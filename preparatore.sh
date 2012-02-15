@@ -128,7 +128,7 @@ while true; do
 done
 beep
 echo "
-Installo un'pò di plasmoidi"
+Installo qualche plasmoide"
 wget http://download.opensuse.org/repositories/home:/pinters/Debian_6.0/amd64/netspeed-plasma_0.2-1_amd64.deb
 dpkg -i ./netspeed-plasma_0.2-1_amd64.deb
 rm ./netspeed-plasma_0.2-1_amd64.deb
@@ -243,7 +243,7 @@ while true; do
 done
 
 echo "
-installo i Google Font - Ci mette parecchio"
+installo i Google Font - Impiega diverso tempo"
 cd /home/$UTENTE/
 wget http://webupd8.googlecode.com/files/install-google-fonts
 chmod +x install-google-fonts
