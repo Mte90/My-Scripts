@@ -22,3 +22,7 @@ p = duplica la linea
 cc = svuota la linea corrente
 o = linea nuova a quella corrente
 r = rimpiazza carattere del cursore
+
+*** Indentazione ***
+<< = togli indentazione
+>> = aggiungi indentazione
