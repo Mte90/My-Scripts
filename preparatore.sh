@@ -108,7 +108,7 @@ rm -r ./beshadowed-kwin-fx
 
 echo "
 installo BeClock"
-wget -O beclock.txz http://kde-look.org/CONTENT/content-files/117542-beclock-kwin-fx-16.txz
+wget -O beclock.txz http://kde-look.org/CONTENT/content-files/117542-beclock-kwin-fx-17a.txz
 tar -xJf beclock.txz
 cd beclock-kwin-fx
 ./configure
