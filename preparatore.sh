@@ -195,6 +195,14 @@ cd /home/$UTENTE/Desktop
 rm ./ofwvlc.tar.gz
 rm -r ./ofwvlc
 
+wget -O kate-folder-service-menu.tar.gz http://kate-folder-service-menu.googlecode.com/files/kate-folder-service-menu0.2.tar.gz
+tar zxvf ./kate-folder-service-menu.tar.gz
+cd ./kate-folder-service-menu
+./install
+cd /home/$UTENTE/Desktop
+rm ./kate-folder-service-menu.tar.gz
+rm -r ./kate-folder-service-menu
+
 echo "
 Avvio FileZilla, Wine, Gimp per inizializzarli!"
 
