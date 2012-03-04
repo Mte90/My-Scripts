@@ -41,7 +41,8 @@ echo -e '\e[m';
 " >> /root/.bashrc
 
 echo "
-alias casa='cd /home/$UTENTE/Desktop'
+alias casa='cd /home/$UTENTE/Desktop
+alias renamemp3='eyeD3 --rename=\"%A - %t\" ./*'
 " >> /home/$UTENTE/.bashrc
 
 dpkg-reconfigure locales
@@ -65,7 +66,7 @@ beep
 apt-get install emesene amule amule-daemon amule-utils plasma-widget-amule deluged deluge-web icedove icedove-l10n-it akregator choqok
 beep
 #Ufficio
-apt-get install libreoffice-writer libreoffice-l10n-it libreoffice-kde libreoffice-impress libreoffice-calc libreoffice-draw tellico
+apt-get install libreoffice-writer libreoffice-l10n-it libreoffice-kde libreoffice-impress libreoffice-calc libreoffice-draw tellico korganizer
 beep
 #Mozilla/Chromium :-(
 apt-get install myspell-it mozilla-libreoffice openjdk-7-jre mozplugger flashplugin-nonfree chromium-browser mozilla-plugin-vlc iceweasel iceweasel-l10n-it
