@@ -54,13 +54,13 @@ apt-get upgrade
 #Librerie
 apt-get -y install ia32-libs ia32-libs-gtk libqt4-core libqt4-gui cmake kdelibs5-dev kdebase-workspace-dev subversion cmake-curses-gui python-kde4 python-qt4 libtool libtag-extras-dev
 apt-get -y install plasma-scriptengine-python plasma-scriptengine-javascript plasma-widgets-workspace plasma-widgets-addons konq-plugins virtuoso-minimal strigi-client gettext libosmesa6
-apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsdl1.2-dev libpcap0.8-dev libgraphicsmagick++3 libhighgui2.3 libraw1394-11 libraw1394-11 libdc1394-22 libcv2.1 libavutil51 libflac++-dev
-apt-get -y install intltool libwnck-dev libnoise-dev libgsl0-dev libgimp2.0-dev doxygen libfftw3-dev libgif-dev libmagick++-dev mesa-common-dev libgl1-mesa-dev libflac++-dev libtag1-dev
+apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsdl1.2-dev libpcap0.8-dev libgraphicsmagick++3 libhighgui2.3 libraw1394-11 libraw1394-11 libdc1394-22 libcv2.1
+apt-get -y install intltool libwnck-dev libnoise-dev libgsl0-dev libfftw3-dev libgif-dev libmagick++-dev mesa-common-dev libgl1-mesa-dev libflac++-dev libtag1-dev libavutil51 libflac++-dev
 #Multimedia
 apt-get install vlc audacity soundkonverter kdenlive w64codecs kid3 openshot transmageddon mediainfo qtractor picard lame libid3-tools melt python-mlt3 libmlt++3 libmlt4 libdvdcss2 transcode tupi
 beep
 #Grafica
-apt-get install gimp gimp-data-extras gimp-plugin-registry gimp-resynthesizer agave trimage kcolorchooser kruler inkscape fotowall inkscape kdegraphics-strigi-plugins okular-extra-backends kipi-plugins imagemagick create-resources
+apt-get install gimp gimp-data-extras gimp-plugin-registry agave trimage kcolorchooser kruler inkscape fotowall inkscape kdegraphics-strigi-plugins okular-extra-backends kipi-plugins imagemagick create-resources python-uniconvertor
 beep
 #Internet
 apt-get install emesene amule amule-daemon amule-utils plasma-widget-amule deluged deluge-web icedove icedove-l10n-it akregator choqok
@@ -75,7 +75,7 @@ beep
 apt-get install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imwheel gtk2-engines-pixbuf gtk2-engines-oxygen file-roller bum acetoneiso virtualbox virtualbox-ose-qt virtualbox-dkms qt4-qmake
 beep
 #Programmazione
-apt-get install filezilla lokalize kompare scite universalindentgui monkeystudio qtcreator php5 php5-gd apache2 php5-xdebug mysql-server w3af git phpmyadmin mercurial kate arduino eric4 node-less
+apt-get install filezilla lokalize kompare scite universalindentgui monkeystudio qtcreator php5 php5-gd apache2 mysql-server git phpmyadmin mercurial kate arduino eric4 node-less
 beep
 #Tools
 apt-get install gprename yakuake preload wine gksu unrar partitionmanager ruby
@@ -300,9 +300,9 @@ done
 
 echo "
 installo SVG Cleaner"
-wget -O svgcleaner.tar.gz http://qt-apps.org/CONTENT/content-files/147974-RazrFalcon-SVGCleaner-5069fce.tar.gz
+wget -O svgcleaner.tar.gz https://github.com/RazrFalcon/SVGCleaner/tarball/master
 tar zxvf ./svgcleaner.tar.gz
-cd ./RazrFalcon-SVGCleaner-5069fce
+cd ./RazrFalcon-SVGCleaner-91a759a
 qmake
 make && make install
 cd /home/$UTENTE/Desktop
