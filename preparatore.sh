@@ -7,7 +7,7 @@ cd /home/$UTENTE/Desktop
 
 echo "deb http://www.debian-multimedia.org sid main non-free
 deb http://backports.debian.org/debian-backports lenny-backports main contrib non-free
-deb http://mi.mirror.garr.it/mirrors/debian/ experimental main contrib non-free
+deb http://ftp.bononia.it/debian/ experimental main contrib non-free
 deb http://packages.siduction.org/experimental unstable main contrib non-free
 deb http://download.webmin.com/download/repository sarge contrib
 " >> /etc/apt/sources.list
@@ -49,45 +49,40 @@ dpkg-reconfigure locales
 
 apt-get update
 apt-get remove kde-l10n-de kaffeine aptosid-manual* aptosid-irc install-usb-gui gparted bluez bluez-pcmcia-support
-apt-get -y install kde-l10n-it beep debian-multimedia-keyring
+apt-get -y install kde-l10n-it debian-multimedia-keyring
 apt-get upgrade
+#Librerie KDE
+apt-get -y install kdelibs5-dev kdebase-workspace-dev plasma-scriptengine-python plasma-scriptengine-javascript plasma-widgets-workspace plasma-widgets-addons konq-plugins virtuoso-minimal strigi-client python-kde4 python-qt4 libqt4-core libqt4-gui
 #Librerie
-apt-get -y install ia32-libs ia32-libs-gtk libqt4-core libqt4-gui cmake kdelibs5-dev kdebase-workspace-dev subversion cmake-curses-gui python-kde4 python-qt4 libtool libtag-extras-dev
-apt-get -y install plasma-scriptengine-python plasma-scriptengine-javascript plasma-widgets-workspace plasma-widgets-addons konq-plugins virtuoso-minimal strigi-client gettext libosmesa6
-apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsdl1.2-dev libpcap0.8-dev libgraphicsmagick++3 libhighgui2.3 libraw1394-11 libraw1394-11 libdc1394-22 libcv2.1
-apt-get -y install intltool libwnck-dev libnoise-dev libgsl0-dev libfftw3-dev libgif-dev libmagick++-dev mesa-common-dev libgl1-mesa-dev libflac++-dev libtag1-dev libavutil51 libflac++-dev
+apt-get -y install ia32-libs ia32-libs-gtk cmake cmake-curses-gui libtool libtag-extras-dev libflac++-dev libtag1-dev libavutil51 libflac++-dev
+apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsdl1.2-dev libpcap0.8-dev libgraphicsmagick++3 libhighgui2.3 libraw1394-11 libdc1394-22 libcv2.1
+apt-get -y install intltool libwnck-dev libnoise-dev libgsl0-dev libfftw3-dev libgif-dev libmagick++-dev libgl1-mesa-dev  gettext libosmesa6
 #Multimedia
 apt-get install vlc audacity soundkonverter kdenlive w64codecs kid3 openshot transmageddon mediainfo qtractor picard lame libid3-tools melt python-mlt3 libmlt++3 libmlt4 libdvdcss2 transcode tupi
-beep
 #Grafica
-apt-get install gimp gimp-data-extras gimp-plugin-registry agave trimage kcolorchooser kruler inkscape fotowall inkscape kdegraphics-strigi-plugins okular-extra-backends kipi-plugins imagemagick create-resources python-uniconvertor
-beep
+apt-get install gimp gimp-data-extras gimp-plugin-registry agave trimage kcolorchooser kruler inkscape inkscape kdegraphics-strigi-plugins okular-extra-backends kipi-plugins imagemagick create-resources python-uniconvertor
 #Internet
 apt-get install emesene amule amule-daemon amule-utils plasma-widget-amule deluged deluge-web icedove icedove-l10n-it akregator choqok
-beep
 #Ufficio
 apt-get install libreoffice-writer libreoffice-l10n-it libreoffice-kde libreoffice-impress libreoffice-calc libreoffice-draw tellico korganizer
-beep
 #Mozilla/Chromium :-(
-apt-get install myspell-it mozilla-libreoffice openjdk-7-jre mozplugger flashplugin-nonfree chromium-browser mozilla-plugin-vlc iceweasel iceweasel-l10n-it
-beep
+apt-get install myspell-it mozilla-libreoffice mozplugger flashplugin-nonfree chromium-browser mozilla-plugin-vlc iceweasel iceweasel-l10n-it
 #Sistema
 apt-get install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imwheel gtk2-engines-pixbuf gtk2-engines-oxygen file-roller bum acetoneiso virtualbox virtualbox-ose-qt virtualbox-dkms qt4-qmake
-beep
 #Programmazione
-apt-get install filezilla lokalize kompare scite universalindentgui monkeystudio qtcreator php5 php5-gd apache2 mysql-server git phpmyadmin mercurial kate arduino eric4 node-less
-beep
+apt-get install filezilla lokalize kompare scite universalindentgui monkeystudio qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate arduino eric4 node-less
 #Tools
-apt-get install gprename yakuake preload wine gksu unrar partitionmanager ruby
+apt-get install gprename yakuake preload wine gksu unrar partitionmanager ruby gdb kmenuedit subversion git mercurial openjdk-7-jre
 #Font
 apt-get install ttf-mscorefonts-installer ttf-droid ttf-dejavu ttf-freefont ttf-bitstream-vera ttf-freefont ttf-linux-libertine ttf-inconsolata googlefontdirectory-tools
+#Giochi
+apt-get install assaultcube
 apt-get clean
 
 modprobe vboxdrv
 modprobe vboxnetflt
 a2enmod rewrite
 
-beep
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
     case $sn in
@@ -118,7 +113,6 @@ cd /home/$UTENTE/Desktop
 rm ./beclock.txz
 rm -r ./beclock-kwin-fx
 
-beep
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
     case $sn in
@@ -127,7 +121,7 @@ while true; do
         * ) echo "Si o no.";;
     esac
 done
-beep
+
 echo "
 Installo qualche plasmoide"
 wget http://download.opensuse.org/repositories/home:/pinters/Debian_6.0/amd64/netspeed-plasma_0.2-1_amd64.deb
@@ -138,11 +132,10 @@ wget -O playctrl.plasmoid http://kde-apps.org/CONTENT/content-files/144437-playc
 plasmapkg -i ./playctrl.plasmoid
 rm ./playctrl.plasmoid
 
-wget -O appmenu.plasmoid http://kde-apps.org/CONTENT/content-files/146098-plasma-applet-appmenu-qml-0.6.plasmoid
+wget -O appmenu.plasmoid http://kde-apps.org/CONTENT/content-files/146098-plasma-applet-appmenu-qml-0.7.2.plasmoid
 plasmapkg -i ./appmenu.plasmoid
 rm ./appmenu.plasmoid
 
-beep
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
     case $sn in
@@ -210,7 +203,6 @@ su $UTENTE -c "filezilla"
 su $UTENTE -c "wine"
 su $UTENTE -c "gimp"
 
-beep
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
     case $sn in
@@ -241,7 +233,6 @@ mv ./GIMP-Refresh /usr/share/gimp/2.0/theme/GIMP-Refresh
 rm -r ./GIMP-Refresh
 rm ./gimp-refresh.zip
 
-beep
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
     case $sn in
@@ -257,7 +248,7 @@ cd /home/$UTENTE/
 wget http://webupd8.googlecode.com/files/install-google-fonts
 chmod +x install-google-fonts
 echo "Intanto devi settare Gimp, Filezilla e Wine per usare i temi scaricati, link per universalindentgui."
-beep
+
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
     case $sn in
@@ -288,7 +279,6 @@ cd /home/$UTENTE/Desktop
 rm ./chakra-gtk-config-1.7.tar.gz
 rm -r ./chakra-gtk-config-1.7
 
-beep
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
     case $sn in
@@ -319,7 +309,6 @@ cd /home/$UTENTE/Desktop
 rm ./krep.tar.gz
 rm -r ./krep
 
-beep
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
     case $sn in
@@ -339,7 +328,6 @@ cd /home/$UTENTE/Desktop
 rm ./converseen-0.4.9.tar.bz2
 rm -r ./converseen-0.4.9
 
-beep
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
     case $sn in
@@ -371,7 +359,6 @@ tar zxvf ./extractme.tar.gz
 cd ./extractme
 python ./OrtaSettingsManager.py
 
-beep
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
     case $sn in
@@ -389,7 +376,6 @@ cd cloudcity && ./configure
 cd build && make && make install
 cd /home/$UTENTE/Desktop
 
-beep
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
     case $sn in
@@ -494,7 +480,6 @@ user_pref("network.http.pipelining.maxrequests", 8);
 user_pref("content.switch.threshold", 250000);
 ' > ./user.js
 
-beep
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
     case $sn in
