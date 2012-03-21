@@ -52,9 +52,9 @@ apt-get remove kde-l10n-de kaffeine aptosid-manual* aptosid-irc install-usb-gui 
 apt-get -y install kde-l10n-it debian-multimedia-keyring
 apt-get upgrade
 #Librerie KDE
-apt-get -y install kdelibs5-dev kdebase-workspace-dev plasma-scriptengine-python plasma-scriptengine-javascript plasma-widgets-workspace plasma-widgets-addons konq-plugins virtuoso-minimal strigi-client python-kde4 python-qt4 libqt4-core libqt4-gui
+apt-get -y install kdelibs5-dev kdebase-workspace-dev plasma-scriptengine-python plasma-scriptengine-javascript plasma-widgets-workspace plasma-widgets-addons konq-plugins virtuoso-minimal strigi-client python-kde4 python-qt4 libqt4-core libqt4-gui python3-pyqt4
 #Librerie
-apt-get -y install ia32-libs ia32-libs-gtk cmake cmake-curses-gui libtool libtag-extras-dev libflac++-dev libtag1-dev libavutil51 libflac++-dev
+apt-get -y install ia32-libs ia32-libs-gtk cmake cmake-curses-gui libtool libtag-extras-dev libflac++-dev libtag1-dev libavutil51 libflac++-dev libxml-twig-perl
 apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsdl1.2-dev libpcap0.8-dev libgraphicsmagick++3 libhighgui2.3 libraw1394-11 libdc1394-22 libcv2.1
 apt-get -y install intltool libwnck-dev libnoise-dev libgsl0-dev libfftw3-dev libgif-dev libmagick++-dev libgl1-mesa-dev  gettext libosmesa6
 #Multimedia
@@ -72,7 +72,7 @@ apt-get install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imw
 #Programmazione
 apt-get install filezilla lokalize kompare scite universalindentgui monkeystudio qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate arduino eric4 node-less
 #Tools
-apt-get install gprename yakuake preload wine gksu unrar partitionmanager ruby gdb kmenuedit subversion git mercurial openjdk-7-jre
+apt-get install gprename yakuake preload wine gksu unrar partitionmanager ruby gdb kmenuedit subversion git mercurial openjdk-7-jre localepurge
 #Font
 apt-get install ttf-mscorefonts-installer ttf-droid ttf-dejavu ttf-freefont ttf-bitstream-vera ttf-freefont ttf-linux-libertine ttf-inconsolata googlefontdirectory-tools
 #Giochi
@@ -82,6 +82,7 @@ apt-get clean
 modprobe vboxdrv
 modprobe vboxnetflt
 a2enmod rewrite
+localepurge
 
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
@@ -101,17 +102,6 @@ cd build; make && make install
 cd /home/$UTENTE/Desktop
 rm ./beshadowed.txz
 rm -r ./beshadowed-kwin-fx
-
-echo "
-installo BeClock"
-wget -O beclock.txz http://kde-look.org/CONTENT/content-files/117542-beclock-kwin-fx-17a.txz
-tar -xJf beclock.txz
-cd beclock-kwin-fx
-./configure
-cd build; make && make install
-cd /home/$UTENTE/Desktop
-rm ./beclock.txz
-rm -r ./beclock-kwin-fx
 
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
@@ -476,7 +466,7 @@ user_pref("browser.startup.homepage", "http://www.mte90.net");
 user_pref("network.dns.disableIPv6", false);
 user_pref("http.proxy.pipelining", true);
 user_pref("network.http.pipelining", true);
-user_pref("network.http.pipelining.maxrequests", 8);
+user_pref("network.http.pipelining.maxrequests", 10);
 user_pref("content.switch.threshold", 250000);
 ' > ./user.js
 
