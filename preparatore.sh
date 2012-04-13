@@ -7,7 +7,7 @@ cd /home/$UTENTE/Desktop
 
 echo "Aggiunta Repo"
 echo "deb http://www.debian-multimedia.org sid main non-free
-deb http://backports.debian.org/debian-backports lenny-backports main contrib non-free
+deb http://backports.debian.org/debian-backports wheezy-backports main contrib non-free
 deb http://ftp.bononia.it/debian/ experimental main contrib non-free
 deb http://packages.siduction.org/experimental unstable main contrib non-free
 deb http://download.webmin.com/download/repository sarge contrib
@@ -28,13 +28,18 @@ echo 'CONCURRENCY=makefile' >> /etc/default/rcS
 echo "
 export XAUTHORITY=/home/$UTENTE/.Xauthority
 export \$(dbus-launch)
+function exr () {
+	unp $1 && rm $1
+}
 
 alias update='apt-get update'
 alias upgrade='apt-get upgrade'
 alias search='apt-cache search'
-alias deb64='dpkg --force-architecture -i'
 alias policy='apt-cache policy'
+alias deb64='dpkg --force-architecture -i'
+alias sources='(kate /etc/apt/source.list &)'
 alias casa='cd /home/$UTENTE/Desktop'
+alias ex='unp'
 
 echo -e '\e[1;31m';
 echo \"  ______  _____   _____  _______\";
@@ -44,9 +49,18 @@ echo -e '\e[m';
 " >> /root/.bashrc
 
 echo "
+function exr () {
+	unp $1 && rm $1
+}
+
 alias casa='cd /home/$UTENTE/Desktop
 alias renamemp3='eyeD3 --rename=\"%A - %t\" ./*'
+alias ex='unp'
+alias yt2mp3='-l --extract-audio --audio-format=mp3 -w -c'
 " >> /home/$UTENTE/.bashrc
+
+echo "Caricamento Alias"
+. /root/.bashrc
 
 dpkg-reconfigure locales
 
@@ -75,11 +89,11 @@ apt-get install myspell-it mozilla-libreoffice mozplugger flashplugin-nonfree ch
 #Sistema
 apt-get install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imwheel gtk2-engines-pixbuf gtk2-engines-oxygen file-roller bum acetoneiso virtualbox virtualbox-ose-qt virtualbox-dkms qt4-qmake
 #Programmazione
-apt-get install filezilla lokalize kompare scite universalindentgui monkeystudio qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate arduino eric4 node-less
+apt-get install filezilla lokalize kompare scite universalindentgui qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate arduino eric4 node-less
 #Tools
-apt-get install gprename yakuake preload wine gksu unrar partitionmanager ruby gdb kmenuedit subversion git mercurial openjdk-7-jre localepurge
+apt-get install gprename yakuake preload wine gksu unrar partitionmanager ruby gdb kmenuedit subversion git mercurial openjdk-7-jre localepurge kdesudo
 #Font
-apt-get install ttf-mscorefonts-installer ttf-droid ttf-dejavu ttf-freefont ttf-bitstream-vera ttf-freefont ttf-linux-libertine ttf-inconsolata googlefontdirectory-tools
+apt-get install ttf-mscorefonts-installer ttf-droid ttf-dejavu ttf-freefont ttf-bitstream-vera ttf-freefont ttf-linux-libertine ttf-inconsolata
 #Giochi
 apt-get install assaultcube
 apt-get clean
@@ -105,7 +119,7 @@ cd ./install_
 echo "
 installo BeShadowed"
 wget -b -O beshadowed.txz http://kde-apps.org/CONTENT/content-files/121607-beshadowed-kwin-fx-0.8a.txz
-tar Jxvf ./beshadowed.txz
+exr ./beshadowed.txz
 cd ./beshadowed-kwin-fx && ./configure
 cd build; make && make install
 cd ../
@@ -127,8 +141,8 @@ dpkg -i ./netspeed-plasma_0.2-1_amd64.deb
 wget -b -O playctrl.plasmoid http://kde-apps.org/CONTENT/content-files/144437-playctrl.plasmoid
 plasmapkg -i ./playctrl.plasmoid
 
-#wget -O appmenu.plasmoid http://kde-apps.org/CONTENT/content-files/146098-plasma-applet-appmenu-qml-0.7.2.plasmoid
-#plasmapkg -i ./appmenu.plasmoid
+wget -O appmenu.plasmoid http://kde-apps.org/CONTENT/content-files/146098-plasma-applet-appmenu-qml-0.7.6.plasmoid
+plasmapkg -i ./appmenu.plasmoid
 
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
@@ -146,21 +160,20 @@ wget -b http://kde-apps.org/CONTENT/content-files/141946-MediaInfoKDE.desktop
 mv ./141946-MediaInfoKDE.desktop /usr/share/kde4/services/ServiceMenus/MediaInfoKDE.desktop
 
 wget -b http://download.tuxfamily.org/ramielinux/aMuleKollection/amuleKollection-0.4.tar.gz
-tar zxvf ./amuleKollection-0.4.tar.gz
+exr ./amuleKollection-0.4.tar.gz
 cd ./amuleKollection-0.4 && ./install.sh
 cd ../
 
 wget -b http://dl.dropbox.com/u/23646728/BlaQuave.tar.gz
-tar zxvf ./BlaQuave.tar.gz
+exr ./BlaQuave.tar.gz
 mv ./BlaQuave /usr/share/icons/BlaQuave
 
 wget -b -O robots.xml http://kde-files.org/CONTENT/content-files/124969-robots.xml
 mv ./robots.xml /usr/share/apps/katepart/syntax/
 
-mkdir ./audiothumbs
-cd ./audiothumbs
+mkdir ./audiothumbs && cd ./audiothumbs
 wget -b -O AudioThumbs-0.2.tar.gz http://kde-apps.org/CONTENT/content-files/145088-AudioThumbs-0.2.tar.gz
-tar zxvf ./AudioThumbs-0.2.tar.gz
+exr ./AudioThumbs-0.2.tar.gz
 mkdir ./build
 cd ./build
 cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` ..
@@ -168,14 +181,14 @@ make && make install
 cd ../
 
 wget -b -O ofwvlc.tar.gz http://kde-apps.org/CONTENT/content-files/146621-ofwvlc-0.3.tar.gz
-tar zxvf ./ofwvlc.tar.gz
+exr ./ofwvlc.tar.gz
 cd ./ofwvlc; cp vlc.desktop /usr/share/kde4/services/ServiceMenus/
 cd it; cp ofwvlc /usr/sbin
 chmod +x /usr/sbin/ofwvlc /usr/share/kde4/services/ServiceMenus/vlc.desktop
 cd ../
 
 wget -b -O kate-folder-service-menu.tar.gz http://kate-folder-service-menu.googlecode.com/files/kate-folder-service-menu0.2.tar.gz
-tar zxvf ./kate-folder-service-menu.tar.gz
+exr ./kate-folder-service-menu.tar.gz
 cd ./kate-folder-service-menu
 ./install
 cd ../
@@ -200,7 +213,7 @@ echo "
 Kdeizziamo FileZilla, Wine, Gimp"
 
 wget -b -O filezilla-theme.tar.gz http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz
-tar zxvf ./filezilla-theme.tar.gz
+exr ./filezilla-theme.tar.gz
 mv ./oxygen /usr/share/filezilla/resources/oxygen
 
 wget -b http://dl.dropbox.com/u/17620616/linki/Oxywine_3.1.msstyles
@@ -211,7 +224,7 @@ chmod -R 777 /home/$UTENTE/.wine/drive_c/windows/Resources
 mv ./Oxywine_3.1.msstyles /home/$UTENTE/.wine/drive_c/windows/Resources/Themes/Oxywine_3.1
 
 wget -b -O gimp-refresh.zip http://kde-look.org/CONTENT/content-files/141457-GIMP-Refresh%200.1.zip
-unzip ./gimp-refresh.zip
+exr ./gimp-refresh.zip
 mv ./GIMP-Refresh /usr/share/gimp/2.0/theme/GIMP-Refresh
 
 while true; do
@@ -250,7 +263,7 @@ dpkg -i ./kde-config-grub_1.1-ubuntu2_amd64.deb
 echo "
 installo GTK Config KCM"
 wget -b http://chakra-project.org/sources/gtk-integration/chakra-gtk-config-1.7.tar.gz
-tar zxvf ./chakra-gtk-config-1.7.tar.gz
+exr ./chakra-gtk-config-1.7.tar.gz
 cd ./chakra-gtk-config-1.77
 mkdir build && cd build
 cmake ..
@@ -269,7 +282,7 @@ done
 echo "
 installo SVG Cleaner"
 wget -b -O svgcleaner.tar.gz https://github.com/RazrFalcon/SVGCleaner/tarball/master
-tar zxvf ./svgcleaner.tar.gz
+exr ./svgcleaner.tar.gz
 cd `tar tzf svgcleaner.tar.gz | head -1`
 qmake
 make && make install
@@ -278,7 +291,7 @@ cd ../
 echo "
 installo Krep"
 wget -b http://www.staerk.de/files/krep.tar.gz
-tar zxvf ./krep.tar.gz
+exr ./krep.tar.gz
 cd krep
 cmake . && make && make install
 cd ../
@@ -295,7 +308,7 @@ done
 echo "
 installo Converseen"
 wget -b http://sourceforge.net/projects/converseen/files/Converseen/Converseen%200.4/0.4.9/converseen-0.4.9.tar.bz2/download
-tar jxvf ./converseen-0.4.9.tar.bz2
+exr ./converseen-0.4.9.tar.bz2
 cd ./converseen-0.4.9
 qmake && make && make install
 cd ../
@@ -312,7 +325,7 @@ done
 echo "
 installo Gmic per Gimp"
 wget -b http://ignum.dl.sourceforge.net/project/gmic/gmic_gimp_linux64.zip
-unzip ./gmic_gimp_linux64.zip
+exr ./gmic_gimp_linux64.zip
 mv ./gmic_gimp /usr/lib/gimp/2.0/plug-ins/
 
 echo "
@@ -323,7 +336,7 @@ dpkg -i ./skype-install.deb
 echo "
 Installiamo Orta come tema per GTK"
 wget -b http://www.deviantart.com/download/184118297/orta_by_skiesofazel-d31mal5.zip
-unzip ./orta_by_skiesofazel-d31mal5.zip
+exr ./orta_by_skiesofazel-d31mal5.zip
 tar zxvf ./extractme.tar.gz
 cd ./extractme
 python ./OrtaSettingsManager.py
@@ -515,15 +528,15 @@ echo "Gimp - Palette, Patterns, Brushes, Gradients"
 cd /home/$UTENTE/Desktop/install_
 mkdir ./gimp
 wget -b http://gimp-tutorials.net/files/130-UltimateWeb2-0-Gradients-for-Gimp.zip
-unzip ./130-UltimateWeb2-0-Gradients-for-Gimp.zip
+exr ./130-UltimateWeb2-0-Gradients-for-Gimp.zip
 wget -b http://www.deviantart.com/download/244975649/30_gimp_gradients_by_frostbo-d41uof5.zip
-unzip ./30_gimp_gradients_by_frostbo-d41uof5.zip
+exr ./30_gimp_gradients_by_frostbo-d41uof5.zip
 mv ./Gimp\ Gradient\ pack\ 30\ by\ frost/* /usr/share/gimp/2.0/gradients/
 wget -b http://gps-gimp-paint-studio.googlecode.com/files/GPS%201_5_final%20release.zip
-unzip ./GPS\ 1_5_final\ release.zip
+exr ./GPS\ 1_5_final\ release.zip
 cd ./brushes
 wget -b http://www.deviantart.com/download/124578466/3D_Gimp_Brush_set_by_DimondDoves.zip
-unzip 3D_Gimp_Brush_set_by_DimondDoves.zip
+exr 3D_Gimp_Brush_set_by_DimondDoves.zip
 rm wget_log
 cd ../
 mv gradients/* /usr/share/gimp/2.0/gradients/
@@ -543,8 +556,8 @@ wget -b http://www.deviantart.com/download/77556760/GIMP_2_6_and_2_4_Satin_Scrip
 wget -b http://www.deviantart.com/download/123319582/Electronic_GIMP_Script_by_mikethedj4.scm
 wget -b http://www.deviantart.com/download/71646868/Add_Border_Script_by_Insanity_Prevails.scm
 wget -b http://www.deviantart.com/download/273071819/gimp_script___fit_all_layers_to_image_size_by_elheartista-d4ikvkb.zip
-unzip ./GIMP_2_6_and_2_4_Satin_Script_by_fence_post.zip
-unzip ./gimp_script___fit_all_layers_to_image_size_by_elheartista-d4ikvkb.zip
+exr ./GIMP_2_6_and_2_4_Satin_Script_by_fence_post.zip
+exr ./gimp_script___fit_all_layers_to_image_size_by_elheartista-d4ikvkb.zip
 rm ./GIMP_2_6_and_2_4_Satin_Script_by_fence_post.zip
 rm ./gimp_script___fit_all_layers_to_image_size_by_elheartista-d4ikvkb.zip
 rm ./wget_log
@@ -556,13 +569,13 @@ wget -b http://files.myopera.com/area42/files/cssdev.py
 chmod +x ./cssdev.py
 mv ./cssdev.py /usr/lib/gimp/2.0/plug-ins/
 wget -b http://registry.gimp.org/files/gimp-plugin-toy-1.0.4.tar.gz
-tar zxvf ./gimp-plugin-toy-1.0.4.tar.gz
+exr ./gimp-plugin-toy-1.0.4.tar.gz
 cd ./gimp-plugin-toy-1.0.4
 ./configure
 make && make install
 cd ../
 wget -b -O resynth.tar.gz https://github.com/bootchk/resynthesizer/tarball/master
-tar zxvf ./resynth.tar.gz
+exr ./resynth.tar.gz
 cd `tar tzf resynth.tar.gz | head -1`
 ./autogen.sh
 make && make install
