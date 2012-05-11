@@ -6,10 +6,12 @@ UTENTE="mte90"
 cd /home/$UTENTE/Desktop
 
 echo "Aggiunta Repo"
-echo "deb http://www.debian-multimedia.org sid main non-free
-deb http://backports.debian.org/debian-backports wheezy-backports main contrib non-free
+echo "deb http://backports.debian.org/debian-backports wheezy-backports main contrib non-free
 deb http://ftp.bononia.it/debian/ experimental main contrib non-free
+deb http://mozilla.debian.net/ squeeze-backports iceweasel-beta
 deb http://packages.siduction.org/experimental unstable main contrib non-free
+deb-src http://packages.siduction.org/experimental unstable main contrib non-free
+deb http://qt-kde2.debian.net/debian experimental-snapshots main
 deb http://download.webmin.com/download/repository sarge contrib
 " >> /etc/apt/sources.list
 
@@ -28,9 +30,6 @@ echo 'CONCURRENCY=makefile' >> /etc/default/rcS
 echo "
 export XAUTHORITY=/home/$UTENTE/.Xauthority
 export \$(dbus-launch)
-function exr () {
-	unp $1 && rm $1
-}
 
 alias update='apt-get update'
 alias upgrade='apt-get upgrade'
@@ -40,6 +39,7 @@ alias deb64='dpkg --force-architecture -i'
 alias sources='(kate /etc/apt/source.list &)'
 alias casa='cd /home/$UTENTE/Desktop'
 alias ex='unp'
+function exr() { unp $1 ; rm $1;}
 
 echo -e '\e[1;31m';
 echo \"  ______  _____   _____  _______\";
@@ -49,14 +49,12 @@ echo -e '\e[m';
 " >> /root/.bashrc
 
 echo "
-function exr () {
-	unp $1 && rm $1
+function renmp3() {
+	eyeD3 --rename="%A - %t" ./*
 }
-
-alias casa='cd /home/$UTENTE/Desktop
-alias renamemp3='eyeD3 --rename=\"%A - %t\" ./*'
+alias casa='cd /home/$UTENTE/Desktop'
 alias ex='unp'
-alias yt2mp3='-l --extract-audio --audio-format=mp3 -w -c'
+alias yt2mp3='youtube-dl -l --extract-audio --audio-format=mp3 -w -c'
 " >> /home/$UTENTE/.bashrc
 
 echo "Caricamento Alias"
@@ -141,7 +139,7 @@ dpkg -i ./netspeed-plasma_0.2-1_amd64.deb
 wget -b -O playctrl.plasmoid http://kde-apps.org/CONTENT/content-files/144437-playctrl.plasmoid
 plasmapkg -i ./playctrl.plasmoid
 
-wget -O appmenu.plasmoid http://kde-apps.org/CONTENT/content-files/146098-plasma-applet-appmenu-qml-0.7.6.plasmoid
+wget -O appmenu.plasmoid http://kde-look.org/CONTENT/content-files/146098-plasma-applet-appmenu-qml-1.0-beta.plasmoid
 plasmapkg -i ./appmenu.plasmoid
 
 while true; do
@@ -223,9 +221,9 @@ mkdir /home/$UTENTE/.wine/drive_c/windows/Resources/Themes/Oxywine_3.1
 chmod -R 777 /home/$UTENTE/.wine/drive_c/windows/Resources
 mv ./Oxywine_3.1.msstyles /home/$UTENTE/.wine/drive_c/windows/Resources/Themes/Oxywine_3.1
 
-wget -b -O gimp-refresh.zip http://kde-look.org/CONTENT/content-files/141457-GIMP-Refresh%200.1.zip
-exr ./gimp-refresh.zip
-mv ./GIMP-Refresh /usr/share/gimp/2.0/theme/GIMP-Refresh
+wget -b -O gimp.tar.gz http://downloads.sourceforge.net/project/chakra/Tools/Gimp-Oxygen/Gimp-Oxygen-0.1.tar.gz
+exr ./gimp.tar.gz
+mv ./Gimp-Oxygen /usr/share/gimp/2.0/themes/Gimp-Oxygen
 
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
@@ -505,7 +503,7 @@ chmod +x /home/$UTENTE/recoveryfont.sh
 echo "Gmic.sh - Aggiornare Gmic"
 echo '
 #!/bin/bash
-wget http://ignum.dl.sourceforge.net/project/gmic/gmic_gimp_linux64.zip
+wget http://downloads.sourceforge.net/gmic/gmic_gimp_linux64.zip
 unzip ./gmic_gimp_linux64.zip
 mv ./gmic_gimp /usr/lib/gimp/2.0/plug-ins/
 rm ./gmic_gimp_linux64.zip
@@ -583,5 +581,7 @@ make && make install
 echo "Rimozione file scaricati"
 cd /home/$UTENTE/Desktop/
 rm -r ./install_
+
+su $UTENTE -c "kdebugdialog"
 
 echo "Installazione finita"
