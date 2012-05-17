@@ -6,18 +6,25 @@ UTENTE="mte90"
 cd /home/$UTENTE/Desktop
 
 echo "Aggiunta Repo"
-echo "deb http://backports.debian.org/debian-backports wheezy-backports main contrib non-free
+echo "deb http://backports.debian.org/debian-backports squeeze-backports main
 deb http://ftp.bononia.it/debian/ experimental main contrib non-free
 deb http://mozilla.debian.net/ squeeze-backports iceweasel-beta
 deb http://packages.siduction.org/experimental unstable main contrib non-free
 deb-src http://packages.siduction.org/experimental unstable main contrib non-free
 deb http://qt-kde2.debian.net/debian experimental-snapshots main
 deb http://download.webmin.com/download/repository sarge contrib
+deb http://download.opensuse.org/repositories/isv:ownCloud:ownCloud2012/Debian_6.0/ /
 " >> /etc/apt/sources.list
 
 wget http://www.webmin.com/jcameron-key.asc
 apt-key add jcameron-key.asc
 rm ./jcameron-key.asc
+wget http://download.opensuse.org/repositories/isv:/ownCloud:/ownCloud2012/Debian_6.0/Release.key
+apt-key add ./Release.key
+rm ./Release.key
+wget http://packages.siduction.org/siduction/pool/main/s/siduction-keyring/siduction-archive-keyring_2012.03.23_all.deb
+dpkg -i ./siduction-archive-keyring_2012.03.23_all.deb
+rm ./siduction-archive-keyring_2012.03.23_all.deb
 
 #sfondi
 #script da github
@@ -36,7 +43,7 @@ alias upgrade='apt-get upgrade'
 alias search='apt-cache search'
 alias policy='apt-cache policy'
 alias deb64='dpkg --force-architecture -i'
-alias sources='(kate /etc/apt/source.list &)'
+alias apts='(kate /etc/apt/sources.list &)'
 alias casa='cd /home/$UTENTE/Desktop'
 alias ex='unp'
 function exr() { unp $1 ; rm $1;}
@@ -65,7 +72,7 @@ dpkg-reconfigure locales
 echo "Aggiornamento ed installazione programmi"
 apt-get update
 apt-get remove kde-l10n-de kaffeine aptosid-manual* aptosid-irc install-usb-gui gparted bluez bluez-pcmcia-support
-apt-get -y install kde-l10n-it debian-multimedia-keyring
+apt-get -y install kde-l10n-it pkg-mozilla-archive-keyring
 apt-get upgrade
 #Librerie KDE
 apt-get -y install kdelibs5-dev kdebase-workspace-dev plasma-scriptengine-python plasma-scriptengine-javascript plasma-widgets-workspace plasma-widgets-addons konq-plugins virtuoso-minimal strigi-client python-kde4 python-qt4 libqt4-core libqt4-gui python3-pyqt4
@@ -82,14 +89,14 @@ apt-get install emesene amule amule-daemon amule-utils plasma-widget-amule delug
 #Ufficio
 apt-get install libreoffice-writer libreoffice-l10n-it libreoffice-kde libreoffice-impress libreoffice-calc libreoffice-draw tellico korganizer
 #Mozilla/Chromium :-(
-apt-get install -t experimental iceweasel iceweasel-l10n-it
+apt-get install -t squeeze-backports iceweasel iceweasel-l10n-it
 apt-get install myspell-it mozilla-libreoffice mozplugger flashplugin-nonfree chromium-browser mozilla-plugin-vlc
 #Sistema
 apt-get install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imwheel gtk2-engines-pixbuf gtk2-engines-oxygen file-roller bum acetoneiso virtualbox virtualbox-ose-qt virtualbox-dkms qt4-qmake
 #Programmazione
-apt-get install filezilla lokalize kompare scite universalindentgui qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate arduino eric4 node-less
+apt-get install filezilla lokalize kompare scite universalindentgui qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate arduino node-less
 #Tools
-apt-get install gprename yakuake preload wine gksu unrar partitionmanager ruby gdb kmenuedit subversion git mercurial openjdk-7-jre localepurge kdesudo
+apt-get install gprename yakuake preload wine gksu unrar partitionmanager ruby rubygems gdb kmenuedit subversion git mercurial openjdk-7-jre localepurge kdesudo owncloud-client
 #Font
 apt-get install ttf-mscorefonts-installer ttf-droid ttf-dejavu ttf-freefont ttf-bitstream-vera ttf-freefont ttf-linux-libertine ttf-inconsolata
 #Giochi
@@ -190,6 +197,9 @@ exr ./kate-folder-service-menu.tar.gz
 cd ./kate-folder-service-menu
 ./install
 cd ../
+
+wget http://packages.netrunner-os.com/pool/main/k/kde-gtk-config/kde-gtk-config_2.0~gitcb43e9b7_amd64.deb
+dpkg -i ./kde-gtk-config_2.0~gitcb43e9b7_amd64.deb64
 
 echo "
 Avvio FileZilla, Wine, Gimp per inizializzarli!"
