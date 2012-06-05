@@ -75,15 +75,15 @@ apt-get remove kde-l10n-de kaffeine aptosid-manual* aptosid-irc install-usb-gui 
 apt-get -y install kde-l10n-it pkg-mozilla-archive-keyring
 apt-get upgrade
 #Librerie KDE
-apt-get -y install kdelibs5-dev kdebase-workspace-dev plasma-scriptengine-python plasma-scriptengine-javascript plasma-widgets-workspace plasma-widgets-addons konq-plugins virtuoso-minimal strigi-client python-kde4 python-qt4 libqt4-core libqt4-gui python3-pyqt4
+apt-get -y install kdelibs5-dev kde-workspace-dev plasma-scriptengine-python plasma-scriptengine-javascript plasma-widgets-workspace plasma-widgets-addons konq-plugins virtuoso-minimal strigi-client python-kde4 python-qt4 libqt4-core libqt4-gui python3-pyqt4
 #Librerie
 apt-get -y install ia32-libs ia32-libs-gtk cmake cmake-curses-gui libtool libtag-extras-dev libflac++-dev libtag1-dev libavutil51 libflac++-dev libxml-twig-perl
 apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsdl1.2-dev libpcap0.8-dev libgraphicsmagick++3 libhighgui2.3 libraw1394-11 libdc1394-22 libcv2.1
-apt-get -y install intltool libwnck-dev libnoise-dev libgsl0-dev libfftw3-dev libgif-dev libmagick++-dev libgl1-mesa-dev  gettext libosmesa6
+apt-get -y install intltool libwnck-dev libnoise-dev libgsl0-dev libfftw3-dev libgif-dev libmagick++-dev libgl1-mesa-dev gettext libosmesa6
 #Multimedia
 apt-get install vlc audacity soundkonverter kdenlive w64codecs kid3 openshot transmageddon mediainfo qtractor picard lame libid3-tools melt python-mlt3 libmlt++3 libmlt4 libdvdcss2 transcode tupi
 #Grafica
-apt-get install gimp gimp-data-extras gimp-plugin-registry agave trimage kcolorchooser kruler inkscape inkscape kdegraphics-strigi-plugins okular-extra-backends kipi-plugins imagemagick create-resources python-uniconvertor
+apt-get install gimp gimp-data-extras gimp-plugin-registry agave trimage kcolorchooser kruler inkscape kdegraphics-strigi-plugins okular-extra-backends kipi-plugins imagemagick create-resources python-uniconvertor
 #Internet
 apt-get install emesene amule amule-daemon amule-utils plasma-widget-amule deluged deluge-web icedove icedove-l10n-it akregator choqok
 #Ufficio
@@ -126,7 +126,7 @@ installo BeShadowed"
 wget -b -O beshadowed.txz http://kde-apps.org/CONTENT/content-files/121607-beshadowed-kwin-fx-0.8a.txz
 exr ./beshadowed.txz
 cd ./beshadowed-kwin-fx && ./configure
-cd build; make && make install
+cd build; make -j16 && make install
 cd ../
 
 while true; do
@@ -145,9 +145,6 @@ dpkg -i ./netspeed-plasma_0.2-1_amd64.deb
 
 wget -b -O playctrl.plasmoid http://kde-apps.org/CONTENT/content-files/144437-playctrl.plasmoid
 plasmapkg -i ./playctrl.plasmoid
-
-wget -O appmenu.plasmoid http://kde-look.org/CONTENT/content-files/146098-plasma-applet-appmenu-qml-1.0-beta.plasmoid
-plasmapkg -i ./appmenu.plasmoid
 
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
@@ -265,18 +262,25 @@ cd /home/$UTENTE/Desktop/install_
 
 echo "
 installo Grub2 KCM"
-wget -b http://ppa.launchpad.net/eu-andreduartesp/ppa/ubuntu/pool/main/k/kcmgrub2/kde-config-grub_1.1-ubuntu2_amd64.deb
-dpkg -i ./kde-config-grub_1.1-ubuntu2_amd64.deb
+wget -b http://anongit.kde.org/kcmgrub2/kcmgrub2-latest.tar.gz
+exr ./kcmgrub2-latest.tar.gz
+cd kcmgrub2/
+./initrepo.sh
+mkdir build && cd build
+cmake ..
+make -j16 && make install
+cd ../../
 
 echo "
 installo GTK Config KCM"
-wget -b http://chakra-project.org/sources/gtk-integration/chakra-gtk-config-1.7.tar.gz
-exr ./chakra-gtk-config-1.7.tar.gz
-cd ./chakra-gtk-config-1.77
+wget -b http://anongit.kde.org/kde-gtk-config/kde-gtk-config-latest.tar.gz
+exr ./kde-gtk-config-latest.tar.gz
+cd ./kde-gtk-config/
+./initrepo.sh
 mkdir build && cd build
 cmake ..
-make && make install
-cd ../
+make -j16 && make install
+cd ../../
 
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
@@ -293,7 +297,7 @@ wget -b -O svgcleaner.tar.gz https://github.com/RazrFalcon/SVGCleaner/tarball/ma
 exr ./svgcleaner.tar.gz
 cd `tar tzf svgcleaner.tar.gz | head -1`
 qmake
-make && make install
+make -j16 && make install
 cd ../
 
 echo "
@@ -301,7 +305,7 @@ installo Krep"
 wget -b http://www.staerk.de/files/krep.tar.gz
 exr ./krep.tar.gz
 cd krep
-cmake . && make && make install
+cmake . && make -j16 && make install
 cd ../
 
 while true; do
@@ -315,11 +319,13 @@ done
 
 echo "
 installo Converseen"
-wget -b http://sourceforge.net/projects/converseen/files/Converseen/Converseen%200.4/0.4.9/converseen-0.4.9.tar.bz2/download
-exr ./converseen-0.4.9.tar.bz2
-cd ./converseen-0.4.9
-qmake && make && make install
-cd ../
+wget -b -O converseen-0.5.tar.bz2 http://sourceforge.net/projects/converseen/files/Converseen/Converseen%200.5/0.5.0/converseen-0.5.tar.bz2/download
+exr ./converseen-0.5.tar.bz2
+cd ./converseen-0.5
+mkdir build
+cd build
+cmake .. && make -j16 && make install
+cd ../../
 
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
@@ -329,12 +335,6 @@ while true; do
         * ) echo "Si o no.";;
     esac
 done
-
-echo "
-installo Gmic per Gimp"
-wget -b http://ignum.dl.sourceforge.net/project/gmic/gmic_gimp_linux64.zip
-exr ./gmic_gimp_linux64.zip
-mv ./gmic_gimp /usr/lib/gimp/2.0/plug-ins/
 
 echo "
 installo la cagata di Skype"
@@ -363,7 +363,7 @@ installo Bespin"
 cd /home/mte90
 svn co https://cloudcity.svn.sourceforge.net/svnroot/cloudcity
 cd cloudcity && ./configure
-cd build && make && make install
+cd build && make -j16 && make install
 cd /home/$UTENTE/Desktop/install_
 
 while true; do
@@ -457,7 +457,7 @@ echo '//support for ed2k link
 user_pref("network.protocol-handler.app.ed2k", "/usr/bin/ed2k");
 user_pref("network.protocol-handler.expose.ed2k", false);
 user_pref("network.protocol-handler.external.ed2k", true);
-//webl library
+//webgl library
 user_pref("webgl.osmesalib", "/usr/lib/x86_64-linux-gnu/libOSMesa.so.6");
 //homepage
 user_pref("browser.startup.homepage", "http://www.mte90.net");
@@ -532,6 +532,11 @@ while true; do
     esac
 done
 
+
+echo "
+installo Gmic per Gimp"
+/home/$UTENTE/gmic.sh
+
 echo "Gimp - Palette, Patterns, Brushes, Gradients"
 cd /home/$UTENTE/Desktop/install_
 mkdir ./gimp
@@ -586,7 +591,7 @@ wget -b -O resynth.tar.gz https://github.com/bootchk/resynthesizer/tarball/maste
 exr ./resynth.tar.gz
 cd `tar tzf resynth.tar.gz | head -1`
 ./autogen.sh
-make && make install
+make -j16 && make install
 
 echo "Rimozione file scaricati"
 cd /home/$UTENTE/Desktop/
