@@ -75,7 +75,7 @@ apt-get remove kde-l10n-de kaffeine aptosid-manual* aptosid-irc install-usb-gui 
 apt-get -y install kde-l10n-it pkg-mozilla-archive-keyring
 apt-get upgrade
 #Librerie KDE
-apt-get -y install kdelibs5-dev kde-workspace-dev plasma-scriptengine-python plasma-scriptengine-javascript plasma-widgets-workspace plasma-widgets-addons konq-plugins virtuoso-minimal strigi-client python-kde4 python-qt4 libqt4-core libqt4-gui python3-pyqt4
+apt-get -y install kdelibs5-dev kde-workspace-dev plasma-scriptengine-python plasma-scriptengine-javascript plasma-widgets-workspace plasma-widgets-addons konq-plugins virtuoso-minimal strigi-client python-kde4 python-qt4 libqt4-core libqt4-gui python3-pyqt4 appmenu-qt
 #Librerie
 apt-get -y install ia32-libs ia32-libs-gtk cmake cmake-curses-gui libtool libtag-extras-dev libflac++-dev libtag1-dev libavutil51 libflac++-dev libxml-twig-perl
 apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsdl1.2-dev libpcap0.8-dev libgraphicsmagick++3 libhighgui2.3 libraw1394-11 libdc1394-22 libcv2.1
@@ -92,15 +92,13 @@ apt-get install libreoffice-writer libreoffice-l10n-it libreoffice-kde libreoffi
 apt-get install -t squeeze-backports iceweasel iceweasel-l10n-it
 apt-get install myspell-it mozilla-libreoffice mozplugger flashplugin-nonfree chromium-browser mozilla-plugin-vlc
 #Sistema
-apt-get install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imwheel gtk2-engines-pixbuf gtk2-engines-oxygen file-roller bum acetoneiso virtualbox virtualbox-ose-qt virtualbox-dkms qt4-qmake
+apt-get install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imwheel gtk2-engines-pixbuf gtk2-engines-oxygen file-roller bum acetoneiso virtualbox virtualbox-ose-qt virtualbox-dkms qt4-qmake kde-notification-colibri kuser ksystemlog
 #Programmazione
 apt-get install filezilla lokalize kompare scite universalindentgui qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate arduino node-less
 #Tools
-apt-get install gprename yakuake preload wine gksu unrar partitionmanager ruby rubygems gdb kmenuedit subversion git mercurial openjdk-7-jre localepurge kdesudo owncloud-client
+apt-get install gprename yakuake preload wine gksu unrar partitionmanager ruby rubygems gdb kmenuedit subversion git mercurial openjdk-7-jre localepurge kdesudo owncloud-client exfat-fuse exfat-utils
 #Font
 apt-get install ttf-mscorefonts-installer ttf-droid ttf-dejavu ttf-freefont ttf-bitstream-vera ttf-freefont ttf-linux-libertine ttf-inconsolata
-#Giochi
-apt-get install assaultcube
 apt-get clean
 
 echo "Fix"
