@@ -75,7 +75,7 @@ apt-get remove kde-l10n-de kaffeine aptosid-manual* aptosid-irc install-usb-gui 
 apt-get -y install kde-l10n-it pkg-mozilla-archive-keyring
 apt-get upgrade
 #Librerie KDE
-apt-get -y install kdelibs5-dev kde-workspace-dev plasma-scriptengine-python plasma-scriptengine-javascript plasma-widgets-workspace plasma-widgets-addons konq-plugins virtuoso-minimal strigi-client python-kde4 python-qt4 libqt4-core libqt4-gui python3-pyqt4 appmenu-qt
+apt-get -y install kdelibs5-dev kde-workspace-dev plasma-scriptengine-python plasma-scriptengine-javascript plasma-widgets-workspace plasma-widgets-addons konq-plugins virtuoso-minimal strigi-client python-kde4 python-qt4 libqt4-core libqt4-gui python3-pyqt4 appmenu-qt kdepim-groupware kdepim-kresources kdepim-wizards
 #Librerie
 apt-get -y install ia32-libs ia32-libs-gtk cmake cmake-curses-gui libtool libtag-extras-dev libflac++-dev libtag1-dev libavutil51 libflac++-dev libxml-twig-perl
 apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsdl1.2-dev libpcap0.8-dev libgraphicsmagick++3 libhighgui2.3 libraw1394-11 libdc1394-22 libcv2.1
@@ -193,9 +193,6 @@ cd ./kate-folder-service-menu
 ./install
 cd ../
 
-wget http://packages.netrunner-os.com/pool/main/k/kde-gtk-config/kde-gtk-config_2.0~gitcb43e9b7_amd64.deb
-dpkg -i ./kde-gtk-config_2.0~gitcb43e9b7_amd64.deb64
-
 echo "
 Avvio FileZilla, Wine, Gimp per inizializzarli!"
 
@@ -263,17 +260,6 @@ installo Grub2 KCM"
 wget -b http://anongit.kde.org/kcmgrub2/kcmgrub2-latest.tar.gz
 exr ./kcmgrub2-latest.tar.gz
 cd kcmgrub2/
-./initrepo.sh
-mkdir build && cd build
-cmake ..
-make -j16 && make install
-cd ../../
-
-echo "
-installo GTK Config KCM"
-wget -b http://anongit.kde.org/kde-gtk-config/kde-gtk-config-latest.tar.gz
-exr ./kde-gtk-config-latest.tar.gz
-cd ./kde-gtk-config/
 ./initrepo.sh
 mkdir build && cd build
 cmake ..
