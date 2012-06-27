@@ -284,14 +284,6 @@ qmake
 make -j16 && make install
 cd ../
 
-echo "
-installo Krep"
-wget -b http://www.staerk.de/files/krep.tar.gz
-exr ./krep.tar.gz
-cd krep
-cmake . && make -j16 && make install
-cd ../
-
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
     case $sn in
