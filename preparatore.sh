@@ -295,7 +295,7 @@ done
 
 echo "
 installo Converseen"
-wget -b -O converseen-0.5.tar.bz2 http://sourceforge.net/projects/converseen/files/Converseen/Converseen%200.5/0.5.0/converseen-0.5.tar.bz2/download
+wget -b -O converseen-0.5.tar.bz2 http://downloads.sourceforge.net/project/converseen/Converseen/Converseen%200.5/0.5.1/converseen-0.5.1.tar.bz2
 exr ./converseen-0.5.tar.bz2
 cd ./converseen-0.5
 mkdir build
