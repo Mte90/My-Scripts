@@ -1,19 +1,22 @@
 #!/bin/bash
 
-echo "Preparatore per Aptosid 1.3 by Mte90 - www.mte90.net"
+echo "Preparatore per Aptosid 1.4 by Mte90 - www.mte90.net"
 
 UTENTE="mte90"
 cd /home/$UTENTE/Desktop
 
 echo "Aggiunta Repo"
-echo "deb http://backports.debian.org/debian-backports squeeze-backports main
+echo "#deb http://www.debian-multimedia.org/ sid main non-free
+deb http://mozilla.debian.net/ squeeze-backports iceweasel-aurora
+deb http://download.webmin.com/download/repository/ sarge contrib
 deb http://ftp.bononia.it/debian/ experimental main contrib non-free
-deb http://mozilla.debian.net/ squeeze-backports iceweasel-beta
-deb http://packages.siduction.org/experimental unstable main contrib non-free
-deb-src http://packages.siduction.org/experimental unstable main contrib non-free
+deb-src http://ftp.bononia.it/debian/ experimental main contrib non-free
 deb http://qt-kde2.debian.net/debian experimental-snapshots main
-deb http://download.webmin.com/download/repository sarge contrib
+deb-src http://qt-kde2.debian.net/debian experimental-snapshots main
+#deb http://packages.siduction.org/experimental unstable main contrib non-free
+#deb-src http://packages.siduction.org/experimental unstable main contrib non-free
 deb http://download.opensuse.org/repositories/isv:ownCloud:ownCloud2012/Debian_6.0/ /
+deb http://backports.debian.org/debian-backports squeeze-backports main
 " >> /etc/apt/sources.list
 
 wget http://www.webmin.com/jcameron-key.asc
@@ -85,11 +88,11 @@ apt-get install vlc audacity soundkonverter kdenlive w64codecs kid3 openshot tra
 #Grafica
 apt-get install gimp gimp-data-extras gimp-plugin-registry agave trimage kcolorchooser kruler inkscape kdegraphics-strigi-plugins okular-extra-backends kipi-plugins imagemagick create-resources python-uniconvertor
 #Internet
-apt-get install emesene amule amule-daemon amule-utils plasma-widget-amule deluged deluge-web icedove icedove-l10n-it akregator choqok
+apt-get install emesene amule amule-daemon amule-utils plasma-widget-amule deluged deluge-web icedove icedove-l10n-it akregator choqok kde-telepathy telepathy-gabble telepathy-salut telepathy-haze
 #Ufficio
 apt-get install libreoffice-writer libreoffice-l10n-it libreoffice-kde libreoffice-impress libreoffice-calc libreoffice-draw tellico korganizer
 #Mozilla/Chromium :-(
-apt-get install -t squeeze-backports iceweasel iceweasel-l10n-it
+apt-get install -t experimental iceweasel iceweasel-l10n-it
 apt-get install myspell-it mozilla-libreoffice mozplugger flashplugin-nonfree chromium-browser mozilla-plugin-vlc
 #Sistema
 apt-get install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imwheel gtk2-engines-pixbuf gtk2-engines-oxygen file-roller bum acetoneiso virtualbox virtualbox-ose-qt virtualbox-dkms qt4-qmake kde-notification-colibri kuser ksystemlog
@@ -575,4 +578,5 @@ rm -r ./install_
 
 su $UTENTE -c "kdebugdialog"
 
+mkdir /home/$UTENTE/Desktop/kde
 echo "Installazione finita"
