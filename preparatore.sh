@@ -372,7 +372,7 @@ mv ./MFC620CN.ppd /etc/cups/ppd/MFC620CN.ppd
 echo "Download HotKeys"
 wget -O preset.hotkeys http://kde-look.org/CONTENT/content-files/148793-preset.khotkeys
 
-kdesudo $UTENTE -c "kcmshell4 khotkeys"
+su $UTENTE -c "dbus-launch kcmshell4 khotkeys"
 
 echo "
 Avvio Bum"
@@ -385,21 +385,21 @@ mv ./smb.conf /etc/samba/smb.conf
 
 echo "
 Carico la configurazione di Konversation"
-kdesudo $UTENTE -c "konversation"
+su $UTENTE -c "dbus-launch konversation"
 wget http://dl.dropbox.com/u/21763079/konversationrc
 mv ./konversationrc /home/$UTENTE/.kde/share/config/konversationrc
 chmod -R 777 /home/$UTENTE/.kde/share/config/konversationrc
 
 echo "
 Carico la configurazione di Kate"
-kdesudo $UTENTE -c "kate"
+su $UTENTE -c "dbus-launch kate"
 wget http://dl.dropbox.com/u/21763079/katerc
 mv ./katerc /home/$UTENTE/.kde/share/config/katerc
 chmod -R 777 /home/$UTENTE/.kde/share/config/katerc
 
 echo "
 Carico la configurazione di Choqok"
-kdesudo $UTENTE -c "choqok"
+su $UTENTE -c "dbus-launch choqok"
 wget http://dl.dropbox.com/u/21763079/choqokrc
 mv ./choqokrc /home/$UTENTE/.kde/share/config/choqokrc
 chmod -R 777 /home/$UTENTE/.kde/share/config/choqokrc
