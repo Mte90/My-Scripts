@@ -6,13 +6,12 @@ UTENTE="mte90"
 cd /home/$UTENTE/Desktop
 
 echo "Aggiunta Repo"
-echo "deb http://backports.debian.org/debian-backports squeeze-backports main
+echo "#deb http://www.debian-multimedia.org/ sid main non-free
+deb http://mozilla.debian.net/ experimental iceweasel-aurora
+deb http://download.webmin.com/download/repository/ sarge contrib
 deb http://ftp.bononia.it/debian/ experimental main contrib non-free
-deb http://mozilla.debian.net/ squeeze-backports iceweasel-beta
-deb http://qt-kde2.debian.net/debian experimental-snapshots main
-deb http://download.webmin.com/download/repository sarge contrib
+deb-src http://ftp.bononia.it/debian/ experimental main contrib non-free
 deb http://download.opensuse.org/repositories/isv:ownCloud:ownCloud2012/Debian_6.0/ /
-deb http://cdn.debian.net/debian/ sid non-free contrib
 " >> /etc/apt/sources.list
 
 mkdir install_
@@ -86,7 +85,7 @@ apt-get -y install cmake cmake-curses-gui libtool libtag-extras-dev libflac++-de
 apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsdl1.2-dev libpcap0.8-dev libgraphicsmagick++3 libhighgui2.3 libraw1394-11 libdc1394-22
 apt-get -y install intltool libwnck-dev libnoise-dev libgsl0-dev libfftw3-dev libgif-dev libmagick++-dev libgl1-mesa-dev gettext libosmesa6 extra-xdg-menus
 #Multimedia
-apt-get -y install vlc audacity soundkonverter kdenlive kid3 openshot transmageddon mediainfo qtractor picard lame libid3-tools melt transcode tupi phonon-backend-vlc mplayerthumbs
+apt-get -y install vlc audacity soundkonverter kdenlive kid3 openshot transmageddon mediainfo qtractor picard lame libid3-tools melt transcode phonon-backend-vlc mplayerthumbs
 #Grafica
 apt-get -y install gimp gimp-data-extras gimp-plugin-registry agave trimage kcolorchooser kruler inkscape kipi-plugins imagemagick create-resources python-uniconvertor
 #Internet
@@ -94,7 +93,7 @@ apt-get -y install amule amule-daemon amule-utils plasma-widget-amule deluged de
 #Ufficio
 apt-get -y install libreoffice-writer libreoffice-l10n-it libreoffice-kde libreoffice-impress libreoffice-calc libreoffice-draw tellico korganizer okular-extra-backends
 #Mozilla/Chromium :-(
-apt-get -y install -t squeeze-backports iceweasel iceweasel-l10n-it
+apt-get -y install -t experimental iceweasel iceweasel-l10n-it
 apt-get -y install myspell-it mozilla-libreoffice mozplugger chromium mozilla-plugin-vlc
 #Sistema
 apt-get -y install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imwheel gtk3-engines-oxygen gtk2-engines-pixbuf gtk2-engines-oxygen file-roller bum acetoneiso
