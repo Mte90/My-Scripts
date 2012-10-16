@@ -85,7 +85,7 @@ apt-get -y install cmake cmake-curses-gui libtool libtag-extras-dev libflac++-de
 apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsdl1.2-dev libpcap0.8-dev libgraphicsmagick++3 libhighgui2.3 libraw1394-11 libdc1394-22
 apt-get -y install intltool libwnck-dev libnoise-dev libgsl0-dev libfftw3-dev libgif-dev libmagick++-dev libgl1-mesa-dev gettext libosmesa6 extra-xdg-menus
 #Multimedia
-apt-get -y install vlc audacity soundkonverter kdenlive kid3 openshot transmageddon mediainfo qtractor picard lame libid3-tools melt transcode phonon-backend-vlc mplayerthumbs
+apt-get -y install vlc audacity soundkonverter kdenlive kid3 openshot transmageddon mediainfo qtractor picard lame libid3-tools melt transcode phonon-backend-vlc mplayerthumbs eyed3
 #Grafica
 apt-get -y install gimp gimp-data-extras gimp-plugin-registry agave trimage kcolorchooser kruler inkscape kipi-plugins imagemagick create-resources python-uniconvertor
 #Internet
