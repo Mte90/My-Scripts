@@ -1,17 +1,20 @@
 #!/bin/bash
 
-echo "Preparatore per Aptosid 1.4 by Mte90 - www.mte90.net"
+echo "Preparatore per Aptosid 1.5 by Mte90 - www.mte90.net"
 
 UTENTE="mte90"
 cd /home/$UTENTE/Desktop
 
 echo "Aggiunta Repo"
-echo "#deb http://www.debian-multimedia.org/ sid main non-free
+echo "
 deb http://mozilla.debian.net/ experimental iceweasel-aurora
 deb http://download.webmin.com/download/repository/ sarge contrib
 deb http://ftp.bononia.it/debian/ experimental main contrib non-free
 deb-src http://ftp.bononia.it/debian/ experimental main contrib non-free
-deb http://download.opensuse.org/repositories/isv:ownCloud:ownCloud2012/Debian_6.0/ /
+deb http://qt-kde.debian.net/debian experimental-snapshots main
+deb-src http://qt-kde.debian.net/debian experimental-snapshots main
+deb http://download.opensuse.org/repositories/isv:ownCloud:devel/Debian_6.0/ /
+deb http://repo.ajenti.org/debian main main
 " >> /etc/apt/sources.list
 
 mkdir install_
@@ -19,13 +22,10 @@ cd ./install_
 
 wget http://www.webmin.com/jcameron-key.asc
 apt-key add jcameron-key.asc
-wget http://download.opensuse.org/repositories/isv:/ownCloud:/ownCloud2012/Debian_6.0/Release.key
+wget http://download.opensuse.org/repositories/isv:ownCloud:devel/Debian_6.0/Release.key
 apt-key add ./Release.key
 wget http://qt-kde.debian.net/debian/pool/main/p/pkg-kde-archive-keyring/pkg-kde-archive-keyring_2.1_all.deb
 dpkg -i ./pkg-kde-archive-keyring_2.1_all.deb
-
-#sfondi
-#script da github
 
 echo "Fix & tips"
 
@@ -44,6 +44,7 @@ alias policy='apt-cache policy'
 alias deb64='dpkg --force-architecture -i'
 alias apts='(kate /etc/apt/sources.list &)'
 alias casa='cd /home/$UTENTE/Desktop'
+alias www='cd /var/www'
 alias ex='unp'
 function exr() { unp \$1 ; rm \$1;}
 
@@ -59,6 +60,7 @@ function renmp3() {
 	eyeD3 --rename="%A - %t" ./*
 }
 alias casa='cd /home/$UTENTE/Desktop'
+alias www='cd /var/www'
 alias ex='unp'
 alias yt2mp3='youtube-dl -l --extract-audio --audio-format=mp3 -w -c'
 " >> /home/$UTENTE/.bashrc
@@ -79,7 +81,7 @@ apt-get -y install kdelibs5-dev kde-workspace-dev python-kde4 python-qt4 libqt4-
 apt-get -y install libattica0.4 libattica-dev libcups2-dev libqjson0 libqjson-dev libqtwebkit-dev libgpgme11-dev qt4-qmake xsltproc samba
 apt-get -y install plasma-scriptengine-python plasma-scriptengine-javascript plasma-widgets-workspace plasma-widgets-addons  kdegraphics-strigi-plugins
 apt-get -y install python-mlt4 libmlt++4 libmlt5 libktpcommoninternalsprivate-dev virtuoso-minimal strigi-client kio-ftps kde-thumbnailer-deb kdelibs5-plugins
-apt-get -y install task-italian-kde-desktop svgpart software-properties-kde konq-plugins ksaneplugin kdesrc-build kde-sc-dev-latest kde-notification-colibri
+apt-get -y install svgpart software-properties-kde konq-plugins ksaneplugin kdesrc-build kde-sc-dev-latest kde-notification-colibri
 #Librerie
 apt-get -y install cmake cmake-curses-gui libtool libtag-extras-dev libflac++-dev libtag1-dev libavutil51 libflac++-dev libxml-twig-perl libtag1-dev csh
 apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsdl1.2-dev libpcap0.8-dev libgraphicsmagick++3 libhighgui2.3 libraw1394-11 libdc1394-22
@@ -89,16 +91,16 @@ apt-get -y install vlc audacity soundkonverter kdenlive kid3 openshot transmaged
 #Grafica
 apt-get -y install gimp gimp-data-extras gimp-plugin-registry agave trimage kcolorchooser kruler inkscape kipi-plugins imagemagick create-resources python-uniconvertor
 #Internet
-apt-get -y install amule amule-daemon amule-utils plasma-widget-amule deluged deluge-web icedove icedove-l10n-it akregator choqok kde-telepathy pidgin-skype
+apt-get -y install amule amule-daemon amule-utils plasma-widget-amule deluged deluge-web icedove icedove-l10n-it akregator choqok
 #Ufficio
-apt-get -y install libreoffice-writer libreoffice-l10n-it libreoffice-kde libreoffice-impress libreoffice-calc libreoffice-draw tellico korganizer okular-extra-backends
+apt-get -y install libreoffice-writer libreoffice-l10n-it libreoffice-kde libreoffice-impress libreoffice-calc libreoffice-draw tellico korganizer okular-extra-backends retext
 #Mozilla/Chromium :-(
 apt-get -y install -t experimental iceweasel iceweasel-l10n-it
 apt-get -y install myspell-it mozilla-libreoffice mozplugger chromium mozilla-plugin-vlc
 #Sistema
-apt-get -y install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imwheel gtk3-engines-oxygen gtk2-engines-pixbuf gtk2-engines-oxygen file-roller bum acetoneiso
+apt-get -y install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imwheel gtk3-engines-oxygen gtk2-engines-pixbuf gtk2-engines-oxygen bum acetoneiso
 #Programmazione
-apt-get -y install filezilla lokalize kompare scite universalindentgui qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate arduino node-less kdevelop-php ohcount
+apt-get -y install filezilla lokalize kompare scite universalindentgui qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate arduino node-less ohcount spyder
 #KDE Tools
 apt-get -y install kdenetwork kde-config-cron kfilereplace kdeutils kscreensaver kdepim-runtime kuser ksystemlog virtualbox virtualbox-ose-qt virtualbox-dkms yakuake kmenuedit
 #Tools
@@ -108,7 +110,7 @@ apt-get -y install ttf-mscorefonts-installer ttf-droid ttf-dejavu ttf-freefont t
 #Non-Free
 apt-get -y install firmware-linux-nonfree unrar flashplugin-nonfree
 #Pacchetti i386
-apt-get -y install wine-bin-unstable:i386
+apt-get install libpulse0:i386 libqtwebkit4:i386 libqtgui4:i386 libqtcore4:i386 libqt4-xml:i386 libqt4-dbus:i386 libqt4-network:i386
 apt-get clean
 
 echo "Fix"
@@ -188,10 +190,9 @@ cd ./kate-folder-service-menu
 cd ../
 
 echo "
-Avvio FileZilla, Wine, Gimp per inizializzarli!"
+Avvio FileZilla, Gimp per inizializzarli!"
 
 su $UTENTE -c "filezilla"
-su $UTENTE -c "wine"
 su $UTENTE -c "gimp"
 
 while true; do
@@ -204,18 +205,11 @@ while true; do
 done
 
 echo "
-Kdeizziamo FileZilla, Wine, Gimp"
+Kdeizziamo FileZilla, Gimp"
 
 wget -O filezilla-theme.tar.gz http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz
 exr ./filezilla-theme.tar.gz
 mv ./oxygen /usr/share/filezilla/resources/oxygen
-
-wget http://dl.dropbox.com/u/17620616/linki/Oxywine_3.1.msstyles
-mkdir /home/$UTENTE/.wine/drive_c/windows/Resources
-mkdir /home/$UTENTE/.wine/drive_c/windows/Resources/Themes
-mkdir /home/$UTENTE/.wine/drive_c/windows/Resources/Themes/Oxywine_3.1
-chmod -R 777 /home/$UTENTE/.wine/drive_c/windows/Resources
-mv ./Oxywine_3.1.msstyles /home/$UTENTE/.wine/drive_c/windows/Resources/Themes/Oxywine_3.1
 
 wget -O gimp.tar.gz http://downloads.sourceforge.net/project/chakra/Tools/Gimp-Oxygen/Gimp-Oxygen-0.1.tar.gz
 exr ./gimp.tar.gz
@@ -289,9 +283,9 @@ done
 
 echo "
 installo Converseen"
-wget -O converseen-0.5.1.tar.bz2 http://downloads.sourceforge.net/project/converseen/Converseen/Converseen%200.5/0.5.1/converseen-0.5.1.tar.bz2
-exr ./converseen-0.5.1.tar.bz2
-cd ./converseen-0.5.1
+curl --header 'Host: ignum.dl.sourceforge.net' --header 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:20.0) Gecko/20130118 Firefox/20.0 Iceweasel/20.0a2' --header 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' --header 'Accept-Language: it,en-us;q=0.7,en;q=0.3' --header 'Accept-Encoding: gzip, deflate' --header 'DNT: 1' --header 'Referer: http://sourceforge.net/projects/converseen/files/Converseen/Converseen%200.5/0.5.2/converseen-0.5.2.1.tar.bz2/download?_test=updater&utm_expid=65835818-0' --header 'Cookie: __utma=191645736.302767130.1353421728.1358697467.1358951793.18; __utmz=191645736.1357509497.15.10.utmcsr=gmic.sourceforge.net|utmccn=(referral)|utmcmd=referral|utmcct=/; __utmx=191645736.Y-dl38WZTAK90LGp_lPRaQ$65835818-0:1; __utmxx=191645736.Y-dl38WZTAK90LGp_lPRaQ$65835818-0:1358951791:15552000; __utmb=191645736.4.9.1358951799815; __utmc=191645736' --header 'Connection: keep-alive' 'http://ignum.dl.sourceforge.net/project/converseen/Converseen/Converseen%200.5/0.5.2/converseen-0.5.2.1.tar.bz2' -o 'converseen-0.5.2.1.tar.bz2' -L
+exr ./converseen-0.5.2.1.tar.bz2
+cd ./converseen-0.5.2.1
 mkdir build && cd build
 cmake .. && make -j16 && make install
 cd ../../
@@ -325,7 +319,7 @@ done
 
 echo "
 installo la cagata di Skype"
-wget -O skype-install.deb http://www.skype.com/go/getskype-linux-deb-64
+wget -O skype-install.deb http://www.skype.com/go/getskype-linux-deb
 dpkg -i ./skype-install.deb
 
 while true; do
@@ -355,18 +349,6 @@ IMWHEEL_PARAMS="-b 0 0 0 0 8 9"
 
 /usr/bin/killall imwheel 2>/dev/null
 EOF
-
-echo "
-Installo Brother MFC620CN"
-#http://welcome.solutions.brother.com/bsc/public_s/id/linux/en/index.html
-#http://welcome.solutions.brother.com/bsc/public_s/id/linux/en/download_prn.html#MFC-620CN
-wget http://www.brother.com/pub/bsc/linux/dlf/mfc620cnlpr-1.0.2-1.i386.deb
-wget http://www.brother.com/pub/bsc/linux/dlf/cupswrapperMFC620CN-1.0.2-3.i386.deb
-dpkg -i --force-architecture ./mfc620cnlpr-1.0.2-1.i386.deb
-dpkg -i --force-architecture ./cupswrapperMFC620CN-1.0.2-3.i386.deb
-#file fixato per i margini
-wget http://dl.dropbox.com/u/21763079/MFC620CN.ppd
-mv ./MFC620CN.ppd /etc/cups/ppd/MFC620CN.ppd
 
 echo "Download HotKeys"
 wget -O preset.hotkeys http://kde-look.org/CONTENT/content-files/148793-preset.khotkeys
@@ -444,7 +426,7 @@ Salvo i vari script"
 echo "Monitor.sh - Ripristina i settaggi dei monitor"
 echo '
 #!/bin/bash
-xrandr --output "HDMI-0" --pos 1360x0 --mode 1280x1024 --refresh 75.0762 --output "VGA-0" --pos 0x0 --mode 1360x768 --refresh 60.0152 --primary
+xrandr --output HDMI-0 --pos 0x0 --mode 1360x768 --refresh 60.0152 --output VGA-0 --pos 1360x0 --mode 1360x768 --rotate right --refresh 60.0152 --output VGA-0 --primary
 '> /home/$UTENTE/monitor.sh
 
 chmod +x /home/$UTENTE/monitor.sh
@@ -458,7 +440,7 @@ rm -rfvI ~/.local/share/Trash/info/
 
 chmod +x /home/$UTENTE/trash.sh
 
-echo "Recoveryfont.sh - Ricarica la conf dei font di kde, utile dopo aver aggiornato i font succede che si sputanna tutto"
+echo "Recoveryfont.sh - Ricarica la conf dei font di kde, utile dopo aver aggiornato i font succede che si sputtana tutto"
 cp /home/$UTENTE/.kde/share/config/kdeglobals /home/$UTENTE/.kde/share/config/_kdeglobals
 echo "
 #!/bin/bash
@@ -553,5 +535,16 @@ cd /home/$UTENTE/Desktop/
 rm -r ./install_
 
 kdesudo $UTENTE -c "kdebugdialog"
+
+echo "Permessi in scrittura per var/www"
+chmod -R 777 /var/www
+
+echo "Scaricamento wallpaper"
+#sfondi
+cd ../Documents
+curl --header 'Host: it.owncube.com' --header 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:20.0) Gecko/20130118 Firefox/20.0 Iceweasel/20.0a2' --header 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' --header 'Accept-Language: it,en-us;q=0.7,en;q=0.3' --header 'Accept-Encoding: gzip, deflate' --header 'DNT: 1' --header 'Content-Type: application/x-www-form-urlencoded' --header 'Cookie: 507d17dbcc303=9aq9e6clng66d6tuu5ine3l3m4' 'https://it.owncube.com/public.php?service=files&t=b7ac59dcfc568ea09a0297b1e02c918b&download' -O -J -L
+unzip ./sfondi.zip ./
+
+
 
 echo "Installazione finita"
