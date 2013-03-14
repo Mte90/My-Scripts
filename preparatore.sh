@@ -72,7 +72,7 @@ dpkg-reconfigure locales
 
 echo "Aggiornamento ed installazione programmi"
 apt-get update
-apt-get remove kde-l10n-de kaffeine aptosid-manual* aptosid-irc install-usb-gui gparted bluez bluez-pcmcia-support
+apt-get remove kde-l10n-de kaffeine install-usb-gui gparted bluez bluez-pcmcia-support
 dpkg --add-architecture i386
 apt-get -y install kde-l10n-it pkg-mozilla-archive-keyring
 apt-get upgrade
@@ -267,7 +267,7 @@ echo "
 installo SVG Cleaner"
 wget -O svgcleaner.tar.gz https://github.com/RazrFalcon/SVGCleaner/tarball/master
 exr ./svgcleaner.tar.gz
-cd `tar tzf svgcleaner.tar.gz | head -1`
+cd ./`tar tzf svgcleaner.tar.gz | head -1`
 qmake
 make -j16 && make install
 cd ../
@@ -377,13 +377,6 @@ su $UTENTE -c "dbus-launch kate"
 wget http://dl.dropbox.com/u/21763079/katerc
 mv ./katerc /home/$UTENTE/.kde/share/config/katerc
 chmod -R 777 /home/$UTENTE/.kde/share/config/katerc
-
-echo "
-Carico la configurazione di Choqok"
-su $UTENTE -c "dbus-launch choqok"
-wget http://dl.dropbox.com/u/21763079/choqokrc
-mv ./choqokrc /home/$UTENTE/.kde/share/config/choqokrc
-chmod -R 777 /home/$UTENTE/.kde/share/config/choqokrc
 
 echo "
 Imposto Yakuake all'avvio"
