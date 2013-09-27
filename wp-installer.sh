@@ -30,9 +30,9 @@ echo "Creating Virtual Host $1.dev"
 #Create Virtual Host
 sudo breeder -s $1 -a dev
 
-cd ./$1.dev
+cd /var/www/$1.dev
 echo '--------------------------------------------------------'
-echo "Downloading of wordpress with locale $locale in ./$1.dev"
+echo "Downloading of wordpress with locale $locale in /var/www/$1.dev"
 
 #Install wordpress
 wp core download --locale=$locale
