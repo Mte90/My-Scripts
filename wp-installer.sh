@@ -4,11 +4,11 @@
 # wp-installer it's a simpe script for install on local machine wordpress with some plugin with a click!
 #Prerequisites:
 # require Breeder - https://github.com/welaika/breeder - Written by weLaika
-# 		Generate the Virtual Host file, edit the file hosts, refresh apache and create the folder in this script
+# 	Generate the Virtual Host file, edit the file hosts, refresh apache and create the folder in this script
 # require WordMove - https://github.com/welaika/wordmove - Written by weLaika
-#		Capistrano for Wordpress if you don't know it, fix your workflow now!!
+#	Capistrano for Wordpress if you don't know it, fix your workflow now!!
 # require Wp-Cli - http://wp-cli.org/ - Written by wp-cli
-#		Command Line Script for execute command on local wordpress installation
+#	Command Line Script for execute command on local wordpress installation
 
 #Usage: wp-installer.sh sitename
 # sitename will be used for generate the db, create the folder and the virtual host
