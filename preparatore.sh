@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Preparatore per Aptosid 1.5 by Mte90 - www.mte90.net"
+echo "Preparatore per Aptosid 1.6 by Mte90 - www.mte90.net"
 
 UTENTE="mte90"
 cd /home/$UTENTE/Desktop
@@ -9,11 +9,9 @@ echo "Aggiunta Repo"
 echo "
 deb http://mozilla.debian.net/ experimental iceweasel-aurora
 deb http://download.webmin.com/download/repository/ sarge contrib
-deb http://ftp.bononia.it/debian/ experimental main contrib non-free
-deb-src http://ftp.bononia.it/debian/ experimental main contrib non-free
-deb http://qt-kde.debian.net/debian experimental-snapshots main
-deb-src http://qt-kde.debian.net/debian experimental-snapshots main
-deb http://download.opensuse.org/repositories/isv:ownCloud:devel/Debian_6.0/ /
+deb http://mi.mirror.garr.it/mirrors/debian/ experimental main contrib non-free
+deb http://ppa.launchpad.net/kivy-team/kivy/ubuntu oneiric main
+deb http://download.opensuse.org/repositories/isv:ownCloud:devel/Debian_7.0/ /
 deb http://repo.ajenti.org/debian main main
 " >> /etc/apt/sources.list
 
@@ -22,13 +20,12 @@ cd ./install_
 
 wget http://www.webmin.com/jcameron-key.asc
 apt-key add jcameron-key.asc
-wget http://download.opensuse.org/repositories/isv:ownCloud:devel/Debian_6.0/Release.key
+wget http://download.opensuse.org/repositories/isv:ownCloud:devel/Debian_7.0/Release.key
 apt-key add ./Release.key
-wget http://qt-kde.debian.net/debian/pool/main/p/pkg-kde-archive-keyring/pkg-kde-archive-keyring_2.1_all.deb
-dpkg -i ./pkg-kde-archive-keyring_2.1_all.deb
 
 echo "Fix & tips"
 
+sed -i -e 's/#GRUB_TERMINAL/GRUB_TERMINAL/g' /etc/default/grub
 echo 'CONCURRENCY=makefile' >> /etc/default/rcS
 
 #fix per avvio gui da root in console
@@ -36,6 +33,7 @@ echo "
 export XAUTHORITY=/home/$UTENTE/.Xauthority
 export \$(dbus-launch)
 
+alias ls='ls --color=auto'
 alias update='apt-get update'
 alias upgrade='apt-get upgrade'
 alias aptforce='apt-get -o Dpkg::Options::="--force-overwrite" install'
@@ -56,9 +54,6 @@ echo -e '\e[m';
 " >> /root/.bashrc
 
 echo "
-function renmp3() {
-	eyeD3 --rename="%A - %t" ./*
-}
 alias casa='cd /home/$UTENTE/Desktop'
 alias www='cd /var/www'
 alias ex='unp'
@@ -87,20 +82,20 @@ apt-get -y install cmake cmake-curses-gui libtool libtag-extras-dev libflac++-de
 apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsdl1.2-dev libpcap0.8-dev libgraphicsmagick++3 libhighgui2.3 libraw1394-11 libdc1394-22
 apt-get -y install intltool libwnck-dev libnoise-dev libgsl0-dev libfftw3-dev libgif-dev libmagick++-dev libgl1-mesa-dev gettext libosmesa6 extra-xdg-menus
 #Multimedia
-apt-get -y install vlc audacity soundkonverter kdenlive kid3 openshot transmageddon mediainfo qtractor picard lame libid3-tools melt transcode phonon-backend-vlc mplayerthumbs eyed3
+apt-get -y install vlc audacity soundkonverter kdenlive kid3 openshot transmageddon mediainfo picard lame libid3-tools melt transcode phonon-backend-vlc mplayerthumbs eyed3
 #Grafica
-apt-get -y install gimp gimp-data-extras gimp-plugin-registry agave trimage kcolorchooser kruler inkscape kipi-plugins imagemagick create-resources python-uniconvertor
+apt-get -y install gimp gimp-data-extras gimp-plugin-registry trimage kcolorchooser kruler inkscape kipi-plugins imagemagick create-resources python-uniconvertor
 #Internet
-apt-get -y install amule amule-daemon amule-utils plasma-widget-amule deluged deluge-web icedove icedove-l10n-it akregator choqok
+apt-get -y install amule amule-daemon amule-utils plasma-widget-amule qtransimssion icedove icedove-l10n-it akregator
 #Ufficio
-apt-get -y install libreoffice-writer libreoffice-l10n-it libreoffice-kde libreoffice-impress libreoffice-calc libreoffice-draw tellico korganizer okular-extra-backends retext
+apt-get -y install libreoffice-writer libreoffice-l10n-it libreoffice-kde libreoffice-impress libreoffice-calc libreoffice-draw tellico okular-extra-backends retext
 #Mozilla/Chromium :-(
 apt-get -y install -t experimental iceweasel iceweasel-l10n-it
 apt-get -y install myspell-it mozilla-libreoffice mozplugger chromium mozilla-plugin-vlc
 #Sistema
 apt-get -y install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imwheel gtk3-engines-oxygen gtk2-engines-pixbuf gtk2-engines-oxygen bum acetoneiso
 #Programmazione
-apt-get -y install filezilla lokalize kompare scite universalindentgui qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate arduino node-less ohcount spyder
+apt-get -y install lokalize kompare scite php5-cli qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate arduino node-less ohcount spyder
 #KDE Tools
 apt-get -y install kdenetwork kde-config-cron kfilereplace kdeutils kscreensaver kdepim-runtime kuser ksystemlog virtualbox virtualbox-ose-qt virtualbox-dkms yakuake kmenuedit
 #Tools
@@ -118,6 +113,7 @@ modprobe vboxdrv
 modprobe vboxnetflt
 a2enmod rewrite
 localepurge
+git config --global core.editor "vim"
 
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
@@ -190,9 +186,8 @@ cd ./kate-folder-service-menu
 cd ../
 
 echo "
-Avvio FileZilla, Gimp per inizializzarli!"
+Avvio Gimp per inizializzarlo!"
 
-su $UTENTE -c "filezilla"
 su $UTENTE -c "gimp"
 
 while true; do
@@ -205,11 +200,7 @@ while true; do
 done
 
 echo "
-Kdeizziamo FileZilla, Gimp"
-
-wget -O filezilla-theme.tar.gz http://kde-look.org/CONTENT/content-files/141546-filezilla-oxygen-theme.tar.gz
-exr ./filezilla-theme.tar.gz
-mv ./oxygen /usr/share/filezilla/resources/oxygen
+Kdeizziamo  Gimp"
 
 wget -O gimp.tar.gz http://downloads.sourceforge.net/project/chakra/Tools/Gimp-Oxygen/Gimp-Oxygen-0.1.tar.gz
 exr ./gimp.tar.gz
@@ -229,7 +220,7 @@ installo i Google Font - Impiega diverso tempo"
 cd /home/$UTENTE/
 wget http://webupd8.googlecode.com/files/install-google-fonts
 chmod +x install-google-fonts
-echo "Intanto devi settare Gimp, Filezilla e Wine per usare i temi scaricati, link per universalindentgui."
+echo "Intanto devi settare Gimp e Wine per usare i temi scaricati."
 
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
@@ -283,9 +274,9 @@ done
 
 echo "
 installo Converseen"
-curl --header 'Host: ignum.dl.sourceforge.net' --header 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:20.0) Gecko/20130118 Firefox/20.0 Iceweasel/20.0a2' --header 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' --header 'Accept-Language: it,en-us;q=0.7,en;q=0.3' --header 'Accept-Encoding: gzip, deflate' --header 'DNT: 1' --header 'Referer: http://sourceforge.net/projects/converseen/files/Converseen/Converseen%200.5/0.5.2/converseen-0.5.2.1.tar.bz2/download?_test=updater&utm_expid=65835818-0' --header 'Cookie: __utma=191645736.302767130.1353421728.1358697467.1358951793.18; __utmz=191645736.1357509497.15.10.utmcsr=gmic.sourceforge.net|utmccn=(referral)|utmcmd=referral|utmcct=/; __utmx=191645736.Y-dl38WZTAK90LGp_lPRaQ$65835818-0:1; __utmxx=191645736.Y-dl38WZTAK90LGp_lPRaQ$65835818-0:1358951791:15552000; __utmb=191645736.4.9.1358951799815; __utmc=191645736' --header 'Connection: keep-alive' 'http://ignum.dl.sourceforge.net/project/converseen/Converseen/Converseen%200.5/0.5.2/converseen-0.5.2.1.tar.bz2' -o 'converseen-0.5.2.1.tar.bz2' -L
-exr ./converseen-0.5.2.1.tar.bz2
-cd ./converseen-0.5.2.1
+wget "http://sourceforge.net/projects/converseen/files/Converseen/Converseen%200.6/converseen-0.6.5.tar.bz2/download" -O converseen.tar.bz2
+exr ./converseen.tar.bz2
+cd ./converseen
 mkdir build && cd build
 cmake .. && make -j16 && make install
 cd ../../
@@ -316,6 +307,11 @@ while true; do
         * ) echo "Si o no.";;
     esac
 done
+
+echo "
+Installo Wp-Cli"
+curl https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | bash
+source $HOME/.wp-cli/vendor/wp-cli/wp-cli/utils/wp-completion.bash
 
 echo "
 installo la cagata di Skype"
@@ -416,14 +412,6 @@ done
 echo "
 Salvo i vari script"
 
-echo "Monitor.sh - Ripristina i settaggi dei monitor"
-echo '
-#!/bin/bash
-xrandr --output HDMI-0 --pos 0x0 --mode 1360x768 --refresh 60.0152 --output VGA-0 --pos 1360x0 --mode 1360x768 --rotate right --refresh 60.0152 --output VGA-0 --primary
-'> /home/$UTENTE/monitor.sh
-
-chmod +x /home/$UTENTE/monitor.sh
-
 echo "Trash.sh - Svuota il cestino, utile quando ci sono file con permessi sbagliati"
 echo '
 #!/bin/bash
@@ -432,17 +420,6 @@ rm -rfvI ~/.local/share/Trash/info/
 '> /home/$UTENTE/trash.sh
 
 chmod +x /home/$UTENTE/trash.sh
-
-echo "Recoveryfont.sh - Ricarica la conf dei font di kde, utile dopo aver aggiornato i font succede che si sputtana tutto"
-cp /home/$UTENTE/.kde/share/config/kdeglobals /home/$UTENTE/.kde/share/config/_kdeglobals
-echo "
-#!/bin/bash
-cd /home/$UTENTE/.kde/share/config/
-cp ./_kdeglobals ./kdeglobals
-kcmshell4 fonts
-"> /home/$UTENTE/recoveryfont.sh
-
-chmod +x /home/$UTENTE/recoveryfont.sh
 
 echo "Gmic.sh - Aggiornare Gmic"
 echo '
