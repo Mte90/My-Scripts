@@ -55,8 +55,7 @@ wp plugin install wordpress-seo
 wp plugin install w3-total-cache
 wp plugin install better-wp-security
 wp plugin install addthis
-wp plugin install mp6 --activate
-wp plugin install developer --activate
+wp plugin install debug-bar --activate
 
 echo '--------------------------------------------------------'
 echo 'Remove preloaded plugin'
