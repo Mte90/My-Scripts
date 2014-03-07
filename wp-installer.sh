@@ -64,5 +64,8 @@ wp plugin delete hello
 wp plugin delete akismet
 
 echo '--------------------------------------------------------'
+
+chown -R www-data /var/www/$1.dev
+chmod -R 775 /var/www/$1.dev
 echo 'Finished!'
 echo "Open http://$1.dev on your browser"
