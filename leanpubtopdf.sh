@@ -15,6 +15,6 @@ done < ./Book.txt
 
 #Create PDF
 
-pandoc -o ./Book.pdf ./tmp.md
+pandoc -f markdown_mmd -o ./Book.pdf -s ./tmp.md
 
 rm ./tmp.md
