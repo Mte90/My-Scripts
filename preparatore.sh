@@ -127,14 +127,11 @@ done
 
 echo "
 Installo qualche plasmoide"
-wget http://download.opensuse.org/repositories/home:/pinters/Debian_6.0/amd64/netspeed-plasma_0.2-1_amd64.deb
-dpkg -i ./netspeed-plasma_0.2-1_amd64.deb
+wget -O Actos_SoundMenu.plasmoid https://github.com/ghinda/actos-soundmenu/archive/master.zip
+plasmapkg -i ./Actos_SoundMenu.plasmoid
 
-wget -O playctrl.plasmoid http://kde-apps.org/CONTENT/content-files/144437-playctrl.plasmoid
-plasmapkg -i ./playctrl.plasmoid
-
-wget -O lock-keys.plasmoid http://kde-look.org/CONTENT/content-files/152551-Lock%20keys%20controller.plasmoid
-plasmapkg -i ./lock-keys.plasmoid
+wget -O plasma-simpleMonitor.plasmoid http://kde-apps.org/CONTENT/content-files/162541-plasma-simpleMonitor-0.4.plasmoid
+plasmapkg -i ./plasma-simpleMonitor.plasmoid
 
 while true; do
     read -n 1 -p "Vuoi proseguire?" sn
