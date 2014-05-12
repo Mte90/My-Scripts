@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Preparatore per Aptosid 1.6 by Mte90 - www.mte90.net"
+echo "Preparatore per Aptosid 1.7 by Mte90 - www.mte90.net"
 
 UTENTE="mte90"
 cd /home/$UTENTE/Desktop
@@ -9,10 +9,9 @@ echo "Aggiunta Repo"
 echo "
 deb http://mozilla.debian.net/ experimental iceweasel-aurora
 deb http://download.webmin.com/download/repository/ sarge contrib
-deb http://mi.mirror.garr.it/mirrors/debian/ experimental main contrib non-free
-deb http://ppa.launchpad.net/kivy-team/kivy/ubuntu oneiric main
+deb http://debian.fastweb.it/debian/ experimental main contrib non-free
 deb http://download.opensuse.org/repositories/isv:ownCloud:devel/Debian_7.0/ /
-deb http://repo.ajenti.org/debian main main
+deb http://mirror.cc.columbia.edu/debian/ squeeze main
 " >> /etc/apt/sources.list
 
 mkdir install_
@@ -34,9 +33,9 @@ export XAUTHORITY=/home/$UTENTE/.Xauthority
 export \$(dbus-launch)
 
 alias ls='ls --color=auto'
-alias update='apt-get update'
-alias upgrade='apt-get upgrade'
-alias aptforce='apt-get -o Dpkg::Options::="--force-overwrite" install'
+alias update='apt update'
+alias upgrade='apt upgrade'
+alias aptforce='apt -o Dpkg::Options::="--force-overwrite" install'
 alias search='apt-cache search'
 alias policy='apt-cache policy'
 alias deb64='dpkg --force-architecture -i'
@@ -82,7 +81,9 @@ apt-get -y install cmake cmake-curses-gui libtool libtag-extras-dev libflac++-de
 apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsdl1.2-dev libpcap0.8-dev libgraphicsmagick++3 libhighgui2.3 libraw1394-11 libdc1394-22
 apt-get -y install intltool libwnck-dev libnoise-dev libgsl0-dev libfftw3-dev libgif-dev libmagick++-dev libgl1-mesa-dev gettext libosmesa6 extra-xdg-menus
 #Multimedia
-apt-get -y install vlc audacity soundkonverter kdenlive kid3 openshot transmageddon mediainfo picard lame libid3-tools melt transcode phonon-backend-vlc mplayerthumbs eyed3
+apt-get -y install vlc audacity soundkonverter kdenlive kid3 openshot transmageddon mediainfo lame libid3-tools melt transcode phonon-backend-vlc mplayerthumbs eyed3 blender
+apt-get -y install vokoscreen ugvcview q4vl2
+apt-get -y install gstreamer0.10-alsa gstreamer0.10-ffmpeg gstreamer0.10-fluendo-mp3 gstreamer0.10-plugins-base libgstreamer-plugins-base0.10-0 libgstreamer0.10-0 libgstreamer0.10-dev gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly  gstreamer0.10-plugins-bad gstreamer0.10-tools
 #Grafica
 apt-get -y install gimp gimp-data-extras gimp-plugin-registry trimage kcolorchooser kruler inkscape kipi-plugins imagemagick create-resources python-uniconvertor
 #Internet
@@ -95,7 +96,7 @@ apt-get -y install myspell-it mozilla-libreoffice mozplugger chromium mozilla-pl
 #Sistema
 apt-get -y install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imwheel gtk3-engines-oxygen gtk2-engines-pixbuf gtk2-engines-oxygen bum acetoneiso
 #Programmazione
-apt-get -y install lokalize kompare scite php5-cli qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate arduino node-less ohcount spyder
+apt-get -y install lokalize kompare php5-cli qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate node-less ohcount spyder
 #KDE Tools
 apt-get -y install kdenetwork kde-config-cron kfilereplace kdeutils kscreensaver kdepim-runtime kuser ksystemlog virtualbox virtualbox-ose-qt virtualbox-dkms yakuake kmenuedit
 #Tools
@@ -274,7 +275,7 @@ done
 
 echo "
 installo Converseen"
-wget "http://sourceforge.net/projects/converseen/files/Converseen/Converseen%200.6/converseen-0.6.5.tar.bz2/download" -O converseen.tar.bz2
+wget "http://sourceforge.net/projects/converseen/files/Converseen/Converseen%200.7/converseen-0.7.tar.bz2/download" -O converseen.tar.bz2
 exr ./converseen.tar.bz2
 cd ./converseen
 mkdir build && cd build
@@ -397,6 +398,7 @@ user_pref("network.http.pipelining", true);
 user_pref("network.http.pipelining.maxrequests", 10);
 user_pref("content.switch.threshold", 250000);
 user_pref("middlemouse.contentLoadURL", false);
+user_pref("spellchecker.dictionary", "it_IT");
 ' > ./user.js
 chmod -R 777 ./user.js
 
