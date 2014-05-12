@@ -82,12 +82,12 @@ apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsd
 apt-get -y install intltool libwnck-dev libnoise-dev libgsl0-dev libfftw3-dev libgif-dev libmagick++-dev libgl1-mesa-dev gettext libosmesa6 extra-xdg-menus
 #Multimedia
 apt-get -y install vlc audacity soundkonverter kdenlive kid3 openshot transmageddon mediainfo lame libid3-tools melt transcode phonon-backend-vlc mplayerthumbs eyed3 blender
-apt-get -y install vokoscreen ugvcview q4vl2
-apt-get -y install gstreamer0.10-alsa gstreamer0.10-ffmpeg gstreamer0.10-fluendo-mp3 gstreamer0.10-plugins-base libgstreamer-plugins-base0.10-0 libgstreamer0.10-0 libgstreamer0.10-dev gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly  gstreamer0.10-plugins-bad gstreamer0.10-tools
+apt-get -y install vokoscreen ugvcview q4vl2 youtube-dl
+apt-get -y install gstreamer0.10-alsa gstreamer0.10-ffmpeg gstreamer0.10-fluendo-mp3 gstreamer0.10-plugins-base libgstreamer-plugins-base0.10-0 libgstreamer0.10-0 libgstreamer0.10-dev gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly gstreamer0.10-plugins-bad gstreamer0.10-tools
 #Grafica
 apt-get -y install gimp gimp-data-extras gimp-plugin-registry trimage kcolorchooser kruler inkscape kipi-plugins imagemagick create-resources python-uniconvertor
 #Internet
-apt-get -y install amule amule-daemon amule-utils plasma-widget-amule qtransimssion icedove icedove-l10n-it akregator
+apt-get -y install amule amule-daemon amule-utils plasma-widget-amule qtransimssion icedove icedove-l10n-it akregator kget kde-telepathy
 #Ufficio
 apt-get -y install libreoffice-writer libreoffice-l10n-it libreoffice-kde libreoffice-impress libreoffice-calc libreoffice-draw tellico okular-extra-backends retext
 #Mozilla/Chromium :-(
@@ -96,7 +96,7 @@ apt-get -y install myspell-it mozilla-libreoffice mozplugger chromium mozilla-pl
 #Sistema
 apt-get -y install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imwheel gtk3-engines-oxygen gtk2-engines-pixbuf gtk2-engines-oxygen bum acetoneiso
 #Programmazione
-apt-get -y install lokalize kompare php5-cli qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate node-less ohcount spyder
+apt-get -y install lokalize kompare php5-cli qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate node-less ohcount spyder poedit
 #KDE Tools
 apt-get -y install kdenetwork kde-config-cron kfilereplace kdeutils kscreensaver kdepim-runtime kuser ksystemlog virtualbox virtualbox-ose-qt virtualbox-dkms yakuake kmenuedit
 #Tools
@@ -289,27 +289,17 @@ while true; do
 done
 
 echo "
-installo KAmule"
-wget -O kamule.tar.gz http://kde-apps.org/CONTENT/content-files/150270-kamule-0.5.tar.bz2
-exr ./kamule.tar.gz
-cd ./kamule-0.5
-mkdir build && cd build
-cmake .. && make -j16 && make install
-cd ../../
-
-while true; do
-    read -n 1 -p "Vuoi proseguire?" sn
-    case $sn in
-        [Ss]* ) break;;
-        [Nn]* ) exit;;
-        * ) echo "Si o no.";;
-    esac
-done
-
-echo "
 Installo Wp-Cli"
 curl https://raw.github.com/wp-cli/wp-cli.github.com/master/installer.sh | bash
 source $HOME/.wp-cli/vendor/wp-cli/wp-cli/utils/wp-completion.bash
+
+echo "
+Installo Wordmove"
+gem install wordmove
+
+echo "
+Installo GruntJS"
+npm install -g grunt-cli
 
 echo "
 installo la cagata di Skype"
