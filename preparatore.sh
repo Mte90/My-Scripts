@@ -300,6 +300,7 @@ gem install wordmove
 echo "
 Installo GruntJS"
 npm install -g grunt-cli
+npm install -g grunt-devtools
 
 echo "
 installo la cagata di Skype"
