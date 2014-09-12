@@ -81,11 +81,11 @@ apt-get -y install cmake cmake-curses-gui libtool libtag-extras-dev libflac++-de
 apt-get -y install libx11-dev libxfixes-dev libxrender-dev mesa-common-dev libsdl1.2-dev libpcap0.8-dev libgraphicsmagick++3 libhighgui2.3 libraw1394-11 libdc1394-22
 apt-get -y install intltool libwnck-dev libnoise-dev libgsl0-dev libfftw3-dev libgif-dev libmagick++-dev libgl1-mesa-dev gettext libosmesa6 extra-xdg-menus
 #Multimedia
-apt-get -y install vlc audacity soundkonverter kdenlive kid3 openshot transmageddon mediainfo lame libid3-tools melt transcode phonon-backend-vlc mplayerthumbs eyed3 blender
+apt-get -y install vlc audacity soundkonverter kdenlive kid3 openshot transmageddon mediainfo lame libid3-tools melt transcode phonon-backend-vlc mplayerthumbs blender
 apt-get -y install vokoscreen ugvcview q4vl2 youtube-dl
 apt-get -y install gstreamer0.10-alsa gstreamer0.10-ffmpeg gstreamer0.10-fluendo-mp3 gstreamer0.10-plugins-base libgstreamer-plugins-base0.10-0 libgstreamer0.10-0 libgstreamer0.10-dev gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly gstreamer0.10-plugins-bad gstreamer0.10-tools
 #Grafica
-apt-get -y install gimp gimp-data-extras gimp-plugin-registry trimage kcolorchooser kruler inkscape kipi-plugins imagemagick create-resources python-uniconvertor
+apt-get -y install gimp gimp-data-extras trimage kcolorchooser kruler inkscape kipi-plugins imagemagick create-resources python-uniconvertor
 #Internet
 apt-get -y install amule amule-daemon amule-utils plasma-widget-amule qtransimssion icedove icedove-l10n-it akregator kget kde-telepathy
 #Ufficio
@@ -96,9 +96,9 @@ apt-get -y install myspell-it mozilla-libreoffice mozplugger chromium mozilla-pl
 #Sistema
 apt-get -y install update-notifier-kde kde-config-gtk-style apt-rdepends webmin imwheel gtk3-engines-oxygen gtk2-engines-pixbuf gtk2-engines-oxygen bum acetoneiso
 #Programmazione
-apt-get -y install lokalize kompare php5-cli qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate node-less ohcount spyder poedit
+apt-get -y install lokalize kompare php5-cli qtcreator php5 php5-gd apache2 mysql-server phpmyadmin kate node-less ohcount spyder poedit php-codesniffer
 #KDE Tools
-apt-get -y install kdenetwork kde-config-cron kfilereplace kdeutils kscreensaver kdepim-runtime kuser ksystemlog virtualbox virtualbox-ose-qt virtualbox-dkms yakuake kmenuedit
+apt-get -y install kdenetwork kde-config-cron kfilereplace kdeutils kscreensaver kdepim-runtime flielight virtualbox virtualbox-ose-qt virtualbox-dkms yakuake kmenuedit
 #Tools
 apt-get -y install gprename preload gksu partitionmanager ruby rubygems gdb subversion git mercurial openjdk-7-jre localepurge kdesudo owncloud-client exfat-fuse exfat-utils
 #Font
@@ -301,6 +301,7 @@ echo "
 Installo GruntJS"
 npm install -g grunt-cli
 npm install -g grunt-devtools
+npm install -g yeoman
 
 echo "
 installo la cagata di Skype"
@@ -336,7 +337,7 @@ IMWHEEL_PARAMS="-b 0 0 0 0 8 9"
 EOF
 
 echo "Download HotKeys"
-wget -O preset.hotkeys http://kde-look.org/CONTENT/content-files/148793-preset.khotkeys
+wget -O preset.hotkeys https://dl.dropboxusercontent.com/u/21763079/preset
 
 su $UTENTE -c "dbus-launch kcmshell4 khotkeys"
 
@@ -494,6 +495,83 @@ echo "Rimozione file scaricati"
 cd /home/$UTENTE/Desktop/
 rm -r ./install_
 
+mkdir sw-make
+chmod -R 777 ./sw-make
+chown mte90 ./sw-make
+cd ./sw-make
+
+echo "
+Scarico Breeder"
+git clone git@github.com:welaika/breeder.git
+cd breeder && sudo make install
+breeder -i
+cd ../
+
+while true; do
+    read -n 1 -p "Vuoi proseguire?" sn
+    case $sn in
+        [Ss]* ) break;;
+        [Nn]* ) exit;;
+        * ) echo "Si o no.";;
+    esac
+done
+
+echo "
+Scarico Keepassx"
+git clone https://github.com/keepassx/keepassx
+cd keepassx
+mkdir build | cd build
+cmake ..
+make -j16
+make install
+cd ../
+
+while true; do
+    read -n 1 -p "Vuoi proseguire?" sn
+    case $sn in
+        [Ss]* ) break;;
+        [Nn]* ) exit;;
+        * ) echo "Si o no.";;
+    esac
+done
+
+echo "
+Scarico Kde Connect"
+git clone git://anongit.kde.org/kdeconnect-kde
+cd kdeconnect-kde
+mkdir build | cd build
+cmake ..
+make -j16
+make install
+cd ../
+
+echo "
+Scarico script"
+cd /tmp
+git clone https://github.com/sudar/wp-plugin-in-github > /dev/null
+chmod +x ./wp-plugin-in-github/*.sh
+mv ./wp-plugin-in-github/*.sh /usr/local/bin/
+rm -r ./wp-plugin-in-github
+
+git clone https://github.com/Mte90/Wordmove-Tools > /dev/null
+rm ./Wordmove-Tools/README.md
+chmod +x ./Wordmove-Tools/*
+mv ./Wordmove-Tools/* /usr/local/bin/
+rm -r ./Wordmove-Tools
+
+wget https://raw.githubusercontent.com/Mte90/Script/master/wp-installer.sh
+chmod +x wp-installer.sh
+mv ./wp-installer.sh /usr/local/bin/
+
+while true; do
+    read -n 1 -p "Vuoi proseguire?" sn
+    case $sn in
+        [Ss]* ) break;;
+        [Nn]* ) exit;;
+        * ) echo "Si o no.";;
+    esac
+done
+
 kdesudo $UTENTE -c "kdebugdialog"
 
 echo "Permessi in scrittura per var/www"
@@ -504,7 +582,5 @@ echo "Scaricamento wallpaper"
 cd ../Documents
 curl --header 'Host: it.owncube.com' --header 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:20.0) Gecko/20130118 Firefox/20.0 Iceweasel/20.0a2' --header 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' --header 'Accept-Language: it,en-us;q=0.7,en;q=0.3' --header 'Accept-Encoding: gzip, deflate' --header 'DNT: 1' --header 'Content-Type: application/x-www-form-urlencoded' --header 'Cookie: 507d17dbcc303=9aq9e6clng66d6tuu5ine3l3m4' 'https://it.owncube.com/public.php?service=files&t=b7ac59dcfc568ea09a0297b1e02c918b&download' -O -J -L
 unzip ./sfondi.zip ./
-
-
 
 echo "Installazione finita"
