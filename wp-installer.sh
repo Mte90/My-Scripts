@@ -54,7 +54,7 @@ echo 'Installing few plugin'
 wp plugin install wordpress-seo
 wp plugin install w3-total-cache
 wp plugin install better-wp-security
-wp plugin install addthis
+wp plugin install wp-original-media-path
 wp plugin install debug-bar --activate
 
 echo '--------------------------------------------------------'
@@ -65,7 +65,7 @@ wp plugin delete akismet
 
 echo '--------------------------------------------------------'
 
-chown -R www-data /var/www/$1.dev
-chmod -R 775 /var/www/$1.dev
+sudo chown -R www-data /var/www/$1.dev
+sudo chmod -R 775 /var/www/$1.dev
 echo 'Finished!'
 echo "Open http://$1.dev on your browser"
