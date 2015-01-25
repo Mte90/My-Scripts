@@ -24,6 +24,8 @@ dbuser='root'
 dbpass='test'
 #Admin password for wordpress
 admin_pass='test'
+#User in the system
+user='mte90'
 
 echo "Creating Virtual Host $1.dev"
 
@@ -40,6 +42,18 @@ wp core config --dbname=$1 --dbuser=$dbuser --dbpass=$dbpass
 wp db create
 wp core install --url=$1.dev --title='Change me!' --admin_name=admin  --admin_password=$admin_pass --admin_email=youremail@email.it
 
+echo '--------------------------------------------------------'
+echo "Tweak and clean"
+
+wp rewrite structure '/%postname%/'
+wp theme delete twentythirteen
+wp theme delete twentyfourteen
+wp comment delete 1
+wp core config --extra-php --dbname=$1 --dbuser=$dbuser --dbpass=$dbpass <<PHP
+define('WP_POST_REVISIONS', 3);
+define('DISALLOW_FILE_EDIT', true);
+PHP
+
 echo 'Wordpress installed and configured!'
 echo '--------------------------------------------------------'
 echo 'Initializing WordMove'
@@ -52,9 +66,10 @@ echo 'Installing few plugin'
 
 #Install some essential plugin
 wp plugin install wordpress-seo
-wp plugin install w3-total-cache
+wp plugin install stop-pinging-yourself-for-wordpress
 wp plugin install better-wp-security
 wp plugin install wp-original-media-path
+wp plugin install zero-spam
 wp plugin install debug-bar --activate
 
 echo '--------------------------------------------------------'
@@ -65,7 +80,7 @@ wp plugin delete akismet
 
 echo '--------------------------------------------------------'
 
-sudo chown -R www-data /var/www/$1.dev
+sudo chown -R $user:www-data /var/www/$1.dev
 sudo chmod -R 775 /var/www/$1.dev
 echo 'Finished!'
 echo "Open http://$1.dev on your browser"
