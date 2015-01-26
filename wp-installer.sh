@@ -38,7 +38,10 @@ echo "Downloading of wordpress with locale $locale in /var/www/$1.dev"
 
 #Install wordpress
 wp core download --locale=$locale
-wp core config --dbname=$1 --dbuser=$dbuser --dbpass=$dbpass
+wp core config --extra-php --dbname=$1 --dbuser=$dbuser --dbpass=$dbpass <<PHP
+define('WP_POST_REVISIONS', 3);
+define('DISALLOW_FILE_EDIT', true);
+PHP
 wp db create
 wp core install --url=$1.dev --title='Change me!' --admin_name=admin  --admin_password=$admin_pass --admin_email=youremail@email.it
 
@@ -49,10 +52,6 @@ wp rewrite structure '/%postname%/'
 wp theme delete twentythirteen
 wp theme delete twentyfourteen
 wp comment delete 1
-wp core config --extra-php --dbname=$1 --dbuser=$dbuser --dbpass=$dbpass <<PHP
-define('WP_POST_REVISIONS', 3);
-define('DISALLOW_FILE_EDIT', true);
-PHP
 
 echo 'Wordpress installed and configured!'
 echo '--------------------------------------------------------'
