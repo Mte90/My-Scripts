@@ -64,10 +64,9 @@ echo '--------------------------------------------------------'
 echo 'Installing few plugin'
 
 #Install some essential plugin
-wp plugin install wordpress-seo
-wp plugin install stop-pinging-yourself-for-wordpress
+wp plugin install wordpress-seo --activate
+wp plugin install stop-pinging-yourself-for-wordpress --activate
 wp plugin install better-wp-security
-wp plugin install wp-original-media-path
 wp plugin install zero-spam
 wp plugin install debug-bar --activate
 
