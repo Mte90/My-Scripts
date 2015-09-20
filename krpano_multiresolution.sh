@@ -1,5 +1,5 @@
 #!/bin/bash
-#Data una immagine la divide secondo le dimensioni per ottenere più versioni della stessa divisa
+#Split the image in many section of the image following the rules of KrPano 
 tile=1024
 path=./esterno.jpg
 size[0]="2330"

@@ -1,5 +1,5 @@
 #Why
-This folders contain the bash/py script that I've done (or found) to improve my UX in my debian sid box.  
+This folders contain the bash/python scripts that I've done (or found) to improve my UX in my debian sid box.  
 
 #Others Resources
 
