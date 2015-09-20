@@ -1,0 +1,76 @@
+#!/bin/bash
+echo "MP3 Simple Converter v 1.0b By Mte90 - http://www.mte90.net"
+echo "Basato su http://www.lffl.org/2011/06/script-per-convertire-i-nostri-mp3.html by Ferram"
+echo ""
+bitrate=128
+overwrite=0;
+#leggo i parametri
+while getopts p:b:o OPZIONE
+do
+  case $OPZIONE in
+    p) path=$OPTARG;;
+    b) bitrate=$OPTARG;;
+    o) overwrite=1;;
+    *) echo "E stata indicata un'opzione non valida.";;
+  esac
+done
+if [ "$path" ]; then
+  echo Il percorso: $path
+  cd "$path"
+    if [ $overwrite -eq 1 ]; then
+    echo Sovrascrivo i file!
+    fi
+  echo Il bitrate: $bitrate
+  echo Sto elaborando i file mp3...
+  echo ""
+  #Prendo la dimensione della cartella
+  dmtot=`du -sh "$path" | cut -f 1`
+  dmtot=`echo $dmtot | sed 's/\(.*\)./\1/'`
+  totconv=0
+    #mi giro i file della cartella
+    for f in ./*.mp3;
+    do
+    nnconv=0;
+      #verifico se è stato gia convertito e se ha il bitrate scelto
+      if [ -u "${f%.mp3}.new.mp3" ]; then
+      	if [ "`id3info "${f%.mp3}.new.mp3" | grep Bitrate | cut -c 10-12`" -gt $bitrate ]; then
+	nnconv=1;
+	fi
+      fi
+      #verifico il bitrate se è maggiore di quello che serve a me
+      if [ "`id3info "$f" | grep Bitrate | cut -c 10-12`" -gt $bitrate -a $nnconv -eq 0 ]; then
+	echo `basename "$f"` In elaborazione...
+	  #se settato sovrascrivo
+	  if [ $overwrite -eq 1 ]; then
+	    lame -h --silent --mp3input -b $bitrate "$f" temp
+	    #copio i tag id3
+	    id3cp "$f" temp
+	    mv -f temp "$f"
+	    totconv=$(($totconv+`stat -c%s "${f%.mp3}.mp3"`))
+	    echo `basename "$f"` Convertito...
+	   else
+	   #altrimenti coverto e creo un nuovo file
+	    lame -h --mp3input --silent -b $bitrate "$f" "${f%.mp3}.new.mp3"
+	    #copio i tag id3
+	    id3cp "$f" temp
+	    id3cp temp "${f%.mp3}.new.mp3"
+	    #aggiungo la dimensione del file convertito
+	    totconv=$(($totconv+`stat -c%s "${f%.mp3}.new.mp3"`))
+	   fi
+      else
+	#prendo la dimensione del file non convertito
+	echo `basename "$f"` Ignorato perche gia a bitrate $bitrate o gia convertito...
+	totconv=$(($totconv+`stat -c%s "${f%.mp3}.mp3"`))
+      fi
+      done
+  echo ""
+  echo Finito!
+  #converto i byte in mb
+  totconv=$(echo "scale=1; $totconv / 1024 / 1024" | bc)
+  echo Dimensione Originali Cartella: $dmtot MB
+  echo Dimensione Convertita Cartella: $totconv MB
+else
+  echo Aiuto:
+  echo "Uso:  mp3_sc -p PATH -b BITRATE [128] -o [for overwrite the file]"
+fi
+echo ""
