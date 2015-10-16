@@ -11,6 +11,7 @@ alias git-remove-last-commit='git reset --soft HEAD~1'
 alias phpdoc='phpcs -d memory_limit=512M --ignore=*cmb*,index.php,*.js,WP_*,CPT_* --standard=PHPDoc'
 alias phpdoccbf='phpcbf -d memory_limit=512M --ignore=*cmb*,index.php,*.js,WP_*,CPT_* --standard=PHPDoc'
 alias git-pass='ssh-add -t 36000'
+alias svn-revert='svn revert --recursive .'
 
 function mkcd(){ mkdir -p $@ && cd $_; }
 
