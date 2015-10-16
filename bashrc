@@ -6,13 +6,17 @@ alias kate='kate -b'
 alias wpp='cd ./wp-content/plugins'
 alias wpt='cd ./wp-content/themes'
 alias howdoi='howdoi -c'
-alias git-commit-message-prev='git commit --amend'
+alias git-commit-rename='git commit --amend'
 alias git-remove-last-commit='git reset --soft HEAD~1'
 alias phpdoc='phpcs -d memory_limit=512M --ignore=*cmb*,index.php,*.js,WP_*,CPT_* --standard=PHPDoc'
 alias phpdoccbf='phpcbf -d memory_limit=512M --ignore=*cmb*,index.php,*.js,WP_*,CPT_* --standard=PHPDoc'
 alias git-pass='ssh-add -t 36000'
 
 function mkcd(){ mkdir -p $@ && cd $_; }
+
+function vvv-debug-tail(){ tail -f /var/www/VVV/www/$1/htdocs/wp-content/debug.log; }
+
+alias vvv-debug=vvv-debug-tail
 
 # Bash completion for Yeoman generators - tested in Ubuntu, OS X and Windows (using Git bash)
 function _yo_generator_complete_() {
