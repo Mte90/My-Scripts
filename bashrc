@@ -19,6 +19,10 @@ function vvv-debug-tail(){ tail -f /var/www/VVV/www/$1/htdocs/wp-content/debug.l
 
 alias vvv-debug=vvv-debug-tail
 
+function git-merge-last() { git reset --soft HEAD~$1 && git commit }
+
+alias git-merge-last-commit=git-merge-last
+
 # Bash completion for Yeoman generators - tested in Ubuntu, OS X and Windows (using Git bash)
 function _yo_generator_complete_() {
 	# local node_modules if present
@@ -37,7 +41,7 @@ function _yo_generator_complete_() {
 	local generators_filtered=$(if [ -z "$word" ]; then echo "$generators_all"; else echo "$generators_all" | grep $word; fi)
 	
 	COMPREPLY=($generators_filtered)
-	}
+}
 complete -F _yo_generator_complete_ yo
 
 #Root
