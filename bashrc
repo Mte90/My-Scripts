@@ -19,7 +19,7 @@ function vvv-debug-tail(){ tail -f /var/www/VVV/www/$1/htdocs/wp-content/debug.l
 
 alias vvv-debug=vvv-debug-tail
 
-function git-merge-last() { git reset --soft HEAD~$1 && git commit }
+function git-merge-last() { git reset --soft HEAD~$1 && git commit; }
 
 alias git-merge-last-commit=git-merge-last
 
