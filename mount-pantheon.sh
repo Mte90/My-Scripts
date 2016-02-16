@@ -18,6 +18,7 @@ fi
 
 if ! [ -x "$(command -v sshfs)" ]; then
   echo 'sshfs is missing on that system' >&2
+  exit
 fi
 
 if [ -z $host ]; then
