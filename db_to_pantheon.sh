@@ -27,8 +27,8 @@ mysqldump -upantheon -p"$pass" -h "$host" -P 10252 --add-drop-table --no-data pa
 
 #Upload db
 echo 'Upload new DB'
-old_domain=`terminus wp 'option get siteurl' --site="$ph_site" --env=dev`
 mysql -upantheon -p"$pass" -h "$host" -P 10252 pantheon < $file
+old_domain=`terminus wp 'option get siteurl' --site="$ph_site" --env=dev`
 echo 'Replace of the sitename'
 terminus wp "search-replace $old_domain http://dev-$ph_site.pantheon.io" --site=$ph_site --env=dev
 echo "Activate wp-native-php-sessions"
