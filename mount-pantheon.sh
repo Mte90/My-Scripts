@@ -2,6 +2,7 @@
 
 # Required sshfs on your system
 # Example: mount-pantheon.sh host user sitename
+# Is the same of: terminus site mount --site=site-name --destination=/tmp/folder --env=dev
 # Folder mount on /tmp, change with your path
 
 host=$1
