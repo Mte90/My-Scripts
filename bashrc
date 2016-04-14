@@ -12,6 +12,7 @@ alias phpdoc='phpcs -p -d memory_limit=512M --ignore=*cmb*,index.php,*.js,WP_*,C
 alias phpdoccbf='phpcbf -p -d memory_limit=512M --ignore=*cmb*,index.php,*.js,WP_*,CPT_*,*.css,Widgets-Helper,*_Core --standard=PHPDoc ./'
 alias git-pass='ssh-add -t 36000'
 alias svn-revert='svn revert --recursive .'
+export PATH=./vendor/bin:$PATH
 
 function mkcd(){ mkdir -p $@ && cd $_; }
 
