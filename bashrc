@@ -16,13 +16,11 @@ export PATH=./vendor/bin:$PATH
 
 function mkcd(){ mkdir -p $@ && cd $_; }
 
-function vvv-debug-tail(){ tail -f /var/www/VVV/www/$1/htdocs/wp-content/debug.log; }
+function vvv-debug(){ tail -f /var/www/VVV/www/$1/htdocs/wp-content/debug.log; }
 
-alias vvv-debug=vvv-debug-tail
+function git-merge-last-commit() { git reset --soft HEAD~$1 && git commit; }
 
-function git-merge-last() { git reset --soft HEAD~$1 && git commit; }
-
-alias git-merge-last-commit=git-merge-last
+function commit() { commit=$(kdialog --title 'Commit message' --inputbox 'Insert the commit' ''); git commit -m $commit; }
 
 # Bash completion for Yeoman generators - tested in Ubuntu, OS X and Windows (using Git bash)
 function _yo_generator_complete_() {
