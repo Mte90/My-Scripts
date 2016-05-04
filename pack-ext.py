@@ -25,7 +25,7 @@ def zipdir(path,name):
             zipf.write(os.path.join(dirpath, file_found))
     zipf.close()
 
-if os.path.isdir(sys.argv[1]):
+if len(sys.argv) > 1 and os.path.isdir(sys.argv[1]):
     manifest = sys.argv[1] + '/manifest.json'
     if os.path.isfile(manifest):
         with open(manifest) as content:
@@ -46,5 +46,8 @@ if os.path.isdir(sys.argv[1]):
     else:
         print("The file" + manifest + " not exist")
         sys.exit()
-    pass
+else:
+    print("Path not found")
+    sys.exit()
+    
 

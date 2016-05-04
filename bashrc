@@ -20,7 +20,7 @@ function vvv-debug(){ tail -f /var/www/VVV/www/$1/htdocs/wp-content/debug.log; }
 
 function git-merge-last-commit() { git reset --soft HEAD~$1 && git commit; }
 
-function commit() { commit=$(kdialog --title 'Commit message' --inputbox 'Insert the commit' ''); git commit -m $commit; }
+function commit() { commit=$(kdialog --title 'Commit message' --inputbox 'Insert the commit' '') && git commit -m $commit; }
 
 # Bash completion for Yeoman generators - tested in Ubuntu, OS X and Windows (using Git bash)
 function _yo_generator_complete_() {
