@@ -35,7 +35,7 @@ sed -i "$rowff" $foldername.php
 #If Freemius SDK is commented remove the comments
 rowfs=`grep -n "/includes/freemius/start.php" $foldername.php | awk -F: '{print $1}'`
 rowfs+='s'
-sed -i "$rowfs/\///" $foldername.php
+sed -i "$rowfs/\/\///" $foldername.php
 
 zip -r $pluginfolder/$foldername-$version.zip ./ > /dev/null
 
