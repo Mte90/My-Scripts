@@ -28,14 +28,17 @@ rm -rf ./vendor
 rm -rf ./tests
 
 #Remove Fake_Freemius
-rm -rf ./includes/Fake_Freemius.php
-rowff=`grep -n "/includes/Fake_Freemius.php" $foldername.php | awk -F: '{print $1}'`
-rowff+='d'
-sed -i "$rowff" $foldername.php
-#If Freemius SDK is commented remove the comments
-rowfs=`grep -n "/includes/freemius/start.php" $foldername.php | awk -F: '{print $1}'`
-rowfs+='s'
-sed -i "$rowfs/\/\///" $foldername.php
+if [ -f './includes/Fake_Freemius.php' ]; then
+    echo "Cleaning for Freemius"
+    rm -rf ./includes/Fake_Freemius.php
+    rowff=`grep -n "/includes/Fake_Freemius.php" $foldername.php | awk -F: '{print $1}'`
+    rowff+='d'
+    sed -i "$rowff" $foldername.php
+    #If Freemius SDK is commented remove the comments
+    rowfs=`grep -n "/includes/freemius/start.php" $foldername.php | awk -F: '{print $1}'`
+    rowfs+='s'
+    sed -i "$rowfs/\/\///" $foldername.php
+fi
 
 zip -r $pluginfolder/$foldername-$version.zip ./ > /dev/null
 
