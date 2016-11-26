@@ -2,6 +2,10 @@
 
 pluginfolder=$PWD
 foldername=`basename $PWD`
+fileroot=$1
+if [ -z $1 ]; then
+    fileroot=$foldername
+fi
 
 echo "Generating the zip in progress..."
 
@@ -31,13 +35,13 @@ rm -rf ./tests
 if [ -f './includes/Fake_Freemius.php' ]; then
     echo "Cleaning for Freemius"
     rm -rf ./includes/Fake_Freemius.php
-    rowff=`grep -n "/includes/Fake_Freemius.php" $foldername.php | awk -F: '{print $1}'`
+    rowff=`grep -n "/includes/Fake_Freemius.php" $fileroot.php | awk -F: '{print $1}'`
     rowff+='d'
-    sed -i "$rowff" $foldername.php
+    sed -i "$rowff" $fileroot.php
     #If Freemius SDK is commented remove the comments
-    rowfs=`grep -n "/includes/freemius/start.php" $foldername.php | awk -F: '{print $1}'`
+    rowfs=`grep -n "/includes/freemius/start.php" $fileroot.php | awk -F: '{print $1}'`
     rowfs+='s'
-    sed -i "$rowfs/\/\///" $foldername.php
+    sed -i "$rowfs/\/\///" $fileroot.php
 fi
 
 zip -r $pluginfolder/$foldername-$version.zip ./ > /dev/null
