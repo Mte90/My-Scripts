@@ -35,7 +35,10 @@ if len(sys.argv) > 1 and os.path.isdir(sys.argv[1]):
             print("-Firefox WebExtension Package done!")
             # remove applications from json
             os.system('cp ' + sys.argv[1] + '/manifest.json ' + sys.argv[1] + '/__manifest.json ')
-            del data['applications']
+            try:
+                del data['applications']
+            except:
+                print('No application data, fine!')
             with open(manifest, 'w') as new_manifest:
                 json.dump(data, new_manifest, indent = 4)
             zipdir(sys.argv[1], name + '.zip')
