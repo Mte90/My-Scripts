@@ -59,84 +59,6 @@ class WordPress_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_AbstractFu
 				),
 			),
 
-			'get_term_link' => array(
-				'type'      => 'error',
-				'message'   => '%s is prohibited, please use wpcom_vip_get_term_link() instead.',
-				'functions' => array(
-					'get_term_link',
-					'get_tag_link',
-					'get_category_link',
-				),
-			),
-
-			'get_page_by_path' => array(
-				'type'      => 'error',
-				'message'   => '%s is prohibited, please use wpcom_vip_get_page_by_path() instead.',
-				'functions' => array(
-					'get_page_by_path',
-				),
-			),
-
-			'get_page_by_title' => array(
-				'type'      => 'error',
-				'message'   => '%s is prohibited, please use wpcom_vip_get_page_by_title() instead.',
-				'functions' => array(
-					'get_page_by_title',
-				),
-			),
-
-			'get_term_by' => array(
-				'type'      => 'error',
-				'message'   => '%s is prohibited, please use wpcom_vip_get_term_by() instead.',
-				'functions' => array(
-					'get_term_by',
-					'get_cat_ID',
-				),
-			),
-
-			'get_category_by_slug' => array(
-				'type'      => 'error',
-				'message'   => '%s is prohibited, please use wpcom_vip_get_category_by_slug() instead.',
-				'functions' => array(
-					'get_category_by_slug',
-				),
-			),
-
-			'url_to_postid' => array(
-				'type'      => 'error',
-				'message'   => '%s is prohibited, please use wpcom_vip_url_to_postid() instead.',
-				'functions' => array(
-					'url_to_postid',
-					'url_to_post_id',
-				),
-			),
-
-			'attachment_url_to_postid' => array(
-				'type'      => 'error',
-				'message'   => '%s is prohibited, please use wpcom_vip_attachment_url_to_postid() instead.',
-				'functions' => array(
-					'attachment_url_to_postid',
-				),
-			),
-
-			// @link https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#remote-calls
-			'wp_remote_get' => array(
-				'type'      => 'warning',
-				'message'   => '%s is highly discouraged, please use vip_safe_wp_remote_get() instead.',
-				'functions' => array(
-					'wp_remote_get',
-				),
-			),
-
-			// @link https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#remote-calls
-			'curl' => array(
-				'type'      => 'warning',
-				'message'   => 'Using cURL functions is highly discouraged within VIP context. Check (Fetching Remote Data) on VIP Documentation.',
-				'functions' => array(
-					'curl_*',
-				),
-			),
-
 			// @link https://vip.wordpress.com/documentation/vip/code-review-what-we-look-for/#custom-roles
 			'custom_role' => array(
 				'type'      => 'error',
@@ -174,42 +96,6 @@ class WordPress_Sniffs_VIP_RestrictedFunctionsSniff extends WordPress_AbstractFu
 					'wp_get_post_categories',
 					'wp_get_post_tags',
 					'wp_get_object_terms',
-				),
-			),
-
-			'term_exists' => array(
-				'type'      => 'error',
-				'message'   => '%s is highly discouraged due to not being cached; please use wpcom_vip_term_exists() instead.',
-				'functions' => array(
-					'term_exists',
-				),
-			),
-
-			'count_user_posts' => array(
-				'type'      => 'error',
-				'message'   => '%s is highly discouraged due to not being cached; please use wpcom_vip_count_user_posts() instead.',
-				'functions' => array(
-					'count_user_posts',
-				),
-			),
-
-			'wp_old_slug_redirect' => array(
-				'type'      => 'error',
-				'message'   => '%s is highly discouraged due to not being cached; please use wpcom_vip_old_slug_redirect() instead.',
-				'functions' => array(
-					'wp_old_slug_redirect',
-				),
-			),
-
-			'get_adjacent_post' => array(
-				'type'      => 'error',
-				'message'   => '%s is highly discouraged due to not being cached; please use wpcom_vip_get_adjacent_post() instead.',
-				'functions' => array(
-					'get_adjacent_post',
-					'get_previous_post',
-					'get_previous_post_link',
-					'get_next_post',
-					'get_next_post_link',
 				),
 			),
 
