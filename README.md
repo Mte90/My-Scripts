@@ -9,3 +9,8 @@ This folders contain the bash/python scripts that I've done (or found) to improv
 * [SyntaxAlert](https://github.com/Mte90/SyntaxAlert) - Script that alert the user about typo 
 * [QAsana](https://github.com/Mte90/QAsana) - Simple interface for Asana
 * [Plessc](https://github.com/Mte90/Plessc) - Interface for lessc
+* [GH-license](https://github.com/Mte90/GH-License) - Scan your repos and download an Open Source license
+* [ExtStoreStats](https://github.com/Mte90/ExtStoreStats) - Get the stats of your browser extension on different marketplace
+* [VVV-Codecept](https://github.com/Mte90/VVV-Codecept) - Script to generate a codeception.yml file with VVV datas
+* [Freemius-Suite](https://github.com/CodeAtCode/freemius-suite) - Scripts for freemius and wordpress plugins
+* [BulkRejectGP](https://github.com/Mte90/BulkRejectGP) - Bulk reject of approved string on GlotPress with Firefox automation
