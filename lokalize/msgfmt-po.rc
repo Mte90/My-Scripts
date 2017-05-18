@@ -1,0 +1,8 @@
+<!DOCTYPE KrossScripting SYSTEM "kpartgui.dtd">
+<KrossScripting>
+    <collection comment="Tools" name="tools" text="Tools">
+        <script icon="text-x-python" comment="Compiles po" name="msgfmt-po" file="msgfmt-po.py" interpreter="python" text="Compile PO">
+            <property name="autorun">true</property>
+        </script>
+    </collection>
+</KrossScripting>

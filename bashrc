@@ -79,7 +79,7 @@ if [ -x /usr/bin/dircolors ]; then
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
 
-    #alias grep='grep --color=auto'
+    alias grep='grep --color=auto'
     #alias fgrep='fgrep --color=auto'
     #alias egrep='egrep --color=auto'
 fi
@@ -132,12 +132,36 @@ export PATH=./composer/bin:$PATH
 
 eval "$(hub alias -s)"
 
+up(){ DEEP=$1; [ -z "${DEEP}" ] && { DEEP=1; }; for i in $(seq 1 ${DEEP}); do cd ../; done; }
+
 function mkcd(){ mkdir -p $@ && cd $_; }
 
-function vvv-debug(){ multitail -cS php -m 500 /var/www/VVV/www/$1/htdocs/wp-content/debug.log; }
+function vvv-debug(){
+    log="/var/www/VVV/www/$1/htdocs/wp-content/debug.log"
+    if [ -f $log ]; then
+        actualsize=$(du -k $log | cut -f 1)
+        if [ $actualsize -ge 300 ]; then
+            rm $log;
+        fi
+    else
+        echo "" > $log
+    fi
+    multitail -cS php -m 600 /var/www/VVV/www/$1/htdocs/wp-content/debug.log;
+}
 
 function git-merge-last-commit() { git reset --soft HEAD~$1 && git commit; }
 
-function commit() { commit=$(kdialog --title 'Commit message' --inputbox 'Insert the commit' '') && git commit -m "$commit"; }
+function commit() { commit=$(kdialog --title 'Commit message' --inputbox 'Insert the commit' '') && git commit -m "$commit" && echo "$commit"; }
 
 . ~/.bash_powerline
+
+# add this configuration to ~/.bashrc
+export HH_CONFIG=hicolor         # get more colors
+shopt -s histappend              # append new history items to .bash_history
+export HISTCONTROL=ignorespace   # leading space hides commands from history
+export HISTFILESIZE=1000        # increase history file size (default is 500)
+export HISTSIZE=${HISTFILESIZE}  # increase history size (default is 500)
+export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"   # mem/file sync
+# if this is interactive shell, then bind hh to Ctrl-r (for Vi mode check doc)
+if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hh -- \C-j"'; fi
+
