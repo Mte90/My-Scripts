@@ -76,18 +76,10 @@ esac
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto -h'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
 
-    alias grep='grep --color=auto'
-    #alias fgrep='fgrep --color=auto'
-    #alias egrep='egrep --color=auto'
+    alias grep='grep --color=auto --exclude-dir=\.git'
 fi
 
-# some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -115,20 +107,28 @@ fi
 
 alias casa='cd /home/mte90/Desktop'
 alias www='cd /var/www'
+alias vvv='cd /var/www/VVV/www'
+alias back='cd "$OLDPWD"'
 alias yt2mp3='youtube-dl -l --extract-audio --audio-format=mp3 -w -c'
 alias kate='kate -b'
-alias wpp='cd ./wp-content/plugins'
-alias wpt='cd ./wp-content/themes'
+alias cpwd='pwd|tr -d "\n"|pbcopy'
+alias wpp='cd ./htdocs/wp-content/plugins 2>/dev/null;cd ./wp-content/plugins 2>/dev/null'
+alias wpt='cd ./htdocs/wp-content/themes 2>/dev/null;cd ./wp-content/themes 2>/dev/null'
 alias howdoi='howdoi -c'
+alias phpdoc='phpcs -p -d memory_limit=512M --ignore=*composer*,*.js,*.css,*vendor*,*/lib,index.php,*tests*,*config* --standard=PHPDoc ./'
+alias phpdoccbf='phpcbf -p -d memory_limit=512M --ignore=*composer*,*.js,*.css,*vendor*,*/lib,index.php,*tests*,*config* --standard=PHPDoc ./'
 alias git-commit-rename='git commit --amend'
 alias git-remove-last-commit='git reset --soft HEAD~1'
-alias phpdoc='phpcs -p -d memory_limit=512M --ignore=*composer*,*.js,*.css,*/lib --standard=PHPDoc ./'
-alias phpdoccbf='phpcbf -p -d memory_limit=512M --ignore=*composer*,*.js,*.css,*/lib --standard=PHPDoc ./'
 alias git-pass='ssh-add -t 36000'
+alias gpm="git push origin master"
+# add and remove new/deleted files from git index automatically
+alias gitar="git ls-files -d -m -o -z --exclude-standard | xargs -0 git update-index --add --remove"
+
 alias svn-revert='svn cleanup & svn cleanup &  sqlite3 .svn/wc.db "delete from work_queue" && svn revert --recursive .'
 alias qafoo='/opt/QualityAnalyzer/bin/analyze --exclude=lib,composer,node_modules'
 export PATH=./vendor/bin:$PATH
 export PATH=./composer/bin:$PATH
+export PATH=~/.composer/vendor/bin:$PATH
 
 eval "$(hub alias -s)"
 
@@ -143,9 +143,8 @@ function vvv-debug(){
         if [ $actualsize -ge 300 ]; then
             rm $log;
         fi
-    else
-        echo "" > $log
     fi
+    echo "" > $log
     multitail -cS php -m 600 /var/www/VVV/www/$1/htdocs/wp-content/debug.log;
 }
 
@@ -155,7 +154,7 @@ function commit() { commit=$(kdialog --title 'Commit message' --inputbox 'Insert
 
 . ~/.bash_powerline
 
-# add this configuration to ~/.bashrc
+# https://github.com/dvorka/hstr
 export HH_CONFIG=hicolor         # get more colors
 shopt -s histappend              # append new history items to .bash_history
 export HISTCONTROL=ignorespace   # leading space hides commands from history
