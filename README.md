@@ -1,7 +1,7 @@
-#Why
+# Why
 This folders contain the bash/python scripts that I've done (or found) to improve my UX in my debian sid box.  
 
-#Others Resources/Tools by me
+# Others Resources/Tools by me
 
 * [Wordmove-Tools](https://github.com/Mte90/Wordmove-Tools) - Scripts for wordmove
 * [GH-License](https://github.com/Mte90/GH-License) - Scan a GitHub user's repo for the license or download a license

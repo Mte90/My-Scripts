@@ -149,6 +149,7 @@ alias git-commit-rename='git commit --amend'
 alias git-remove-last-commit='git reset --soft HEAD~1'
 alias git-pass='ssh-add -t 36000'
 alias gpm="git push origin master"
+alias git-restage="git update-index --again"
 # add and remove new/deleted files from git index automatically
 alias gitar="git ls-files -d -m -o -z --exclude-standard | xargs -0 git update-index --add --remove"
 function git-merge-last-commit() { git reset --soft HEAD~$1 && git commit; }
