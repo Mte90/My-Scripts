@@ -101,36 +101,26 @@ if ! shopt -oq posix; then
   fi
 fi
 
-if [ -f /hub.bash_completion ]; then
-    . /hub.bash_completion
-fi
-
+# CD stuff
 alias casa='cd /home/mte90/Desktop'
 alias www='cd /var/www'
 alias vvv='cd /var/www/VVV/www'
 alias back='cd "$OLDPWD"'
-alias yt2mp3='youtube-dl -l --extract-audio --audio-format=mp3 -w -c'
-alias kate='kate -b'
-alias cpwd='pwd|tr -d "\n"|pbcopy'
 alias wpp='cd ./htdocs/wp-content/plugins 2>/dev/null;cd ./wp-content/plugins 2>/dev/null'
 alias wpt='cd ./htdocs/wp-content/themes 2>/dev/null;cd ./wp-content/themes 2>/dev/null'
+# Misc
+alias biggest='BLOCKSIZE=1048576; du -x -h | sort -nr | head -10'
+alias yt2mp3='youtube-dl -l --extract-audio --audio-format=mp3 -w -c'
+alias kate='kate -b'
+# dev
+# https://github.com/gleitz/howdoi
 alias howdoi='howdoi -c'
 alias phpdoc='phpcs -p -d memory_limit=512M --ignore=*composer*,*.js,*.css,*vendor*,*/lib,index.php,*tests*,*config* --standard=PHPDoc ./'
 alias phpdoccbf='phpcbf -p -d memory_limit=512M --ignore=*composer*,*.js,*.css,*vendor*,*/lib,index.php,*tests*,*config* --standard=PHPDoc ./'
-alias git-commit-rename='git commit --amend'
-alias git-remove-last-commit='git reset --soft HEAD~1'
-alias git-pass='ssh-add -t 36000'
-alias gpm="git push origin master"
-# add and remove new/deleted files from git index automatically
-alias gitar="git ls-files -d -m -o -z --exclude-standard | xargs -0 git update-index --add --remove"
-
-alias svn-revert='svn cleanup & svn cleanup &  sqlite3 .svn/wc.db "delete from work_queue" && svn revert --recursive .'
 alias qafoo='/opt/QualityAnalyzer/bin/analyze --exclude=lib,composer,node_modules'
 export PATH=./vendor/bin:$PATH
 export PATH=./composer/bin:$PATH
 export PATH=~/.composer/vendor/bin:$PATH
-
-eval "$(hub alias -s)"
 
 up(){ DEEP=$1; [ -z "${DEEP}" ] && { DEEP=1; }; for i in $(seq 1 ${DEEP}); do cd ../; done; }
 
@@ -148,10 +138,24 @@ function vvv-debug(){
     multitail -cS php -m 600 /var/www/VVV/www/$1/htdocs/wp-content/debug.log;
 }
 
+
+# https://github.com/github/hub
+if [ -f /hub.bash_completion ]; then
+    . /hub.bash_completion
+fi
+# For Git
+eval "$(hub alias -s)"
+alias git-commit-rename='git commit --amend'
+alias git-remove-last-commit='git reset --soft HEAD~1'
+alias git-pass='ssh-add -t 36000'
+alias gpm="git push origin master"
+# add and remove new/deleted files from git index automatically
+alias gitar="git ls-files -d -m -o -z --exclude-standard | xargs -0 git update-index --add --remove"
 function git-merge-last-commit() { git reset --soft HEAD~$1 && git commit; }
-
 function commit() { commit=$(kdialog --title 'Commit message' --inputbox 'Insert the commit' '') && git commit -m "$commit" && echo "$commit"; }
+alias svn-revert='svn cleanup & svn cleanup &  sqlite3 .svn/wc.db "delete from work_queue" && svn revert --recursive .'
 
+# https://github.com/riobard/bash-powerline
 . ~/.bash_powerline
 
 # https://github.com/dvorka/hstr
