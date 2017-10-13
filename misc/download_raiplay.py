@@ -12,7 +12,7 @@ import youtube_dl
 os.chdir(sys.argv[2])
 html = urlopen(sys.argv[1]).read().decode('utf-8')
 tree = lxml.html.fromstring(html)
-sel = CSSSelector('a.video')
+sel = CSSSelector('a.video, .puntateItem a')
 results = sel(tree)
 
 for link in results:
