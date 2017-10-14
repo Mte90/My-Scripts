@@ -9,7 +9,7 @@ message='Vuoi fare le lodi?'
 seconds="$((${minutes} * 60))"
 
 while true; do
-    [[ "$(date +%H)" -ge 15 ]] && exit
+    [[ "$(date +%H)" -ge 13 ]] && exit
 
     if kdialog --yesno "${message}"; then
         ${runme}
