@@ -3,7 +3,7 @@
 # Specify the amount on minutes of the continuos reminder
 minutes=15
 cutoff_hour=15
-runme='firefox "http://www.ibreviary.com/m2/breviario.php?s=lodi"'
+runme='firefox http://www.ibreviary.com/m2/breviario.php?s=lodi'
 message='Vuoi fare le lodi?'
 
 seconds="$((${minutes} * 60))"
@@ -13,6 +13,7 @@ while true; do
 
     if kdialog --yesno "${message}"; then
         ${runme}
+        exit
     else
         sleep ${seconds}
     fi
