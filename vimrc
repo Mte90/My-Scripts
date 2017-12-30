@@ -1,3 +1,6 @@
+" not load for tiny vi
+if !1 | finish | endif
+
 set nocompatible               " be iMproved
 filetype off                   " required!
 
@@ -5,12 +8,10 @@ set number  "" Show line numbers
 set textwidth=100   "" Line wrap (number of cols)
 set showmatch   "" Highlight matching brace
 set visualbell  "" Use visual bell (no beeping)
-
 set hlsearch    "" Highlight all search results
 set smartcase   "" Enable smart-case search
 set ignorecase  "" Always case-insensitive
 set incsearch   "" Searches for strings incrementally
-
 set autoindent  "" Auto-indent new lines
 set shiftwidth=4    "" Number of auto-indent spaces
 set smartindent "" Enable smart-indent
@@ -22,88 +23,103 @@ set report=0
 set hlsearch
 set incsearch
 set cursorline            " Color the cursorline
-
 set undolevels=1000 "" Number of undo levels
 set backspace=indent,eol,start  "" Backspace behaviour
-
-set guifont=Monospace\ 9
-
-autocmd BufReadPost * if line("'\"") && line("'\"") <= line("$") | exe "normal `\"" | endif
-autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
-autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
-autocmd FileType php let b:surround_45 = "<?php \r ?>"
-autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
-autocmd FileType html,css EmmetInstall
-au BufWrite * :Autoformat
-function! IPhpInsertUse()
-    call PhpInsertUse()
-    call feedkeys('a',  'n')
-endfunction
-autocmd FileType php inoremap <Leader>pnu <Esc>:call IPhpInsertUse()<CR>
-autocmd FileType php noremap <Leader>pnu :call PhpInsertUse()<CR>
-function! IPhpExpandClass()
-    call PhpExpandClass()
-    call feedkeys('a', 'n')
-endfunction
-autocmd FileType php inoremap <Leader>pne <Esc>:call IPhpExpandClass()<CR>
-autocmd FileType php noremap <Leader>pne :call PhpExpandClass()<CR>
-autocmd FileType php inoremap <Leader>pns <Esc>:call PhpSortUse()<CR>
-autocmd FileType php noremap <Leader>pns :call PhpSortUse()<CR>
-
-
-syntax enable
-set background=dark
-colorscheme valloric
-set synmaxcol=256
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Files, backups and undo
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Turn backup off, since most stuff is in SVN, git et.c anyway...
 set nobackup
 set nowb
 set noswapfile
+set hidden
+set ignorecase
+set smartcase
+set number
+set guifont=DroidSansMono\ Nerd\ Font\ 11
+set encoding=utf-8
+set laststatus=2
+set t_Co=256
+set background=dark
+set synmaxcol=256
+colorscheme valloric
+syntax enable
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
 " Package manager
 Plugin 'VundleVim/Vundle.vim'
-
-" Git
+" display the result when searching
+Plugin 'henrik/vim-indexed-search'
+" wrapper for git and display git diff in the left gutter
 Plugin 'tpope/vim-fugitive'
-Plugin 'jreybert/vimagit'
-Plugin 'gisphm/vim-gitignore'
-
-" PHP
-Plugin 'shawncplus/phpcomplete.vim'
-Bundle 'vim-php/vim-php-refactoring'
-Bundle 'vim-php/vim-composer'
-Plugin 'alvan/vim-php-manual'
-Plugin 'lvht/phpfold.vim'
-Plugin '2072/PHP-Indenting-for-VIm'
-Plugin '2072/vim-syntax-for-PHP.git'
-Plugin 'joonty/vdebug'
-Plugin 'vim-php/tagbar-phpctags.vim'
+" surrounding with whatever you want (paranthesis, quotes...)
+Plugin 'tpope/vim-surround'
+" easily search, substitute and abbreviate multiple version of words
+Plugin 'tpope/vim-abolish'
+" Match more stuff with % (html tag, LaTeX...)
+Plugin 'tmhedberg/matchit'
+" General autocomplete system
+Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plugin 'roxma/vim-hug-neovim-rpc'
+Plugin 'roxma/nvim-yarp'
+" vim project for one specific vimrc / project + startify for startup cow
+Plugin 'amiorin/vim-project'
+Plugin 'mhinz/vim-startify'
+" snippets
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'sniphpets/sniphpets'
+Plugin 'sniphpets/sniphpets-common'
+" markdown
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+" php autocompletion engine and tools
+Plugin 'mkusher/padawan.vim'
+Plugin 'padawan-php/deoplete-padawan'
+Plugin 'StanAngeloff/php.vim'
+Plugin 'rayburgemeestre/phpfolding.vim'
+Plugin 'stephpy/vim-php-cs-fixer'
 Plugin 'arnaud-lb/vim-php-namespace'
-
+Plugin 'nishigori/vim-php-dictionary'
+Plugin 'shawncplus/phpcomplete.vim'
+" php doc autocompletion
+Plugin 'tobyS/vmustache' | Plugin 'tobyS/pdv'
+" Syntax highlighting for vue js framework
+Plugin 'posva/vim-vue'
+" autoclose bracket and parenthesis when open
+Plugin 'Townk/vim-autoclose'
+" debugger
+Plugin 'joonty/vdebug'
+" object view
+Plugin 'majutsushi/tagbar'
+if !has('gui_running')
+    Plugin 'ap/vim-buftabline'
+endif
+" Nerdtree + modifications: git icons plugin, color filetype plugin
+Plugin 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind']}
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+Bundle 'jistr/vim-nerdtree-tabs'
+" status bar
+Plugin 'itchyny/lightline.vim'
+" Tags are very important
+Plugin 'ludovicchabant/vim-gutentags'
+" undo tree
+Plugin 'sjl/gundo.vim'
+" registers
+Plugin 'vim-scripts/YankRing.vim'
+if !has('gui_running')
+    " fzf - poweful search
+    Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plugin 'junegunn/fzf.vim'
+endif
+" allow multisearch in current directory / multi replace as well
+Plugin 'wincent/ferret'
+" display the hexadecimal colors - useful for css and color config
+Plugin 'ap/vim-css-color'
+" Search stuff
+Plugin 'ctrlpvim/ctrlp.vim'
 " WordPress
 Plugin 'dsawardekar/wordpress.vim'
 Plugin 'salcode/vim-wordpress-dict'
 Plugin 'sudar/vim-wordpress-snippets'
-
-" Omni
-Plugin 'scrooloose/syntastic'
-Plugin 'majutsushi/tagbar'
-Plugin 'ludovicchabant/vim-gutentags'
-Plugin 'ervandew/supertab'
-
 " Web
 Plugin 'othree/html5.vim'
 Plugin 'tpope/vim-haml'
@@ -114,7 +130,7 @@ Plugin 'mklabs/grunt.vim'
 Plugin 'groenewege/vim-less'
 Plugin 'salcode/vim-error-log-shortcut'
 Plugin 'Valloric/MatchTagAlways'
-
+Plugin 'othree/csscomplete.vim'
 " Javascript
 Plugin 'nono/jquery.vim'
 Plugin 'othree/javascript-libraries-syntax.vim'
@@ -127,92 +143,193 @@ Plugin 'mattn/webapi-vim'
 Plugin 'elzr/vim-json'
 Plugin '1995eaton/vim-better-javascript-completion'
 Bundle 'lukaszkorecki/CoffeeTags'
-
-" Code helper
-Plugin 'townk/vim-autoclose'
-Plugin 'chiel92/vim-autoformat'
-Plugin 'thaerkh/vim-indentguides'
-Plugin 'tpope/vim-surround'
-Plugin 'keith/investigate.vim'
-Plugin 'ntpeters/vim-better-whitespace'
-Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'tpope/vim-commentary'
-
-" Misc
-Plugin 'SirVer/ultisnips'
-Bundle 'Shougo/vimproc'
-Plugin 'mhinz/vim-startify'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'troydm/easytree.vim'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'tpope/vim-markdown'
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'run2cmd/ide.vim'
-Plugin 'evanmiller/nginx-vim-syntax'
-Plugin 'tpope/vim-projectionist'
-Plugin 'farmergreg/vim-lastplace'
-Plugin 'Raimondi/delimitMate'
-
-" Themes
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+" Cool icons"
+Plugin 'ryanoasis/vim-devicons'
 
 call vundle#end()
 
-let g:php_refactor_command='php /usr/local/bin/refactor.phar'
-let g:phpcomplete_relax_static_constraint = 1
-let g:phpcomplete_complete_for_unknown_classes = 0
-let g:phpcomplete_search_tags_for_variables = 1
-let g:phpcomplete_parse_docblock_comments = 1
-let g:phpcomplete_enhance_jump_to_definition = 1
-let g:php_refactor_command='/usr/local/bin/refactor.phar'
-let g:php_namespace_sort_after_insert=1
+autocmd BufReadPost * if line("'\"") && line("'\"") <= line("$") | exe "normal `\"" | endif
+autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
+autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+autocmd FileType php let b:surround_45 = "<?php \r ?>"
+autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType html,css EmmetInstall
+" Alias for git add
+autocmd User fugitive command! -bar -buffer -nargs=* Gadd :Gwrite <args>
 
-let g:airline_theme='murmur'
-let g:used_javascript_libs = 'underscore,backbone,vue,react'
+let g:php_cs_fixer_php_path = "php"
+let g:php_cs_fixer_rules = "@PSR2"
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-set statusline+=%{gutentags#statusline()}
+autocmd FileType php setlocal commentstring=\/\/\ %s
+autocmd FileType php nnoremap <leader>g :silent :call PhpCsFixerFixFile()<CR>
 
-let g:indent_guides_auto_colors = 0
-let g:indent_guides_color_change_percent = 10
+" nerdtree configuration
+function! NERDTreeToggleInCurDir()
+  " If NERDTree is open in the current buffer
+  if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
+    exe ":NERDTreeClose"
+  else
+    if (expand("%:t") != '')
+      exe ":NERDTreeFind"
+    else
+      exe ":NERDTreeToggle"
+    endif
+  endif
+endfunction
+" don't display informations (type ? for help and so on)
+let g:NERDTreeMinimalUI = 1
+" don't replace the native vim file explorer
+let g:NERDTreeHijackNetrw = 1
+let g:NERDTreeChDirMode = 2
+let g:NERDTreeAutoDeleteBuffer = 1
+let g:NERDTreeShowBookmarks = 0
+let g:NERDTreeCascadeOpenSingleChildDir = 1
+:let g:NERDTreeWinSize=35
+" change the arrows
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = ''
+if !has('gui_running')
+    " Open by default
+    autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+    autocmd StdinReadPre * let s:std_in=1
+endif
+" ignore files
+let NERDTreeIgnore = ['\.pyc$', '__init__.py', '__pycache__','.sass*','composer','node_modules']
+" webdevicons
+let g:webdevicons_enable = 1
+let g:webdevicons_enable_nerdtree = 1
+let entry_format = "'   ['. index .']'. repeat(' ', (3 - strlen(index)))"
+let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
+if exists('*WebDevIconsGetFileTypeSymbol')  " support for vim-devicons
+  let entry_format .= ". WebDevIconsGetFileTypeSymbol(entry_path) .' '.  entry_path"
+else
+  let entry_format .= '. entry_path'
+endif
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
-let g:syntastic_php_phpcs_args = '--standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
-let g:tagbar_phpctags_memory_limit = '512M'
+if !has('gui_running')
+    autocmd VimEnter * command! -nargs=* Ag call fzf#run({
+    \ 'source':  printf('ag -U --nogroup --column --color "%s"',
+    \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+    \ 'sink*':    function('<sid>ag_handler'),
+    \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+    \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
+    \            '--color hl:68,hl+:110',
+    \ 'down':    '50%'
+    \ })
 
-let g:user_emmet_install_global = 0
+    autocmd VimEnter * command! -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:60%')
+    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+    \ <bang>0)
+endif
 
-let g:javascript_plugin_jsdoc = 1
-let g:tagbar_phpctags_bin='~/.vim/phpctags'
-let g:lightline = {
-    \ 'active': {
-    \   'left': [['mode'], ['readonly', 'filename', 'modified'], ['tagbar', 'ale', 'gutentags']],
-    \   'right': [['lineinfo'], ['filetype']]
-    \ },
-    \ 'inactive': {
-    \   'left': [['absolutepath']],
-    \   'right': [['lineinfo'], ['filetype']]
-    \ },
-    \ 'component': {
-    \   'lineinfo': '%l\%L [%p%%], %c, %n',
-    \   'tagbar': '%{tagbar#currenttag("[%s]", "", "f")}',
-    \   'ale': '%{ale#statusline#Status()}',
-    \   'gutentags': '%{gutentags#statusline("[Generating...]")}'
-    \ },
-\ }
+" deoplete config
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#auto_completion_start_length = 1
+" deoplete tab-complete
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+let g:deoplete#file#enable_buffer_path = 1
+" Compatibility with phpcomplete
+let g:deoplete#omni_patterns = {}
+let g:deoplete#sources = {}
+let g:deoplete#sources.php = ['padawan', 'ultisnips', 'buffer']
+" delay for auto complete and refresh
+let g:deoplete#auto_complete_delay= 75
+let g:deoplete#auto_refresh_delay= 5
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#enable_camel_case = 1
+let g:deoplete#enable_refresh_always = 1
+" compatibility with phpcd
+let g:deoplete#ignore_sources = get(g:, 'deoplete#ignore_sources', {})
+let g:deoplete#ignore_sources.php = ['omni']
+" CtrlP
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+	\ 'dir':  '\v[\/]\.(git|hg|svn)$',
+	\ 'file': '\v\.(exe|so|dll)$',
+	\ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
+	\ }
+" This use a global install of PHPActor
+nnoremap <leader>rmc :call PHPMoveClass()<cr>
+nnoremap <leader>rcc :call PHPCopyClass()<cr>
+nnoremap <leader>rmd :call PHPMoveDir()<cr>
+nnoremap <leader>ric :call PHPModify("implement_contracts")<cr>
+nnoremap <leader>raa :call PHPModify("add_missing_assignments")<cr>
+" Fill constructor
+nnoremap <leader>rfc :call PHPModify("complete_constructor")<cr>
+nnoremap <leader>rei :call PHPExtractInterface()<cr>
+nnoremap <leader>src :call PHPShowReferencesClass()<cr>
+function! PHPMoveClass()
+    let l:oldPath = expand('%')
+    let l:newPath = input("New path: ", l:oldPath)
+    execute "!phpactor class:move ".l:oldPath.' '.l:newPath
+    execute "bd ".l:oldPath
+    execute "e ". l:newPath
+endfunction
+function! PHPCopyClass()
+    let l:oldPath = expand('%')
+    let l:newPath = input("New copy path: ", l:oldPath)
+    execute "!phpactor class:copy ".l:oldPath.' '.l:newPath
+    execute "bd ".l:oldPath
+    execute "e ". l:newPath
+endfunction
+function! PHPShowReferencesClass()
+    execute "!phpactor references:class ".expand('%')
+endfunction
+function! PHPMoveDir()
+    let l:oldPath = input("old path: ", expand('%:p:h'))
+    let l:newPath = input("New path: ", l:oldPath)
+    execute "!phpactor class:move ".l:oldPath.' '.l:newPath
+endfunction
+function! PHPModify(transformer)
+    normal! ggdG
+    execute "read !phpactor class:transform ".expand('%').' --transform='.a:transformer
+    normal! ggdd
+endfunction
+function! PHPExtractInterface()
+    let l:interfaceFile = substitute(expand('%'), '.php', 'Interface.php', '')
+    execute "!phpactor class:inflect ".expand('%').' '.l:interfaceFile.' interface'
+    execute "e ". l:interfaceFile
+endfunction
+let g:php_namespace_sort_after_insert = 1
+" insert use statement in PHP
+function! IPhpInsertUse()
+    call PhpInsertUse()
+    call feedkeys('a',  'n')
+endfunction
+autocmd FileType php inoremap <Leader>u <Esc>:call IPhpInsertUse()<CR>
+autocmd FileType php noremap <Leader>u :call PhpInsertUse()<CR>
 
-let g:gutentags_ctags_exclude = ['*.css', '*.html', '*.js', '*.json', '*.xml',
-                            \ '*.phar', '*.ini', '*.rst', '*.md',
-                            \ '*vendor/*/test*', '*vendor/*/Test*',
-                            \ '*vendor/*/fixture*', '*vendor/*/Fixture*',
-\ '*var/cache*', '*var/log*']
+" vdebug
+let g:vdebug_options = {}
+let g:vdebug_options["port"] = 9000
+let g:vdebug_keymap = {
+\    "run" : "<F5>",
+\    "run_to_cursor" : "<F9>",
+\    "step_over" : "<F2>",
+\    "step_into" : "<F3>",
+\    "step_out" : "<F4>",
+\    "close" : "<F6>",
+\    "detach" : "<F7>",
+\    "set_breakpoint" : "<F10>",
+\    "get_context" : "<F11>",
+\    "eval_under_cursor" : "<F12>",
+\    "eval_visual" : "<F8>",
+\}
+let g:vdebug_options["path_maps"] = {
+\}
+" redefine the characters
+autocmd VimEnter * sign define breakpt text= texthl=DbgBreakptSign linehl=DbgBreakptLine
+autocmd VimEnter * sign define current text= texthl=DbgCurrentSign linehl=DbgCurrentLine
+" GutenTags
 let g:gutentags_enabled                  = 1
 let g:gutentags_generate_on_missing      = 0
 let g:gutentags_generate_on_new          = 1
@@ -225,24 +342,128 @@ let g:gutentags_file_list_command = {
       \     '.hg': 'hg files',
       \   },
 \ }
+let g:gutentags_ctags_exclude = ['*.css', '*.html', '*.js', '*.json', '*.xml',
+                            \ '*.phar', '*.ini', '*.rst', '*.md',
+                            \ '*vendor/*/test*', '*vendor/*/Test*',
+                            \ '*vendor/*/fixture*', '*vendor/*/Fixture*',
+\ '*var/cache*', '*var/log*']
 let g:gutentags_cache_dir = '~/.vim/tags/'
 
-autocmd FileType php setlocal makeprg=php\ -l\ %
-autocmd FileType php setlocal errorformat=%m\ in\ %f\ on\ line\ %l
-autocmd FileType php let b:delimitMate_excluded_regions = "Comment,String,phpStringDouble,phpHereDoc,phpStringSingle,phpComment"
+let g:lightline = {
+    \ 'active': {
+    \   'left': [['mode', 'paste'], ['readonly', 'filename', 'modified'], ['tagbar', 'gitbranch']],
+    \   'right': [['lineinfo'], ['filetype']]
+    \ },
+    \ 'inactive': {
+    \   'left': [['mode', 'paste'], ['readonly', 'filename', 'modified'], ['tagbar', 'gitbranch']],
+    \   'right': [['lineinfo'], ['filetype']]
+    \ },
+    \ 'component': {
+    \   'lineinfo': '%l\%L [%p%%]',
+    \   'tagbar': '%{tagbar#currenttag("[%s]", "", "f")}',
+    \   'gitbranch': '%{&filetype=="help"?"":exists("*fugitive#head")?fugitive#head():""}'
+    \ },
+    \ 'component_function': {
+      \   'filetype': 'MyFiletype',
+      \   'fileformat': 'MyFileformat',
+      \ }
+\ }
 
+function! MyFiletype()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+endfunction
+
+function! MyFileformat()
+  return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+endfunction
+
+call project#rc("/var/www/VVV/www")
+let g:project_use_nerdtree = 1
+let g:startify_bookmarks = [
+            \ {'1': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
+            \]
+" Emmett
+let g:user_emmet_install_global = 0
+" PhpDoc
+let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
+
+" Padawan stuff
+let g:padawan#cli = '/opt/padawan/padawan.php/bin/padawan'
+let g:padawan#server_command = '/opt/padawan/padawan.php/bin/padawan-server'
+"  Run with vim
+:call padawan#StartServer()
+if !has('gui_running')
+    " Buftabline
+    let g:buftabline_numbers = 2
+endif
+"Ultisnip
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsEditSplit="vertical"
+" JS smart complete
+let g:vimjs#smartcomplete = 1
+
+" Select all
 :map <C-a> GVgg
-:map <C-o> :e . <Enter>
+" Save file
 :map <C-s> :w <Enter>
+" Copy
 :map <C-c> y
+" Paste
 :map <C-v> p
+" Cut
 :map <C-x> d
+" Back
 :map <C-z> u
+" Replace
+:map <C-r> :Ack
+" close tab
 :map <C-w> :close <Enter>
-:map <C-W> :q! <Enter>
-:map <C-f> /
+" Search in the file
+:map <C-t> /
+" Search all
 :map <C-h> :%s/
-:map <A-s> :norm A;
+" Open Folder tab current directory
+nmap <leader>n :call NERDTreeToggleInCurDir()<CR>
+" Open folder tab
+:map <C-p> :NERDTreeTabsToggle<CR>
+" To search on history with fuzzy
+nmap <leader>h :History<cr>
+" View all the files
+nmap <leader>b :Buffers<cr>
+" Search in all the files
+nmap <leader>f :Files<cr>
+" Object view
+nmap <F8> :TagbarToggle<CR>
+" Undo tree tab
+nnoremap <F5> :GundoToggle<CR>
+if !has('gui_running')
+    " Switch buffers
+    nmap <leader>1 <Plug>BufTabLine.Go(1)
+    nmap <leader>2 <Plug>BufTabLine.Go(2)
+    nmap <leader>3 <Plug>BufTabLine.Go(3)
+    nmap <leader>4 <Plug>BufTabLine.Go(4)
+    nmap <leader>5 <Plug>BufTabLine.Go(5)
+    nmap <leader>6 <Plug>BufTabLine.Go(6)
+    nmap <leader>7 <Plug>BufTabLine.Go(7)
+    nmap <leader>8 <Plug>BufTabLine.Go(8)
+    nmap <leader>9 <Plug>BufTabLine.Go(9)
+    nmap <leader>0 <Plug>BufTabLine.Go(10)
+endif
+" Format code
+map <c-f> :call JsBeautify()<cr>
+" or
+autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+" for json
+autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
+" for html
+autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+" for css or scss
+autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+
+" C = Ctrl
+" leader = \
 
 filetype plugin indent on
 filetype plugin on
