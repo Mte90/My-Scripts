@@ -38,6 +38,7 @@ set laststatus=2
 set t_Co=256
 set background=dark
 set synmaxcol=256
+set updatetime=250
 colorscheme valloric
 syntax enable
 
@@ -49,6 +50,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'henrik/vim-indexed-search'
 " wrapper for git and display git diff in the left gutter
 Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
 " surrounding with whatever you want (paranthesis, quotes...)
 Plugin 'tpope/vim-surround'
 " easily search, substitute and abbreviate multiple version of words
@@ -75,7 +77,6 @@ Plugin 'mkusher/padawan.vim'
 Plugin 'padawan-php/deoplete-padawan'
 Plugin 'StanAngeloff/php.vim'
 Plugin 'rayburgemeestre/phpfolding.vim'
-Plugin 'stephpy/vim-php-cs-fixer'
 Plugin 'arnaud-lb/vim-php-namespace'
 Plugin 'nishigori/vim-php-dictionary'
 Plugin 'shawncplus/phpcomplete.vim'
@@ -145,9 +146,11 @@ Plugin '1995eaton/vim-better-javascript-completion'
 Bundle 'lukaszkorecki/CoffeeTags'
 " Cool icons"
 Plugin 'ryanoasis/vim-devicons'
+" Report lint errors
+Plugin 'neomake/neomake'
 
 call vundle#end()
-
+" Add support of stuff on different files
 autocmd BufReadPost * if line("'\"") && line("'\"") <= line("$") | exe "normal `\"" | endif
 autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
 autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
@@ -161,13 +164,6 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType html,css EmmetInstall
 " Alias for git add
 autocmd User fugitive command! -bar -buffer -nargs=* Gadd :Gwrite <args>
-
-let g:php_cs_fixer_php_path = "php"
-let g:php_cs_fixer_rules = "@PSR2"
-
-autocmd FileType php setlocal commentstring=\/\/\ %s
-autocmd FileType php nnoremap <leader>g :silent :call PhpCsFixerFixFile()<CR>
-
 " nerdtree configuration
 function! NERDTreeToggleInCurDir()
   " If NERDTree is open in the current buffer
@@ -181,16 +177,16 @@ function! NERDTreeToggleInCurDir()
     endif
   endif
 endfunction
-" don't display informations (type ? for help and so on)
+"  don't display informations (type ? for help and so on)
 let g:NERDTreeMinimalUI = 1
-" don't replace the native vim file explorer
+"  don't replace the native vim file explorer
 let g:NERDTreeHijackNetrw = 1
 let g:NERDTreeChDirMode = 2
 let g:NERDTreeAutoDeleteBuffer = 1
 let g:NERDTreeShowBookmarks = 0
 let g:NERDTreeCascadeOpenSingleChildDir = 1
 :let g:NERDTreeWinSize=35
-" change the arrows
+"  change the arrows
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
 if !has('gui_running')
@@ -198,9 +194,9 @@ if !has('gui_running')
     autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
     autocmd StdinReadPre * let s:std_in=1
 endif
-" ignore files
+"  ignore files
 let NERDTreeIgnore = ['\.pyc$', '__init__.py', '__pycache__','.sass*','composer','node_modules']
-" webdevicons
+" Webdevicons
 let g:webdevicons_enable = 1
 let g:webdevicons_enable_nerdtree = 1
 let entry_format = "'   ['. index .']'. repeat(' ', (3 - strlen(index)))"
@@ -211,7 +207,7 @@ if exists('*WebDevIconsGetFileTypeSymbol')  " support for vim-devicons
 else
   let entry_format .= '. entry_path'
 endif
-
+" fzf for search files
 if !has('gui_running')
     autocmd VimEnter * command! -nargs=* Ag call fzf#run({
     \ 'source':  printf('ag -U --nogroup --column --color "%s"',
@@ -230,24 +226,23 @@ if !has('gui_running')
     \           : fzf#vim#with_preview('right:50%:hidden', '?'),
     \ <bang>0)
 endif
-
-" deoplete config
+" deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_completion_start_length = 1
-" deoplete tab-complete
+"  deoplete tab-complete
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 let g:deoplete#file#enable_buffer_path = 1
-" Compatibility with phpcomplete
+"  Compatibility with phpcomplete
 let g:deoplete#omni_patterns = {}
 let g:deoplete#sources = {}
 let g:deoplete#sources.php = ['padawan', 'ultisnips', 'buffer']
-" delay for auto complete and refresh
+"  delay for auto complete and refresh
 let g:deoplete#auto_complete_delay= 75
 let g:deoplete#auto_refresh_delay= 5
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#enable_camel_case = 1
 let g:deoplete#enable_refresh_always = 1
-" compatibility with phpcd
+"  compatibility with phpcd
 let g:deoplete#ignore_sources = get(g:, 'deoplete#ignore_sources', {})
 let g:deoplete#ignore_sources.php = ['omni']
 " CtrlP
@@ -257,60 +252,11 @@ let g:ctrlp_custom_ignore = {
 	\ 'file': '\v\.(exe|so|dll)$',
 	\ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
 	\ }
-" This use a global install of PHPActor
-nnoremap <leader>rmc :call PHPMoveClass()<cr>
-nnoremap <leader>rcc :call PHPCopyClass()<cr>
-nnoremap <leader>rmd :call PHPMoveDir()<cr>
-nnoremap <leader>ric :call PHPModify("implement_contracts")<cr>
-nnoremap <leader>raa :call PHPModify("add_missing_assignments")<cr>
-" Fill constructor
-nnoremap <leader>rfc :call PHPModify("complete_constructor")<cr>
-nnoremap <leader>rei :call PHPExtractInterface()<cr>
-nnoremap <leader>src :call PHPShowReferencesClass()<cr>
-function! PHPMoveClass()
-    let l:oldPath = expand('%')
-    let l:newPath = input("New path: ", l:oldPath)
-    execute "!phpactor class:move ".l:oldPath.' '.l:newPath
-    execute "bd ".l:oldPath
-    execute "e ". l:newPath
-endfunction
-function! PHPCopyClass()
-    let l:oldPath = expand('%')
-    let l:newPath = input("New copy path: ", l:oldPath)
-    execute "!phpactor class:copy ".l:oldPath.' '.l:newPath
-    execute "bd ".l:oldPath
-    execute "e ". l:newPath
-endfunction
-function! PHPShowReferencesClass()
-    execute "!phpactor references:class ".expand('%')
-endfunction
-function! PHPMoveDir()
-    let l:oldPath = input("old path: ", expand('%:p:h'))
-    let l:newPath = input("New path: ", l:oldPath)
-    execute "!phpactor class:move ".l:oldPath.' '.l:newPath
-endfunction
-function! PHPModify(transformer)
-    normal! ggdG
-    execute "read !phpactor class:transform ".expand('%').' --transform='.a:transformer
-    normal! ggdd
-endfunction
-function! PHPExtractInterface()
-    let l:interfaceFile = substitute(expand('%'), '.php', 'Interface.php', '')
-    execute "!phpactor class:inflect ".expand('%').' '.l:interfaceFile.' interface'
-    execute "e ". l:interfaceFile
-endfunction
-let g:php_namespace_sort_after_insert = 1
-" insert use statement in PHP
-function! IPhpInsertUse()
-    call PhpInsertUse()
-    call feedkeys('a',  'n')
-endfunction
-autocmd FileType php inoremap <Leader>u <Esc>:call IPhpInsertUse()<CR>
-autocmd FileType php noremap <Leader>u :call PhpInsertUse()<CR>
 
 " vdebug
 let g:vdebug_options = {}
 let g:vdebug_options["port"] = 9000
+let g:vdebug_options["ide_key"] = "VVVDEBUG"
 let g:vdebug_keymap = {
 \    "run" : "<F5>",
 \    "run_to_cursor" : "<F9>",
@@ -325,8 +271,10 @@ let g:vdebug_keymap = {
 \    "eval_visual" : "<F8>",
 \}
 let g:vdebug_options["path_maps"] = {
+\       "/srv/www/runexp": "/home/www/VVV/www/runexp",
+\       "/srv/www/demo": "/home/www/VVV/www/demo"
 \}
-" redefine the characters
+"  redefine the characters
 autocmd VimEnter * sign define breakpt text= texthl=DbgBreakptSign linehl=DbgBreakptLine
 autocmd VimEnter * sign define current text= texthl=DbgCurrentSign linehl=DbgCurrentLine
 " GutenTags
@@ -348,7 +296,7 @@ let g:gutentags_ctags_exclude = ['*.css', '*.html', '*.js', '*.json', '*.xml',
                             \ '*vendor/*/fixture*', '*vendor/*/Fixture*',
 \ '*var/cache*', '*var/log*']
 let g:gutentags_cache_dir = '~/.vim/tags/'
-
+" A better line
 let g:lightline = {
     \ 'active': {
     \   'left': [['mode', 'paste'], ['readonly', 'filename', 'modified'], ['tagbar', 'gitbranch']],
@@ -368,42 +316,83 @@ let g:lightline = {
       \   'fileformat': 'MyFileformat',
       \ }
 \ }
-
 function! MyFiletype()
   return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
 endfunction
-
 function! MyFileformat()
   return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
 endfunction
-
+" Project system
 call project#rc("/var/www/VVV/www")
 let g:project_use_nerdtree = 1
+" Home tab
 let g:startify_bookmarks = [
             \ {'1': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
-            \]
+            \ {'2': '/var/www/VVV/www/woocommerce/htdocs/wp-content/plugins/woo-fiscalita-italiana/woo-fiscalita-italiana.php'},
+            \ {'3': '/var/www/VVV/www/boilerplate/htdocs/wp-content/plugins/'},
+            \ {'4': '/var/www/VVV/www/runexp/htdocs/wp-content/plugins/crm-runningexperience/'}
+\]
 " Emmett
 let g:user_emmet_install_global = 0
 " PhpDoc
 let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
-
 " Padawan stuff
 let g:padawan#cli = '/opt/padawan/padawan.php/bin/padawan'
 let g:padawan#server_command = '/opt/padawan/padawan.php/bin/padawan-server'
 "  Run with vim
 :call padawan#StartServer()
+" Buftabline
 if !has('gui_running')
-    " Buftabline
     let g:buftabline_numbers = 2
 endif
-"Ultisnip
+" Ultisnip
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
 " JS smart complete
 let g:vimjs#smartcomplete = 1
+" Neomake signs in the gutter
+let g:neomake_error_sign = {'text': '', 'texthl': 'NeomakeErrorSign'}
+let g:neomake_warning_sign = {
+    \   'text': '',
+    \   'texthl': 'NeomakeWarningSign',
+    \ }
+let g:neomake_message_sign = {
+    \   'text': '➤',
+    \   'texthl': 'NeomakeMessageSign',
+    \ }
+let g:neomake_info_sign = {'text': 'ℹ', 'texthl': 'NeomakeInfoSign'}
+" standard phpcs config
+let g:neomake_php_phpcs_args_standard = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
+" update neomake when save file
+autocmd! BufWritePost * Neomake
+call neomake#configure#automake('rw')
+" display warning for phpcs error
+function! SetWarningType(entry)
+  let a:entry.type = 'W'
+endfunction
+function! SetErrorType(entry)
+  let a:entry.type = 'E'
+endfunction
+function! SetMessageType(entry)
+  let a:entry.type = 'M'
+endfunction
+let g:neomake_php_phpcs_maker = {
+        \ 'args': ['--report=csv', '--standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'],
+        \ 'errorformat':
+            \ '%-GFile\,Line\,Column\,Type\,Message\,Source\,Severity%.%#,'.
+            \ '"%f"\,%l\,%c\,%t%*[a-zA-Z]\,"%m"\,%*[a-zA-Z0-9_.-]\,%*[0-9]%.%#',
+        \ 'postprocess': function('SetWarningType'),
+ \ }
+let g:neomake_php_phpmd_maker = {
+        \ 'args': ['%:p', 'text', 'cleancode,codesize,design,unusedcode,naming'],
+        \ 'errorformat': '%W%f:%l%\s%\s%#%m',
+        \ 'postprocess': function('SetMessageType'),
+\ }
+let g:neomake_open_list = 2
 
+" Hotkeys
 " Select all
 :map <C-a> GVgg
 " Save file
@@ -422,6 +411,8 @@ let g:vimjs#smartcomplete = 1
 :map <C-w> :close <Enter>
 " Search in the file
 :map <C-t> /
+" Search in the project files
+nnoremap <leader>a :Rg<space>
 " Search all
 :map <C-h> :%s/
 " Open Folder tab current directory
@@ -461,6 +452,15 @@ autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
 autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
 " for css or scss
 autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+" input mode map
+inoremap <F5> <ESC>:Phpcs<CR>
+inoremap <F7> <ESC>:cprev<CR>
+inoremap <F8> <ESC>:cnext<CR>
+
+"normal mode map
+noremap <F5> <ESC>:Phpcs<CR>
+noremap <F7> <Esc>:cprev<CR>
+noremap <F8> <ESC>:cnext<CR>
 
 " C = Ctrl
 " leader = \
