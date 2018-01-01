@@ -6,7 +6,7 @@
         # See http://alblue.bandlem.com/2011/11/git-tip-of-week-gc-and-pruning-this.html
 	logallrefupdates=true
 [core]
-	editor = vim
+	editor = vim -Nu NONE -c startinsert
 	# Changes in file permissions will be ignored: please use it!
 	filemode = false
 	autocrlf = input
@@ -17,7 +17,7 @@
 [alias]
 	undo-commit = reset --soft HEAD^
 	#http://www.mte90.net/en/2016/04/git-clone-auto-download-composer-npm-pip-vagrant-bower/
-	clone = clone --recursive --template=/home/mte90/Desktop/Prog/Script/git-templates
+	clone = clone --recursive --template=/home/mte90/Desktop/Prog/My-Scripts/git-templates
 [merge]
     # See here:
     # http://aaronbonner.io/post/78444674979/only-allow-git-fast-forward-merges-to-avoid-ugly
@@ -41,3 +41,7 @@
 	sslverify = false
 [color]
 	ui = auto
+[init]
+	templatedir = /home/mte90/.gh-license/git-templates
+[github]
+	user = Mte90
