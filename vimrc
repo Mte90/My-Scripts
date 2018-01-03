@@ -18,7 +18,6 @@ set smartindent "" Enable smart-indent
 set smarttab    "" Enable smart-tabs
 set softtabstop=4   "" Number of spaces per Tab
 set mouse=a " enable mouse in all modes
-set wildmenu
 set report=0
 set hlsearch
 set incsearch
@@ -39,6 +38,17 @@ set t_Co=256
 set background=dark
 set synmaxcol=256
 set updatetime=250
+set ai
+set sw=4
+set showtabline=2
+" Set global replacement as the default
+set gdefault
+" Better wrapping with indentation
+set breakindent
+set showbreak=\\\\\
+" Load menu
+:source $VIMRUNTIME/menu.vim
+set wildmenu
 colorscheme valloric
 syntax enable
 
@@ -61,8 +71,7 @@ Plugin 'tmhedberg/matchit'
 Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plugin 'roxma/vim-hug-neovim-rpc'
 Plugin 'roxma/nvim-yarp'
-" vim project for one specific vimrc / project + startify for startup cow
-Plugin 'amiorin/vim-project'
+" startify for startup cow
 Plugin 'mhinz/vim-startify'
 " snippets
 Plugin 'SirVer/ultisnips'
@@ -148,11 +157,16 @@ Bundle 'lukaszkorecki/CoffeeTags'
 Plugin 'ryanoasis/vim-devicons'
 " Report lint errors
 Plugin 'neomake/neomake'
-
+" Wakatime
+Plugin 'wakatime/vim-wakatime'
+" Misc
+Plugin 'editorconfig/editorconfig-vim'
+Plugin 'wincent/terminus'
 call vundle#end()
 " Add support of stuff on different files
 autocmd BufReadPost * if line("'\"") && line("'\"") <= line("$") | exe "normal `\"" | endif
 autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
+autocmd FileType php.wordpress setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
 autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 autocmd FileType php let b:surround_45 = "<?php \r ?>"
 autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
@@ -161,7 +175,6 @@ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType html,css EmmetInstall
 " Alias for git add
 autocmd User fugitive command! -bar -buffer -nargs=* Gadd :Gwrite <args>
 " nerdtree configuration
@@ -246,7 +259,10 @@ let g:deoplete#enable_refresh_always = 1
 let g:deoplete#ignore_sources = get(g:, 'deoplete#ignore_sources', {})
 let g:deoplete#ignore_sources.php = ['omni']
 " CtrlP
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.(git|hg|svn))$',
+  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+\}
 let g:ctrlp_custom_ignore = {
 	\ 'dir':  '\v[\/]\.(git|hg|svn)$',
 	\ 'file': '\v\.(exe|so|dll)$',
@@ -272,6 +288,8 @@ let g:vdebug_keymap = {
 \}
 let g:vdebug_options["path_maps"] = {
 \       "/srv/www/runexp": "/home/www/VVV/www/runexp",
+\       "/srv/www/woocommerce": "/home/www/VVV/www/woocommerce",
+\       "/srv/www/glossary": "/home/www/VVV/www/glossary",
 \       "/srv/www/demo": "/home/www/VVV/www/demo"
 \}
 "  redefine the characters
@@ -322,18 +340,17 @@ endfunction
 function! MyFileformat()
   return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
 endfunction
-" Project system
-call project#rc("/var/www/VVV/www")
-let g:project_use_nerdtree = 1
 " Home tab
 let g:startify_bookmarks = [
             \ {'1': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
             \ {'2': '/var/www/VVV/www/woocommerce/htdocs/wp-content/plugins/woo-fiscalita-italiana/woo-fiscalita-italiana.php'},
             \ {'3': '/var/www/VVV/www/boilerplate/htdocs/wp-content/plugins/'},
-            \ {'4': '/var/www/VVV/www/runexp/htdocs/wp-content/plugins/crm-runningexperience/'}
+            \ {'4': '/var/www/VVV/www/runexp/htdocs/wp-content/plugins/crm-runningexperience/'},
+            \ {'5': '/home/mte90/Desktop/Prog/GlotDict/'},
+            \ {'6': '/home/mte90/Desktop/Prog/Share-Backported/'}
 \]
 " Emmett
-let g:user_emmet_install_global = 0
+let g:user_emmet_install_global = 1
 " PhpDoc
 let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
 " Padawan stuff
@@ -391,6 +408,8 @@ let g:neomake_php_phpmd_maker = {
         \ 'postprocess': function('SetMessageType'),
 \ }
 let g:neomake_open_list = 2
+" php
+:let g:PHP_autoformatcomment = 1
 
 " Hotkeys
 " Select all
@@ -443,8 +462,6 @@ if !has('gui_running')
     nmap <leader>0 <Plug>BufTabLine.Go(10)
 endif
 " Format code
-map <c-f> :call JsBeautify()<cr>
-" or
 autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
 " for json
 autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
@@ -456,14 +473,26 @@ autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 inoremap <F5> <ESC>:Phpcs<CR>
 inoremap <F7> <ESC>:cprev<CR>
 inoremap <F8> <ESC>:cnext<CR>
-
 "normal mode map
 noremap <F5> <ESC>:Phpcs<CR>
 noremap <F7> <Esc>:cprev<CR>
 noremap <F8> <ESC>:cnext<CR>
+" Vim PHP format
+nmap <C-f> /if[^{]*$<CR>J
+" Emmett
+let g:user_emmet_leader_key='<C-E>' " require also a comma ,
+" Autocomplete tags with C-k
+augroup html
+autocmd!
+autocmd FileType html inoremap <buffer> <c-k> </<c-x><c-o>
+augroup END
 
 " C = Ctrl
 " leader = \
+" <leader>el for error_log/console.log
+" On visual mode . repeat the last thing you done in edit mode
+" * highlitght the word where it is your cursor
 
-filetype plugin indent on
-filetype plugin on
+:filetype plugin indent on
+:filetype plugin on
+:filetype indent on
