@@ -8,14 +8,20 @@ filetype off                   " required!
 :filetype plugin on
 :filetype indent on
 
-set number  "" Show line numbers
-set textwidth=100   "" Line wrap (number of cols)
-set showmatch   "" Highlight matching brace
-set visualbell  "" Use visual bell (no beeping)
-set shiftwidth=4    "" Number of auto-indent spaces
-set smarttab    "" Enable smart-tabs
-set softtabstop=4   "" Number of spaces per Tab
-set mouse=a " enable mouse in all modes
+set number      " Show line numbers
+set textwidth=100   " Line wrap (number of cols)
+set showmatch   " Highlight matching brace
+set visualbell  " Use visual bell (no beeping)
+set title             " change the terminal's title
+set mouse=a        " enable mouse in all modes
+" New splits open to right and bottom
+set splitbelow
+set splitright
+" Autofolding
+set foldmethod=indent
+set foldnestmax=10
+set nofoldenable
+set foldcolumn=2
 set report=0
 " Encoding
 set encoding=utf-8
@@ -40,6 +46,9 @@ set updatetime=250
 set ai
 set sw=4
 set showtabline=2
+set shiftwidth=4     " Number of auto-indent spaces
+set smarttab         " Enable smart-tabs
+set softtabstop=4    " Number of spaces per Tab
 " Enable smart-indent
 set smartindent
 " Auto-indent new lines
@@ -75,13 +84,13 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-abolish'
 " Match more stuff with % (html tag, LaTeX...)
 Plugin 'tmhedberg/matchit'
-" General autocomplete system
+" Autocomplete system in real time
 Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plugin 'roxma/vim-hug-neovim-rpc'
 Plugin 'roxma/nvim-yarp'
-" startify for startup cow
+" startify for a cool home page
 Plugin 'mhinz/vim-startify'
-" snippets
+" Snippets engine and... snippets!
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'sniphpets/sniphpets'
@@ -93,7 +102,6 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'padawan-php/padawan.vim'
 Plugin 'padawan-php/deoplete-padawan'
 Plugin 'StanAngeloff/php.vim'
-" Plugin 'rayburgemeestre/phpfolding.vim'
 Plugin 'arnaud-lb/vim-php-namespace'
 Plugin '2072/vim-syntax-for-PHP.git'
 Plugin 'nishigori/vim-php-dictionary'
@@ -108,6 +116,8 @@ Plugin 'Townk/vim-autoclose'
 Plugin 'joonty/vdebug'
 " object view
 Plugin 'majutsushi/tagbar'
+" Folding fast is important
+Plugin 'Konfekt/FastFold'
 if !has('gui_running')
     Plugin 'ap/vim-buftabline'
 endif
@@ -284,7 +294,6 @@ let g:ctrlp_custom_ignore = {
 let g:ctrlp_custom_ignore = {
 	\ 'dir':  '\v[\/]\.(git|hg|svn)$',
 	\ 'file': '\v\.(exe|so|dll)$',
-	\ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
 	\ }
 " vdebug
 let g:vdebug_options = {}
@@ -327,8 +336,8 @@ let g:gutentags_file_list_command = {
 \ }
 let g:gutentags_ctags_exclude = ['*.css', '*.html', '*.js', '*.json', '*.xml',
                             \ '*.phar', '*.ini', '*.rst', '*.md',
-                            \ '*vendor/*/test*', '*vendor/*/Test*',
-                            \ '*vendor/*/fixture*', '*vendor/*/Fixture*',
+                            \ '*vendor/*/test*', "*lib/**",
+                            \ "*vendor/**",
 \ '*var/cache*', '*var/log*']
 let g:gutentags_cache_dir = '~/.vim/tags/'
 " A better line
@@ -390,13 +399,12 @@ if !has('gui_running')
 endif
 " Ultisnip
 let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
 " JS smart complete
 let g:vimjs#smartcomplete = 1
 " Ale linting (installed on system: phpmd, phpcs, coffeelint, sass-lint, htmlhint, prettier)
 let g:ale_php_phpcs_standard  = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
+let g:ale_php_phpmd_ruleset = 'cleancode,codesize,design,naming,unusedcode'
 let g:ale_sign_error = 'EE'
 let g:ale_sign_warning = 'WW'
 let g:ale_change_sign_column_color = 1
@@ -406,7 +414,7 @@ let g:ale_change_sign_column_color = 1
 let g:indent_guides_guide_size = 1
 let g:indent_guides_color_change_percent = 3
 let g:indent_guides_enable_on_vim_startup = 1
-" Nerdcommenter
+" Nerdcommenter for... better comments
 let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
@@ -428,10 +436,10 @@ let g:lion_squeeze_spaces = 1
 :map <C-z> u
 " Replace
 :map <C-r> :Ack
-" close tab
-:map <C-w> :close <Enter>
+" Close tab
+:map <C-w> :bd <Enter>
 " Search in the file
-:map <C-t> /
+:map <leader>t /
 " Search in the project files
 nnoremap <leader>a :Rg<space>
 " Search all
@@ -447,9 +455,11 @@ nmap <leader>b :Buffers<cr>
 " Search in all the files
 nmap <leader>f :Files<cr>
 " Object view
-nmap <F8> :TagbarToggle<CR>
+nmap  <C-t> :TagbarToggle<CR>
 " Undo tree tab
-nnoremap <F5> :GundoToggle<CR>
+nnoremap <leader>H :GundoToggle<CR>
+" Fold code open/close with click
+nnoremap <expr> <2-LeftMouse> foldclosed(line('.')) == -1 ? 'za' : 'zo'
 if !has('gui_running')
     " Switch buffers
     nmap <leader>1 <Plug>BufTabLine.Go(1)
@@ -489,3 +499,6 @@ nmap <C-=> <ESC>gl=<CR>
 " On visual mode . repeat the last thing you done in edit mode
 " * highlitght the word where it is your cursor
 " :e and write the path
+" tab for autocomplete of snippet
+" :vsplit file to open a vertical window
+" :hide close current window but not file
