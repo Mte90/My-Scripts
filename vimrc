@@ -4,43 +4,46 @@ if !1 | finish | endif
 set nocompatible               " be iMproved
 filetype off                   " required!
 
+:filetype plugin indent on
+:filetype plugin on
+:filetype indent on
+
 set number  "" Show line numbers
 set textwidth=100   "" Line wrap (number of cols)
 set showmatch   "" Highlight matching brace
 set visualbell  "" Use visual bell (no beeping)
-set hlsearch    "" Highlight all search results
-set smartcase   "" Enable smart-case search
-set ignorecase  "" Always case-insensitive
-set incsearch   "" Searches for strings incrementally
-set autoindent  "" Auto-indent new lines
 set shiftwidth=4    "" Number of auto-indent spaces
-set smartindent "" Enable smart-indent
 set smarttab    "" Enable smart-tabs
 set softtabstop=4   "" Number of spaces per Tab
 set mouse=a " enable mouse in all modes
 set report=0
+" Encoding
+set encoding=utf-8
+" Search option
 set hlsearch
 set incsearch
 set cursorline            " Color the cursorline
 set undolevels=1000 "" Number of undo levels
 set backspace=indent,eol,start  "" Backspace behaviour
+set ignorecase
+set smartcase
+" Cleanup
 set nobackup
 set nowb
 set noswapfile
 set hidden
-set ignorecase
-set smartcase
-set number
-set guifont=DroidSansMono\ Nerd\ Font\ 11
-set encoding=utf-8
+" Statusline
 set laststatus=2
-set t_Co=256
-set background=dark
-set synmaxcol=256
+" Frequency update
 set updatetime=250
+" Enable indent
 set ai
 set sw=4
 set showtabline=2
+" Enable smart-indent
+set smartindent
+" Auto-indent new lines
+set autoindent
 " Set the file path as pwd
 set autochdir
 " Set global replacement as the default
@@ -49,6 +52,11 @@ set gdefault
 set breakindent
 set showbreak=\\\\\
 set wildmenu
+" Set color
+set t_Co=256
+set background=dark
+set synmaxcol=256
+set guifont=DroidSansMono\ Nerd\ Font\ 11
 colorscheme valloric
 syntax enable
 
@@ -278,7 +286,6 @@ let g:ctrlp_custom_ignore = {
 	\ 'file': '\v\.(exe|so|dll)$',
 	\ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
 	\ }
-
 " vdebug
 let g:vdebug_options = {}
 let g:vdebug_options["port"] = 9000
@@ -482,7 +489,3 @@ nmap <C-=> <ESC>gl=<CR>
 " On visual mode . repeat the last thing you done in edit mode
 " * highlitght the word where it is your cursor
 " :e and write the path
-
-:filetype plugin indent on
-:filetype plugin on
-:filetype indent on
