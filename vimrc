@@ -41,13 +41,13 @@ set updatetime=250
 set ai
 set sw=4
 set showtabline=2
+" Set the file path as pwd
+set autochdir
 " Set global replacement as the default
 set gdefault
 " Better wrapping with indentation
 set breakindent
 set showbreak=\\\\\
-" Load menu
-:source $VIMRUNTIME/menu.vim
 set wildmenu
 colorscheme valloric
 syntax enable
@@ -82,20 +82,21 @@ Plugin 'sniphpets/sniphpets-common'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 " php autocompletion engine and tools
-Plugin 'mkusher/padawan.vim'
+Plugin 'padawan-php/padawan.vim'
 Plugin 'padawan-php/deoplete-padawan'
 Plugin 'StanAngeloff/php.vim'
-Plugin 'rayburgemeestre/phpfolding.vim'
+" Plugin 'rayburgemeestre/phpfolding.vim'
 Plugin 'arnaud-lb/vim-php-namespace'
+Plugin '2072/vim-syntax-for-PHP.git'
 Plugin 'nishigori/vim-php-dictionary'
-Plugin 'shawncplus/phpcomplete.vim'
+ Plugin '2072/PHP-Indenting-for-VIm'
 " php doc autocompletion
 Plugin 'tobyS/vmustache' | Plugin 'tobyS/pdv'
 " Syntax highlighting for vue js framework
 Plugin 'posva/vim-vue'
 " autoclose bracket and parenthesis when open
 Plugin 'Townk/vim-autoclose'
-" debugger
+" debugger, https://github.com/joonty/vdebug/pull/316
 Plugin 'joonty/vdebug'
 " object view
 Plugin 'majutsushi/tagbar'
@@ -124,12 +125,14 @@ endif
 Plugin 'wincent/ferret'
 " display the hexadecimal colors - useful for css and color config
 Plugin 'ap/vim-css-color'
-" Search stuff
+" Search stuff, helpful on editing
 Plugin 'ctrlpvim/ctrlp.vim'
 " WordPress
 Plugin 'dsawardekar/wordpress.vim'
 Plugin 'salcode/vim-wordpress-dict'
 Plugin 'sudar/vim-wordpress-snippets'
+" Echo error_log/console.error_log
+Plugin 'salcode/vim-error-log-shortcut'
 " Web
 Plugin 'othree/html5.vim'
 Plugin 'tpope/vim-haml'
@@ -138,9 +141,10 @@ Plugin 'mattn/emmet-vim'
 Plugin 'chrisbra/colorizer'
 Plugin 'mklabs/grunt.vim'
 Plugin 'groenewege/vim-less'
-Plugin 'salcode/vim-error-log-shortcut'
 Plugin 'Valloric/MatchTagAlways'
 Plugin 'othree/csscomplete.vim'
+" close tags on </
+Plugin 'docunext/closetag.vim'
 " Javascript
 Plugin 'nono/jquery.vim'
 Plugin 'othree/javascript-libraries-syntax.vim'
@@ -152,17 +156,23 @@ Plugin 'vim-scripts/vim-coffee-script'
 Plugin 'mattn/webapi-vim'
 Plugin 'elzr/vim-json'
 Plugin '1995eaton/vim-better-javascript-completion'
-Bundle 'lukaszkorecki/CoffeeTags'
+Plugin 'lukaszkorecki/CoffeeTags'
+" Align code
+Plugin 'tommcdo/vim-lion'
 " Cool icons"
 Plugin 'ryanoasis/vim-devicons'
 " Report lint errors
-Plugin 'neomake/neomake'
+Plugin 'w0rp/ale'
+Plugin 'maximbaz/lightline-ale'
 " Wakatime
 Plugin 'wakatime/vim-wakatime'
 " Misc
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'wincent/terminus'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'scrooloose/nerdcommenter'
 call vundle#end()
+
 " Add support of stuff on different files
 autocmd BufReadPost * if line("'\"") && line("'\"") <= line("$") | exe "normal `\"" | endif
 autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
@@ -318,7 +328,7 @@ let g:gutentags_cache_dir = '~/.vim/tags/'
 let g:lightline = {
     \ 'active': {
     \   'left': [['mode', 'paste'], ['readonly', 'filename', 'modified'], ['tagbar', 'gitbranch']],
-    \   'right': [['lineinfo'], ['filetype']]
+    \   'right': [['lineinfo'], ['filetype'], [ 'linter_errors', 'linter_warnings', 'linter_ok' ]]
     \ },
     \ 'inactive': {
     \   'left': [['mode', 'paste'], ['readonly', 'filename', 'modified'], ['tagbar', 'gitbranch']],
@@ -340,6 +350,15 @@ endfunction
 function! MyFileformat()
   return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
 endfunction
+let g:lightline.component_expand = {
+      \  'linter_warnings': 'lightline#ale#warnings',
+      \  'linter_errors': 'lightline#ale#errors',
+      \  'linter_ok': 'lightline#ale#ok',
+      \ }
+let g:lightline.component_type = {
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \ }
 " Home tab
 let g:startify_bookmarks = [
             \ {'1': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
@@ -369,47 +388,23 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
 " JS smart complete
 let g:vimjs#smartcomplete = 1
-" Neomake signs in the gutter
-let g:neomake_error_sign = {'text': '', 'texthl': 'NeomakeErrorSign'}
-let g:neomake_warning_sign = {
-    \   'text': '',
-    \   'texthl': 'NeomakeWarningSign',
-    \ }
-let g:neomake_message_sign = {
-    \   'text': '➤',
-    \   'texthl': 'NeomakeMessageSign',
-    \ }
-let g:neomake_info_sign = {'text': 'ℹ', 'texthl': 'NeomakeInfoSign'}
-" standard phpcs config
-let g:neomake_php_phpcs_args_standard = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
-" update neomake when save file
-autocmd! BufWritePost * Neomake
-call neomake#configure#automake('rw')
-" display warning for phpcs error
-function! SetWarningType(entry)
-  let a:entry.type = 'W'
-endfunction
-function! SetErrorType(entry)
-  let a:entry.type = 'E'
-endfunction
-function! SetMessageType(entry)
-  let a:entry.type = 'M'
-endfunction
-let g:neomake_php_phpcs_maker = {
-        \ 'args': ['--report=csv', '--standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'],
-        \ 'errorformat':
-            \ '%-GFile\,Line\,Column\,Type\,Message\,Source\,Severity%.%#,'.
-            \ '"%f"\,%l\,%c\,%t%*[a-zA-Z]\,"%m"\,%*[a-zA-Z0-9_.-]\,%*[0-9]%.%#',
-        \ 'postprocess': function('SetWarningType'),
- \ }
-let g:neomake_php_phpmd_maker = {
-        \ 'args': ['%:p', 'text', 'cleancode,codesize,design,unusedcode,naming'],
-        \ 'errorformat': '%W%f:%l%\s%\s%#%m',
-        \ 'postprocess': function('SetMessageType'),
-\ }
-let g:neomake_open_list = 2
+" Ale linting (installed on system: phpmd, phpcs, coffeelint, sass-lint, htmlhint, prettier)
+let g:ale_php_phpcs_standard  = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
+let g:ale_sign_error = 'EE'
+let g:ale_sign_warning = 'WW'
+let g:ale_change_sign_column_color = 1
 " php
 :let g:PHP_autoformatcomment = 1
+" Indent lines
+let g:indent_guides_guide_size = 1
+let g:indent_guides_color_change_percent = 3
+let g:indent_guides_enable_on_vim_startup = 1
+" Nerdcommenter
+let g:NERDCompactSexyComs = 1
+let g:NERDCommentEmptyLines = 1
+let g:NERDTrimTrailingWhitespace = 1
+" Align text around a chosen character
+let g:lion_squeeze_spaces = 1
 
 " Hotkeys
 " Select all
@@ -469,29 +464,24 @@ autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
 autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
 " for css or scss
 autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
-" input mode map
-inoremap <F5> <ESC>:Phpcs<CR>
-inoremap <F7> <ESC>:cprev<CR>
-inoremap <F8> <ESC>:cnext<CR>
-"normal mode map
-noremap <F5> <ESC>:Phpcs<CR>
-noremap <F7> <Esc>:cprev<CR>
-noremap <F8> <ESC>:cnext<CR>
 " Vim PHP format
-nmap <C-f> /if[^{]*$<CR>J
+nmap <C-f> <ESC>gg=G<CR>
 " Emmett
 let g:user_emmet_leader_key='<C-E>' " require also a comma ,
-" Autocomplete tags with C-k
-augroup html
-autocmd!
-autocmd FileType html inoremap <buffer> <c-k> </<c-x><c-o>
-augroup END
+" navigate between errors
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+" Toggle comments
+nmap <C-d> <plug>NERDCommenterToggle<CR>
+" Align =
+nmap <C-=> <ESC>gl=<CR>
 
 " C = Ctrl
 " leader = \
 " <leader>el for error_log/console.log
 " On visual mode . repeat the last thing you done in edit mode
 " * highlitght the word where it is your cursor
+" :e and write the path
 
 :filetype plugin indent on
 :filetype plugin on
