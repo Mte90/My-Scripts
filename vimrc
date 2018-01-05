@@ -1,7 +1,6 @@
 " not load for tiny vi
 if !1 | finish | endif
 
-set nocompatible               " be iMproved
 filetype off                   " required!
 
 :filetype plugin indent on
@@ -13,7 +12,7 @@ set textwidth=100   " Line wrap (number of cols)
 set showmatch   " Highlight matching brace
 set visualbell  " Use visual bell (no beeping)
 set title             " change the terminal's title
-set mouse=a        " enable mouse in all modes
+set mouse=a           " enable mouse in all modes
 " New splits open to right and bottom
 set splitbelow
 set splitright
@@ -29,8 +28,8 @@ set encoding=utf-8
 set hlsearch
 set incsearch
 set cursorline            " Color the cursorline
-set undolevels=1000 "" Number of undo levels
-set backspace=indent,eol,start  "" Backspace behaviour
+set undolevels=1000       " Number of undo levels
+set backspace=indent,eol,start  " Backspace behaviour
 set ignorecase
 set smartcase
 " Cleanup
@@ -62,7 +61,6 @@ set breakindent
 set showbreak=\\\\\
 set wildmenu
 " Set color
-set t_Co=256
 set background=dark
 set synmaxcol=256
 set guifont=DroidSansMono\ Nerd\ Font\ 11
@@ -423,55 +421,55 @@ let g:lion_squeeze_spaces = 1
 
 " Hotkeys
 " Select all
-:map <C-a> GVgg
+nnoremap <C-a> GVgg
 " Save file
-:map <C-s> :w <Enter>
+nnoremap <C-s> :w <Enter>
 " Copy
-:map <C-c> y
+nnoremap <C-c> y
 " Paste
-:map <C-v> p
+nnoremap <C-v> p
 " Cut
-:map <C-x> d
+nnoremap <C-x> d
 " Back
-:map <C-z> u
+nnoremap <C-z> u
 " Replace
-:map <C-r> :Ack
+nnoremap <C-r> :Ack
 " Close tab
-:map <C-w> :bd <Enter>
+nnoremap <C-w> :bd <Enter>
 " Search in the file
-:map <leader>t /
+nnoremap <leader>t /
 " Search in the project files
 nnoremap <leader>a :Rg<space>
 " Search all
-:map <C-h> :%s/
+nnoremap <C-h> :%s/
 " Open Folder tab current directory
-nmap <leader>n :call NERDTreeToggleInCurDir()<CR>
+nnoremap <leader>n :call NERDTreeToggleInCurDir()<CR>
 " Open folder tab
-:map <C-p> :NERDTreeTabsToggle<CR>
+nnoremap <C-p> :NERDTreeTabsToggle<CR>
 " To search on history with fuzzy
-nmap <leader>h :History<cr>
+nnoremap <leader>h :History<cr>
 " View all the files
-nmap <leader>b :Buffers<cr>
+nnoremap <leader>b :Buffers<cr>
 " Search in all the files
-nmap <leader>f :Files<cr>
+nnoremap <leader>f :Files<cr>
 " Object view
-nmap  <C-t> :TagbarToggle<CR>
+nnoremap  <C-t> :TagbarToggle<CR>
 " Undo tree tab
 nnoremap <leader>H :GundoToggle<CR>
 " Fold code open/close with click
 nnoremap <expr> <2-LeftMouse> foldclosed(line('.')) == -1 ? 'za' : 'zo'
 if !has('gui_running')
     " Switch buffers
-    nmap <leader>1 <Plug>BufTabLine.Go(1)
-    nmap <leader>2 <Plug>BufTabLine.Go(2)
-    nmap <leader>3 <Plug>BufTabLine.Go(3)
-    nmap <leader>4 <Plug>BufTabLine.Go(4)
-    nmap <leader>5 <Plug>BufTabLine.Go(5)
-    nmap <leader>6 <Plug>BufTabLine.Go(6)
-    nmap <leader>7 <Plug>BufTabLine.Go(7)
-    nmap <leader>8 <Plug>BufTabLine.Go(8)
-    nmap <leader>9 <Plug>BufTabLine.Go(9)
-    nmap <leader>0 <Plug>BufTabLine.Go(10)
+    nnoremap <leader>1 <Plug>BufTabLine.Go(1)
+    nnoremap <leader>2 <Plug>BufTabLine.Go(2)
+    nnoremap <leader>3 <Plug>BufTabLine.Go(3)
+    nnoremap <leader>4 <Plug>BufTabLine.Go(4)
+    nnoremap <leader>5 <Plug>BufTabLine.Go(5)
+    nnoremap <leader>6 <Plug>BufTabLine.Go(6)
+    nnoremap <leader>7 <Plug>BufTabLine.Go(7)
+    nnoremap <leader>8 <Plug>BufTabLine.Go(8)
+    nnoremap <leader>9 <Plug>BufTabLine.Go(9)
+    nnoremap <leader>0 <Plug>BufTabLine.Go(10)
 endif
 " Format code
 autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
@@ -482,16 +480,16 @@ autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
 " for css or scss
 autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 " Vim PHP format
-nmap <C-f> <ESC>gg=G<CR>
+nnoremap <C-f> <ESC>gg=G<CR>
 " Emmett
 let g:user_emmet_leader_key='<C-E>' " require also a comma ,
 " navigate between errors
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nnoremap <silent> <C-k> <Plug>(ale_previous_wrap)
+nnoremap <silent> <C-j> <Plug>(ale_next_wrap)
 " Toggle comments
-nmap <C-d> <plug>NERDCommenterToggle<CR>
+nnoremap <C-d> <plug>NERDCommenterToggle<CR>
 " Align =
-nmap <C-=> <ESC>gl=<CR>
+nnoremap <C-=> <ESC>gl=<CR>
 
 " C = Ctrl
 " leader = \
