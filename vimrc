@@ -6,6 +6,7 @@ filetype off                   " required!
 :filetype plugin indent on
 :filetype plugin on
 :filetype indent on
+syntax on
 
 set number      " Show line numbers
 set textwidth=100   " Line wrap (number of cols)
@@ -106,7 +107,7 @@ Plugin 'StanAngeloff/php.vim'
 Plugin 'arnaud-lb/vim-php-namespace'
 Plugin '2072/vim-syntax-for-PHP.git'
 Plugin 'nishigori/vim-php-dictionary'
- Plugin '2072/PHP-Indenting-for-VIm'
+Plugin '2072/PHP-Indenting-for-VIm'
 " php doc autocompletion
 Plugin 'tobyS/vmustache' | Plugin 'tobyS/pdv'
 " Syntax highlighting for vue js framework
