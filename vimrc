@@ -332,11 +332,12 @@ let g:gutentags_file_list_command = {
       \     '.hg': 'hg files',
       \   },
 \ }
-let g:gutentags_ctags_exclude = ['*.css', '*.html', '*.js', '*.json', '*.xml',
+let g:gutentags_ctags_exclude = ['*lock', '*.json', '*.xml', '*.yml',
                             \ '*.phar', '*.ini', '*.rst', '*.md',
                             \ '*vendor/*/test*', "*lib/**",
-                            \ "*vendor/**",
-\ '*var/cache*', '*var/log*']
+                            \ "*vendor/**", "*tests*",
+                            \ '*var/cache*', '*var/log*'
+]
 let g:gutentags_cache_dir = '~/.vim/tags/'
 " A better line
 let g:lightline = {
