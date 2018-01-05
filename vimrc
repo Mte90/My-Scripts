@@ -337,7 +337,7 @@ let g:gutentags_ctags_exclude = ['*lock', '*.json', '*.xml', '*.yml',
                             \ '*vendor/*/test*', "*lib/**",
                             \ "*vendor/**", "*tests*",
                             \ '*var/cache*', '*var/log*'
-]
+\ ]
 let g:gutentags_cache_dir = '~/.vim/tags/'
 " A better line
 let g:lightline = {
