@@ -422,55 +422,55 @@ let g:lion_squeeze_spaces = 1
 
 " Hotkeys
 " Select all
-nnoremap <C-a> GVgg
+:map <C-a> GVgg
 " Save file
-nnoremap <C-s> :w <Enter>
+:map <C-s> :w <Enter>
 " Copy
-nnoremap <C-c> y
+:map <C-c> y
 " Paste
-nnoremap <C-v> p
+:map <C-v> p
 " Cut
-nnoremap <C-x> d
+:map <C-x> d
 " Back
-nnoremap <C-z> u
+:map <C-z> u
 " Replace
-nnoremap <C-r> :Ack
+:map <C-r> :Ack
 " Close tab
-nnoremap <C-w> :bd <Enter>
+:map <C-w> :bd <Enter>
 " Search in the file
-nnoremap <leader>t /
+:map <leader>t /
 " Search in the project files
-nnoremap <leader>a :Rg<space>
+:map <leader>a :Rg<space>
 " Search all
-nnoremap <C-h> :%s/
+:map <C-h> :%s/
 " Open Folder tab current directory
-nnoremap <leader>n :call NERDTreeToggleInCurDir()<CR>
+:map <leader>n :call NERDTreeToggleInCurDir()<CR>
 " Open folder tab
-nnoremap <C-p> :NERDTreeTabsToggle<CR>
+:map <C-p> :NERDTreeTabsToggle<CR>
 " To search on history with fuzzy
-nnoremap <leader>h :History<cr>
+:map <leader>h :History<cr>
 " View all the files
-nnoremap <leader>b :Buffers<cr>
+:map <leader>b :Buffers<cr>
 " Search in all the files
-nnoremap <leader>f :Files<cr>
+:map <leader>f :Files<cr>
 " Object view
-nnoremap  <C-t> :TagbarToggle<CR>
+:map  <C-t> :TagbarToggle<CR>
 " Undo tree tab
-nnoremap <leader>H :GundoToggle<CR>
+:map <leader>H :GundoToggle<CR>
 " Fold code open/close with click
-nnoremap <expr> <2-LeftMouse> foldclosed(line('.')) == -1 ? 'za' : 'zo'
+:map <expr> <2-LeftMouse> foldclosed(line('.')) == -1 ? 'za' : 'zo'
 if !has('gui_running')
     " Switch buffers
-    nnoremap <leader>1 <Plug>BufTabLine.Go(1)
-    nnoremap <leader>2 <Plug>BufTabLine.Go(2)
-    nnoremap <leader>3 <Plug>BufTabLine.Go(3)
-    nnoremap <leader>4 <Plug>BufTabLine.Go(4)
-    nnoremap <leader>5 <Plug>BufTabLine.Go(5)
-    nnoremap <leader>6 <Plug>BufTabLine.Go(6)
-    nnoremap <leader>7 <Plug>BufTabLine.Go(7)
-    nnoremap <leader>8 <Plug>BufTabLine.Go(8)
-    nnoremap <leader>9 <Plug>BufTabLine.Go(9)
-    nnoremap <leader>0 <Plug>BufTabLine.Go(10)
+    :map <leader>1 <Plug>BufTabLine.Go(1)
+    :map <leader>2 <Plug>BufTabLine.Go(2)
+    :map <leader>3 <Plug>BufTabLine.Go(3)
+    :map <leader>4 <Plug>BufTabLine.Go(4)
+    :map <leader>5 <Plug>BufTabLine.Go(5)
+    :map <leader>6 <Plug>BufTabLine.Go(6)
+    :map <leader>7 <Plug>BufTabLine.Go(7)
+    :map <leader>8 <Plug>BufTabLine.Go(8)
+    :map <leader>9 <Plug>BufTabLine.Go(9)
+    :map <leader>0 <Plug>BufTabLine.Go(10)
 endif
 " Format code
 autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
@@ -481,16 +481,16 @@ autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
 " for css or scss
 autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 " Vim PHP format
-nnoremap <C-f> <ESC>gg=G<CR>
+:map <C-f> <ESC>gg=G<CR>
 " Emmett
 let g:user_emmet_leader_key='<C-E>' " require also a comma ,
 " navigate between errors
-nnoremap <silent> <C-k> <Plug>(ale_previous_wrap)
-nnoremap <silent> <C-j> <Plug>(ale_next_wrap)
+:map <silent> <C-k> <Plug>(ale_previous_wrap)
+:map <silent> <C-j> <Plug>(ale_next_wrap)
 " Toggle comments
-nnoremap <C-d> <plug>NERDCommenterToggle<CR>
+:map <C-d> <plug>NERDCommenterToggle<CR>
 " Align =
-nnoremap <C-=> <ESC>gl=<CR>
+:map <C-=> <ESC>gl=<CR>
 
 " C = Ctrl
 " leader = \
