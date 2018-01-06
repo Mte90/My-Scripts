@@ -14,7 +14,7 @@ set showmatch   " Highlight matching brace
 set visualbell  " Use visual bell (no beeping)
 set title             " change the terminal's title
 set mouse=a           " enable mouse in all modes
-set clipboard=unnamed
+set clipboard=unnamedplus
 set paste
 set go+=a
 " New splits open to right and bottom
@@ -429,14 +429,6 @@ let g:lion_squeeze_spaces = 1
 :map <C-a> GVgg
 " Save file
 :map <C-s> :w <Enter>
-" Copy
-:map <C-c> y<CR>
-" Paste
-:map <C-v> p<CR>
-" Cut
-:map <C-x> d<CR>
-" Back
- map <C-z> :u<CR>
 " Replace
 :map <C-r> :Ack
 " Close tab
@@ -505,3 +497,7 @@ let g:user_emmet_leader_key='<C-E>' " require also a comma ,
 " tab for autocomplete of snippet
 " :vsplit file to open a vertical window
 " :hide close current window but not file
+" Copy y
+" Paste p
+" Cut d
+" Back u
