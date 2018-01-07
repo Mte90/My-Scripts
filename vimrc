@@ -43,6 +43,9 @@ set noswapfile
 set hidden
 " Statusline
 set laststatus=2
+" Tabbar
+set showtabline=2  " Show tabline
+set guioptions-=e  " Don't use GUI tabline
 " Frequency update
 set updatetime=250
 " Enable indent
@@ -66,10 +69,17 @@ set showbreak=\\\\\
 set wildmenu
 " Set color
 set background=dark
-set synmaxcol=256
 set guifont=DroidSansMono\ Nerd\ Font\ 11
 colorscheme valloric
 syntax enable
+" exclusions from the autocomplete menu
+set wildignore+=*.so
+set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
+set wildignore+=*.gif,*.jpg,*.png,*.log
+set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
+set wildignore+=*.swp,*~,._*,*/vendor/cache/*,*/.sass-cache/*
+set wildignore+=*/public/assets/*,*/tmp/cache/assets/*/sass/*
+set wildignore+=.DS_Store
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -120,15 +130,13 @@ Plugin 'joonty/vdebug'
 Plugin 'majutsushi/tagbar'
 " Folding fast is important
 Plugin 'Konfekt/FastFold'
-if !has('gui_running')
-    Plugin 'ap/vim-buftabline'
-endif
 " Nerdtree + modifications: git icons plugin, color filetype plugin
 Plugin 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind']}
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
 Bundle 'jistr/vim-nerdtree-tabs'
 " status bar
+Plugin 'jacoborus/tender.vim'
 Plugin 'itchyny/lightline.vim'
 " Tags are very important
 Plugin 'ludovicchabant/vim-gutentags'
@@ -345,6 +353,7 @@ let g:gutentags_ctags_exclude = ['*lock', '*.json', '*.xml', '*.yml',
 let g:gutentags_cache_dir = '~/.vim/tags/'
 " A better line
 let g:lightline = {
+    \ 'colorscheme': 'tender',
     \ 'active': {
     \   'left': [['mode', 'paste'], ['readonly', 'filename', 'modified'], ['tagbar', 'gitbranch']],
     \   'right': [['lineinfo'], ['filetype'], [ 'linter_errors', 'linter_warnings', 'linter_ok' ]]
@@ -359,9 +368,28 @@ let g:lightline = {
     \   'gitbranch': '%{&filetype=="help"?"":exists("*fugitive#head")?fugitive#head():""}'
     \ },
     \ 'component_function': {
-      \   'filetype': 'MyFiletype',
-      \   'fileformat': 'MyFileformat',
-      \ }
+    \   'filetype': 'MyFiletype',
+    \   'fileformat': 'MyFileformat',
+    \ },
+    \ 'component_expand': {
+    \   'linter_warnings': 'lightline#ale#warnings',
+    \   'linter_errors': 'lightline#ale#errors',
+    \   'linter_ok': 'lightline#ale#ok',
+    \ },
+    \ 'component_type': {
+    \   'linter_warnings': 'warning',
+    \   'linter_errors': 'error',
+    \ },
+    \ 'subseparator': {
+    \   'left': '', 'right': ''
+    \ },
+    \ 'separator': {
+    \   'left': '', 'right': ''
+    \ },
+    \ 'tabline': {
+    \   'left': [ ['tabs'] ],
+    \   'right': [ ['close'] ]
+    \ }
 \ }
 function! MyFiletype()
   return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
@@ -369,15 +397,6 @@ endfunction
 function! MyFileformat()
   return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
 endfunction
-let g:lightline.component_expand = {
-      \  'linter_warnings': 'lightline#ale#warnings',
-      \  'linter_errors': 'lightline#ale#errors',
-      \  'linter_ok': 'lightline#ale#ok',
-      \ }
-let g:lightline.component_type = {
-      \     'linter_warnings': 'warning',
-      \     'linter_errors': 'error',
-      \ }
 " Home tab
 let g:startify_bookmarks = [
             \ {'1': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
@@ -455,19 +474,6 @@ let g:lion_squeeze_spaces = 1
 :map <leader>H :GundoToggle<CR>
 " Fold code open/close with click
 :map <expr> <2-LeftMouse> foldclosed(line('.')) == -1 ? 'za' : 'zo'
-if !has('gui_running')
-    " Switch buffers
-    :map <leader>1 <Plug>BufTabLine.Go(1)
-    :map <leader>2 <Plug>BufTabLine.Go(2)
-    :map <leader>3 <Plug>BufTabLine.Go(3)
-    :map <leader>4 <Plug>BufTabLine.Go(4)
-    :map <leader>5 <Plug>BufTabLine.Go(5)
-    :map <leader>6 <Plug>BufTabLine.Go(6)
-    :map <leader>7 <Plug>BufTabLine.Go(7)
-    :map <leader>8 <Plug>BufTabLine.Go(8)
-    :map <leader>9 <Plug>BufTabLine.Go(9)
-    :map <leader>0 <Plug>BufTabLine.Go(10)
-endif
 " Format code
 autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
 " for json
