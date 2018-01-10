@@ -36,6 +36,9 @@ set undolevels=1000       " Number of undo levels
 set backspace=indent,eol,start  " Backspace behaviour
 set ignorecase
 set smartcase
+set infercase       " Adjust case in insert completion mode
+set wrapscan        " Searches wrap around the end of the file
+set showmatch       " Jump to matching bracket
 " Cleanup
 set nobackup
 set nowb
@@ -48,6 +51,16 @@ set showtabline=2  " Show tabline
 set guioptions-=e  " Don't use GUI tabline
 " Frequency update
 set updatetime=250
+" Behaviour
+set nostartofline               " Cursor in same column for few commands
+set whichwrap+=h,l,<,>,[,],~    " Move to following line on certain keys
+set backspace=indent,eol,start  " Intuitive backspacing in insert mode
+set showfulltag                 " Show tag and tidy search in completion
+set noshowmode          " Don't show mode in cmd window
+set shortmess=aoOTI     " Shorten messages and don't show intro
+set scrolloff=2         " Keep at least 2 lines above/below
+set sidescrolloff=5     " Keep at least 5 lines left/right
+set noshowcmd           " Don't show command in status line
 " Enable indent
 set ai
 set sw=4
@@ -73,8 +86,14 @@ set guifont=DroidSansMono\ Nerd\ Font\ 11
 colorscheme valloric
 syntax enable
 " exclusions from the autocomplete menu
+set wildoptions=tagfile
+set wildignorecase
 set wildignore+=*.so
-set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
+set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
+set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**
+set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
+set wildignore+=__pycache__,*.egg-info
+set wildignore+=*.o,*.out,*.obj,*.rbc,*.rbo,*.class,*.gem
 set wildignore+=*.gif,*.jpg,*.png,*.log
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
 set wildignore+=*.swp,*~,._*,*/vendor/cache/*,*/.sass-cache/*
@@ -236,7 +255,7 @@ let g:NERDTreeChDirMode = 2
 let g:NERDTreeAutoDeleteBuffer = 1
 let g:NERDTreeShowBookmarks = 0
 let g:NERDTreeCascadeOpenSingleChildDir = 1
-:let g:NERDTreeWinSize=35
+let g:NERDTreeWinSize=35
 "  change the arrows
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
@@ -246,7 +265,10 @@ if !has('gui_running')
     autocmd StdinReadPre * let s:std_in=1
 endif
 "  ignore files
-let NERDTreeIgnore = ['\.pyc$', '__init__.py', '__pycache__','.sass*','composer','node_modules']
+let NERDTreeIgnore = [
+	\ '\.git$', '\.hg$', '\.svn$', '\.stversions$', '\.pyc$', '\.svn$', '__init__.py',
+	\ '\.DS_Store$', '\.sass*$', '__pycache__$', '\.egg-info$', '\.cache$','composer','node_modules'
+\ ]
 " Webdevicons
 let g:webdevicons_enable = 1
 let g:webdevicons_enable_nerdtree = 1
@@ -280,13 +302,10 @@ endif
 " deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_completion_start_length = 1
+let g:deoplete#skip_chars = ['(', ')', '<', '>']
+let g:deoplete#tag#cache_limit_size = 800000
 "  deoplete tab-complete
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 let g:deoplete#file#enable_buffer_path = 1
-"  Compatibility with phpcomplete
-let g:deoplete#omni_patterns = {}
-let g:deoplete#sources = {}
-let g:deoplete#sources.php = ['padawan', 'ultisnips', 'buffer']
 "  delay for auto complete and refresh
 let g:deoplete#auto_complete_delay= 75
 let g:deoplete#auto_refresh_delay= 5
@@ -294,8 +313,46 @@ let g:deoplete#enable_smart_case = 1
 let g:deoplete#enable_camel_case = 1
 let g:deoplete#enable_refresh_always = 1
 "  compatibility with phpcd
-let g:deoplete#ignore_sources = get(g:, 'deoplete#ignore_sources', {})
-let g:deoplete#ignore_sources.php = ['omni']
+let g:deoplete_ignore_sources = get(g:, 'deoplete#ignore_sources', {})
+let g:deoplete_ignore_sources.php = ['omni']
+"  Compatibility with phpcomplete
+let g:deoplete#omni_patterns = {}
+let g:deoplete#sources = {}
+let g:deoplete#sources.php = ['padawan', 'ultisnips', 'buffer']
+"  Other stuff
+let g:deoplete_ignore_sources.html = ['syntax']
+let g:deoplete#omni#functions = get(g:, 'deoplete#omni#functions', {})
+let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
+let g:deoplete#omni#functions.html = 'htmlcomplete#CompleteTags'
+let g:deoplete#omni#functions.markdown = 'htmlcomplete#CompleteTags'
+let g:deoplete#omni_patterns = get(g:, 'deoplete#omni_patterns', {})
+let g:deoplete#omni_patterns.html = '<[^>]*'
+let g:deoplete#omni_patterns.php =
+	\ '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+let g:deoplete#omni#input_patterns = get(g:, 'deoplete#omni#input_patterns', {})
+let g:deoplete#omni#input_patterns.xml = '<[^>]*'
+let g:deoplete#omni#input_patterns.md = '<[^>]*'
+let g:deoplete#omni#input_patterns.css  = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
+let g:deoplete#omni#input_patterns.scss = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
+let g:deoplete#omni#input_patterns.sass = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
+let g:deoplete#omni#input_patterns.python = ''
+let g:deoplete#omni#input_patterns.javascript = ''
+call deoplete#custom#source('omni', 'mark', '⌾')
+call deoplete#custom#source('padawan', 'mark', '⌁')
+call deoplete#custom#source('vim', 'mark', '⌁')
+call deoplete#custom#source('tag',           'mark', '⌦')
+call deoplete#custom#source('around',        'mark', '↻')
+call deoplete#custom#source('buffer', 'mark', 'ℬ')
+call deoplete#custom#source('padawan', 'rank', 660)
+call deoplete#custom#source('vim', 'rank', 640)
+call deoplete#custom#source('omni', 'rank', 600)
+call deoplete#custom#source('file_include',  'rank', 420)
+call deoplete#custom#source('file',          'rank', 410)
+call deoplete#custom#source('tag',           'rank', 400)
+call deoplete#custom#source('around',        'rank', 330)
+call deoplete#custom#source('buffer',        'rank', 320)
+call deoplete#custom#source('dictionary', 'rank', 310)
+call deoplete#custom#source('syntax', 'rank', 200)
 " CtrlP
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](\.(git|hg|svn))$',
@@ -333,7 +390,7 @@ autocmd VimEnter * sign define breakpt text= texthl=DbgBreakptSign linehl=Dbg
 autocmd VimEnter * sign define current text= texthl=DbgCurrentSign linehl=DbgCurrentLine
 " GutenTags
 let g:gutentags_enabled                  = 1
-let g:gutentags_generate_on_missing      = 0
+let g:gutentags_generate_on_missing      = 1
 let g:gutentags_generate_on_new          = 1
 let g:gutentags_generate_on_write = 1
 let g:gutentags_define_advanced_commands = 1
@@ -351,6 +408,7 @@ let g:gutentags_ctags_exclude = ['*lock', '*.json', '*.xml', '*.yml',
                             \ '*var/cache*', '*var/log*'
 \ ]
 let g:gutentags_cache_dir = '~/.vim/tags/'
+let g:gutentags_project_root = ['/var/www/VVV/www']
 " A better line
 let g:lightline = {
     \ 'colorscheme': 'tender',
@@ -403,6 +461,7 @@ let g:startify_bookmarks = [
             \ {'2': '/var/www/VVV/www/woocommerce/htdocs/wp-content/plugins/woo-fiscalita-italiana/woo-fiscalita-italiana.php'},
             \ {'3': '/var/www/VVV/www/boilerplate/htdocs/wp-content/plugins/'},
             \ {'4': '/var/www/VVV/www/runexp/htdocs/wp-content/plugins/crm-runningexperience/'},
+            \ {'7': '/var/www/VVV/www/lifter/htdocs/'},
             \ {'5': '/home/mte90/Desktop/Prog/GlotDict/'},
             \ {'6': '/home/mte90/Desktop/Prog/Share-Backported/'}
 \]
@@ -414,11 +473,8 @@ let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
 let g:padawan#cli = '/opt/padawan/padawan.php/bin/padawan'
 let g:padawan#server_command = '/opt/padawan/padawan.php/bin/padawan-server'
 "  Run with vim
+:call padawan#StopServer()
 :call padawan#StartServer()
-" Buftabline
-if !has('gui_running')
-    let g:buftabline_numbers = 2
-endif
 " Ultisnip
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsEditSplit="vertical"
@@ -493,6 +549,10 @@ let g:user_emmet_leader_key='<C-E>' " require also a comma ,
 :map <C-d> <plug>NERDCommenterToggle<CR>
 " Align =
 :map <C-=> <ESC>gl=<CR>
+" Remove spaces at the end of lines
+nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
+" Deoplete
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " C = Ctrl
 " leader = \
