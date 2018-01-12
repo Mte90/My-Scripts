@@ -539,6 +539,8 @@ let g:user_emmet_leader_key='<C-E>' " require also a comma ,
 nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
 " Deoplete
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" Append ; to the end of the line -> CTRL+C
+:map <C-c> :call setline('.', getline('.') . ';')<CR>
 
 " C = Ctrl
 " leader = \
