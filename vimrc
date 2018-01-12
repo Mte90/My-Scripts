@@ -15,7 +15,6 @@ set visualbell  " Use visual bell (no beeping)
 set title             " change the terminal's title
 set mouse=a           " enable mouse in all modes
 set clipboard=unnamedplus
-set paste
 set go+=a
 " New splits open to right and bottom
 set splitbelow
@@ -116,9 +115,12 @@ Plugin 'tpope/vim-abolish'
 " Match more stuff with % (html tag, LaTeX...)
 Plugin 'tmhedberg/matchit'
 " Autocomplete system in real time
-Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plugin 'roxma/vim-hug-neovim-rpc'
-Plugin 'roxma/nvim-yarp'
+Plugin 'Shougo/deoplete.nvim'
+if !has('nvim')
+    Plugin 'roxma/vim-hug-neovim-rpc'
+    Plugin 'roxma/nvim-yarp'
+endif
+Plugin 'Shougo/echodoc.vim'
 " startify for a cool home page
 Plugin 'mhinz/vim-startify'
 " Snippets engine and... snippets!
@@ -147,6 +149,7 @@ Plugin 'Townk/vim-autoclose'
 Plugin 'joonty/vdebug'
 " object view
 Plugin 'majutsushi/tagbar'
+Plugin 'hushicai/tagbar-javascript.vim'
 " Folding fast is important
 Plugin 'Konfekt/FastFold'
 " Nerdtree + modifications: git icons plugin, color filetype plugin
@@ -161,8 +164,6 @@ Plugin 'itchyny/lightline.vim'
 Plugin 'ludovicchabant/vim-gutentags'
 " undo tree
 Plugin 'sjl/gundo.vim'
-" registers
-Plugin 'vim-scripts/YankRing.vim'
 if !has('gui_running')
     " fzf - poweful search
     Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -175,7 +176,6 @@ Plugin 'ap/vim-css-color'
 " Search stuff, helpful on editing
 Plugin 'ctrlpvim/ctrlp.vim'
 " WordPress
-Plugin 'dsawardekar/wordpress.vim'
 Plugin 'salcode/vim-wordpress-dict'
 Plugin 'sudar/vim-wordpress-snippets'
 " Echo error_log/console.error_log
@@ -222,6 +222,7 @@ call vundle#end()
 
 " Add support of stuff on different files
 autocmd BufReadPost * if line("'\"") && line("'\"") <= line("$") | exe "normal `\"" | endif
+au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
 autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
 autocmd FileType php.wordpress setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
 autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
@@ -312,9 +313,10 @@ let g:deoplete#auto_refresh_delay= 5
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#enable_camel_case = 1
 let g:deoplete#enable_refresh_always = 1
+let g:deoplete#sources#padawan#add_parentheses = 1
+let g:deoplete#skip_chars = ['$']
 "  compatibility with phpcd
 let g:deoplete_ignore_sources = get(g:, 'deoplete#ignore_sources', {})
-let g:deoplete_ignore_sources.php = ['omni']
 "  Compatibility with phpcomplete
 let g:deoplete#omni_patterns = {}
 let g:deoplete#sources = {}
@@ -337,22 +339,6 @@ let g:deoplete#omni#input_patterns.scss = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
 let g:deoplete#omni#input_patterns.sass = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
 let g:deoplete#omni#input_patterns.python = ''
 let g:deoplete#omni#input_patterns.javascript = ''
-call deoplete#custom#source('omni', 'mark', '⌾')
-call deoplete#custom#source('padawan', 'mark', '⌁')
-call deoplete#custom#source('vim', 'mark', '⌁')
-call deoplete#custom#source('tag',           'mark', '⌦')
-call deoplete#custom#source('around',        'mark', '↻')
-call deoplete#custom#source('buffer', 'mark', 'ℬ')
-call deoplete#custom#source('padawan', 'rank', 660)
-call deoplete#custom#source('vim', 'rank', 640)
-call deoplete#custom#source('omni', 'rank', 600)
-call deoplete#custom#source('file_include',  'rank', 420)
-call deoplete#custom#source('file',          'rank', 410)
-call deoplete#custom#source('tag',           'rank', 400)
-call deoplete#custom#source('around',        'rank', 330)
-call deoplete#custom#source('buffer',        'rank', 320)
-call deoplete#custom#source('dictionary', 'rank', 310)
-call deoplete#custom#source('syntax', 'rank', 200)
 " CtrlP
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](\.(git|hg|svn))$',
