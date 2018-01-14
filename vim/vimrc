@@ -178,8 +178,6 @@ Plugin 'ctrlpvim/ctrlp.vim'
 " WordPress
 Plugin 'salcode/vim-wordpress-dict'
 Plugin 'sudar/vim-wordpress-snippets'
-" Echo error_log/console.error_log
-Plugin 'salcode/vim-error-log-shortcut'
 " Web
 Plugin 'othree/html5.vim'
 Plugin 'tpope/vim-haml'
@@ -227,7 +225,7 @@ autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab aut
 autocmd FileType php.wordpress setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
 autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 autocmd FileType php let b:surround_45 = "<?php \r ?>"
-autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
+autocmd FileType php setlocal omnifunc=padawan#Complete
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
@@ -320,13 +318,14 @@ let g:deoplete_ignore_sources = get(g:, 'deoplete#ignore_sources', {})
 "  Compatibility with phpcomplete
 let g:deoplete#omni_patterns = {}
 let g:deoplete#sources = {}
-let g:deoplete#sources.php = ['padawan', 'ultisnips', 'buffer']
+let g:deoplete#sources.php = ['ultisnips', 'padawan', 'buffer']
 "  Other stuff
 let g:deoplete_ignore_sources.html = ['syntax']
 let g:deoplete#omni#functions = get(g:, 'deoplete#omni#functions', {})
 let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
 let g:deoplete#omni#functions.html = 'htmlcomplete#CompleteTags'
 let g:deoplete#omni#functions.markdown = 'htmlcomplete#CompleteTags'
+let g:deoplete#omni#functions.php = 'padawan#Complete'
 let g:deoplete#omni_patterns = get(g:, 'deoplete#omni_patterns', {})
 let g:deoplete#omni_patterns.html = '<[^>]*'
 let g:deoplete#omni_patterns.php =
@@ -447,10 +446,12 @@ let g:startify_bookmarks = [
             \ {'2': '/var/www/VVV/www/woocommerce/htdocs/wp-content/plugins/woo-fiscalita-italiana/woo-fiscalita-italiana.php'},
             \ {'3': '/var/www/VVV/www/boilerplate/htdocs/wp-content/plugins/'},
             \ {'4': '/var/www/VVV/www/runexp/htdocs/wp-content/plugins/crm-runningexperience/'},
-            \ {'7': '/var/www/VVV/www/lifter/htdocs/'},
-            \ {'5': '/home/mte90/Desktop/Prog/GlotDict/'},
-            \ {'6': '/home/mte90/Desktop/Prog/Share-Backported/'}
+            \ {'5': '/var/www/VVV/www/lifter/htdocs/'},
+            \ {'6': '/home/mte90/Desktop/Prog/GlotDict/'},
+            \ {'7': '/home/mte90/Desktop/Prog/Share-Backported/'}
 \]
+let g:startify_files_number = 6
+let g:startify_padding_left = 3
 " Emmett
 let g:user_emmet_install_global = 1
 " PhpDoc
@@ -546,7 +547,7 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " leader = \
 " <leader>el for error_log/console.log
 " On visual mode . repeat the last thing you done in edit mode
-" * highlitght the word where it is your cursor
+" * highlight the word where it is your cursor
 " :e and write the path
 " tab for autocomplete of snippet
 " :vsplit file to open a vertical window
