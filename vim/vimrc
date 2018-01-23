@@ -225,7 +225,6 @@ autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab aut
 autocmd FileType php.wordpress setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
 autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 autocmd FileType php let b:surround_45 = "<?php \r ?>"
-autocmd FileType php setlocal omnifunc=padawan#Complete
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
@@ -442,16 +441,18 @@ function! MyFileformat()
 endfunction
 " Home tab
 let g:startify_bookmarks = [
-            \ {'1': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
-            \ {'2': '/var/www/VVV/www/woocommerce/htdocs/wp-content/plugins/woo-fiscalita-italiana/woo-fiscalita-italiana.php'},
-            \ {'3': '/var/www/VVV/www/boilerplate/htdocs/wp-content/plugins/'},
-            \ {'4': '/var/www/VVV/www/runexp/htdocs/wp-content/plugins/crm-runningexperience/'},
-            \ {'5': '/var/www/VVV/www/lifter/htdocs/'},
-            \ {'6': '/home/mte90/Desktop/Prog/GlotDict/'},
-            \ {'7': '/home/mte90/Desktop/Prog/Share-Backported/'}
+            \ {'g': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
+            \ {'w': '/var/www/VVV/www/woocommerce/htdocs/wp-content/plugins/woo-fiscalita-italiana/woo-fiscalita-italiana.php'},
+            \ {'b': '/var/www/VVV/www/boilerplate/htdocs/wp-content/plugins/'},
+            \ {'c': '/var/www/VVV/www/runexp/htdocs/wp-content/plugins/crm-runningexperience/'},
+            \ {'l': '/var/www/VVV/www/lifter/htdocs/'},
+            \ {'o': '/home/mte90/Desktop/Prog/GlotDict/'},
+            \ {'s': '/home/mte90/Desktop/Prog/Share-Backported/'}
 \]
-let g:startify_files_number = 6
-let g:startify_padding_left = 3
+let g:startify_list_order = ['files', 'bookmarks', 'commands']
+let g:startify_custom_header = map(split(system('fortune -o | cowsay -W 70 -f eyes'), '\n'), '" ". v:val')
+let g:startify_files_number = 5
+let g:startify_padding_left = 5
 " Emmett
 let g:user_emmet_install_global = 1
 " PhpDoc
