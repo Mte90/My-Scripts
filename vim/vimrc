@@ -63,10 +63,10 @@ set noshowcmd           " Don't show command in status line
 " Enable indent
 set ai
 set sw=4
-set showtabline=2
 set shiftwidth=4     " Number of auto-indent spaces
 set smarttab         " Enable smart-tabs
 set softtabstop=4    " Number of spaces per Tab
+set expandtab
 " Enable smart-indent
 set smartindent
 " Auto-indent new lines
@@ -108,6 +108,7 @@ Plugin 'henrik/vim-indexed-search'
 " wrapper for git and display git diff in the left gutter
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'wting/gitsessions.vim'
 " surrounding with whatever you want (paranthesis, quotes...)
 Plugin 'tpope/vim-surround'
 " easily search, substitute and abbreviate multiple version of words
@@ -157,7 +158,7 @@ Plugin 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind']}
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
 Bundle 'jistr/vim-nerdtree-tabs'
-" status bar
+" Status bar
 Plugin 'jacoborus/tender.vim'
 Plugin 'itchyny/lightline.vim'
 " Tags are very important
@@ -215,6 +216,7 @@ Plugin 'wakatime/vim-wakatime'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'wincent/terminus'
 Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'senderle/restoreview'
 Plugin 'scrooloose/nerdcommenter'
 call vundle#end()
 
@@ -543,10 +545,13 @@ nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " Append ; to the end of the line -> CTRL+C
 :map <C-c> :call setline('.', getline('.') . ';')<CR>
+" PHP documenter script bound to Control-P
+autocmd FileType php inoremap <C-d> <ESC>:call PhpDocSingle()<CR>i
+autocmd FileType php nnoremap <C-d> :call PhpDocSingle()<CR>
+autocmd FileType php vnoremap <C-d> :call PhpDocRange()<CR>
 
 " C = Ctrl
 " leader = \
-" <leader>el for error_log/console.log
 " On visual mode . repeat the last thing you done in edit mode
 " * highlight the word where it is your cursor
 " :e and write the path
