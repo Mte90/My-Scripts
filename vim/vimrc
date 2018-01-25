@@ -31,7 +31,7 @@ set encoding=utf-8
 set hlsearch
 set incsearch
 set cursorline            " Color the cursorline
-set undolevels=1000       " Number of undo levels
+set undolevels=2000       " Number of undo levels
 set backspace=indent,eol,start  " Backspace behaviour
 set ignorecase
 set smartcase
@@ -108,6 +108,7 @@ Plugin 'henrik/vim-indexed-search'
 " wrapper for git and display git diff in the left gutter
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
+" Save session
 Plugin 'wting/gitsessions.vim'
 " surrounding with whatever you want (paranthesis, quotes...)
 Plugin 'tpope/vim-surround'
@@ -121,6 +122,7 @@ if !has('nvim')
     Plugin 'roxma/vim-hug-neovim-rpc'
     Plugin 'roxma/nvim-yarp'
 endif
+" Displays function signatures
 Plugin 'Shougo/echodoc.vim'
 " startify for a cool home page
 Plugin 'mhinz/vim-startify'
@@ -214,9 +216,16 @@ Plugin 'maximbaz/lightline-ale'
 Plugin 'wakatime/vim-wakatime'
 " Misc
 Plugin 'editorconfig/editorconfig-vim'
+" Better terminal detection
 Plugin 'wincent/terminus'
+" Indentation is very helpful
 Plugin 'nathanaelkane/vim-indent-guides'
+" Remember the folding and the cursor position
 Plugin 'senderle/restoreview'
+" Multiple cursors
+Plugin 'terryma/vim-multiple-cursors'
+" Improve scrolloff area
+Plugin 'drzel/vim-scroll-off-fraction'
 Plugin 'scrooloose/nerdcommenter'
 call vundle#end()
 
@@ -341,7 +350,7 @@ let g:deoplete#omni#input_patterns.python = ''
 let g:deoplete#omni#input_patterns.javascript = ''
 " CtrlP
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.(git|hg|svn))$',
+  \ 'dir':  '\v[\/](\.(git|hg|svn|composer|lib))$',
   \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
 \}
 let g:ctrlp_custom_ignore = {
@@ -452,7 +461,7 @@ let g:startify_bookmarks = [
             \ {'s': '/home/mte90/Desktop/Prog/Share-Backported/'}
 \]
 let g:startify_list_order = ['files', 'bookmarks', 'commands']
-let g:startify_custom_header = map(split(system('fortune -o | cowsay -W 70 -f eyes'), '\n'), '" ". v:val')
+let g:startify_custom_header = map(split(system('fortune | cowsay -W 70 -f eyes'), '\n'), '" ". v:val')
 let g:startify_files_number = 5
 let g:startify_padding_left = 5
 " Emmett
@@ -528,8 +537,6 @@ autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
 autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
 " for css or scss
 autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
-" Vim PHP format
-:map <C-f> <ESC>gg=G<CR>
 " Emmett
 let g:user_emmet_leader_key='<C-E>' " require also a comma ,
 " navigate between errors
@@ -545,20 +552,34 @@ nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " Append ; to the end of the line -> CTRL+C
 :map <C-c> :call setline('.', getline('.') . ';')<CR>
-" PHP documenter script bound to Control-P
+" PHP documenter script bound
 autocmd FileType php inoremap <C-d> <ESC>:call PhpDocSingle()<CR>i
 autocmd FileType php nnoremap <C-d> :call PhpDocSingle()<CR>
 autocmd FileType php vnoremap <C-d> :call PhpDocRange()<CR>
+" Change size of split windows
+nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
+" Granular undo
+inoremap <c-u> <c-g>u<c-u>
+inoremap <c-w> <c-g>u<c-w>
+inoremap <bs>  <c-g>u<bs>
+inoremap <del> <c-g>u<del>
+imap <Space> <Space><C-G>u
+" Standard hotkeys
+vnoremap <C-c> "+y
+vnoremap <D-c> "+y
+vnoremap <C-x> "+d
+vnoremap <D-x> "+d
+inoremap <C-v> <Esc>"+gpa
+inoremap <D-v> <Esc>"+gpa
 
 " C = Ctrl
 " leader = \
 " On visual mode . repeat the last thing you done in edit mode
 " * highlight the word where it is your cursor
 " :e and write the path
-" tab for autocomplete of snippet
+" tab for autocomplete of snippets
 " :vsplit file to open a vertical window
 " :hide close current window but not file
-" Copy y
-" Paste p
-" Cut d
-" Back u
+" ctrl+n for multiple selection of the word selected
+" ctrl+d comment the line selected
