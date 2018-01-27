@@ -197,7 +197,6 @@ Plugin 'docunext/closetag.vim'
 Plugin 'nono/jquery.vim'
 Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'moll/vim-node'
-Plugin 'maksimr/vim-jsbeautify'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 Plugin 'vim-scripts/vim-coffee-script'
@@ -227,6 +226,8 @@ Plugin 'terryma/vim-multiple-cursors'
 " Improve scrolloff area
 Plugin 'drzel/vim-scroll-off-fraction'
 Plugin 'scrooloose/nerdcommenter'
+" Format code
+Plugin 'sbdchd/neoformat'
 call vundle#end()
 
 " Add support of stuff on different files
@@ -236,11 +237,6 @@ autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab aut
 autocmd FileType php.wordpress setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
 autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 autocmd FileType php let b:surround_45 = "<?php \r ?>"
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 " Alias for git add
 autocmd User fugitive command! -bar -buffer -nargs=* Gadd :Gwrite <args>
 " nerdtree configuration
@@ -486,7 +482,15 @@ let g:ale_sign_error = 'EE'
 let g:ale_sign_warning = 'WW'
 let g:ale_change_sign_column_color = 1
 " php
-:let g:PHP_autoformatcomment = 1
+let g:PHP_autoformatcomment = 1
+let g:neoformat_enabled_php = ['php_beautifier']
+" Enable alignment
+let g:neoformat_basic_format_align = 1
+" Enable tab to spaces conversion
+let g:neoformat_basic_format_retab = 1
+" Enable trimmming of trailing whitespace
+let g:neoformat_basic_format_trim = 1
+let g:neoformat_only_msg_on_error = 1
 " Indent lines
 let g:indent_guides_guide_size = 1
 let g:indent_guides_color_change_percent = 3
@@ -497,6 +501,16 @@ let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 " Align text around a chosen character
 let g:lion_squeeze_spaces = 1
+
+augroup PHP
+  autocmd!
+  " Check for PHP syntax errors after saving a file
+  autocmd BufWritePost {*.php} echom system("php -l ".expand('%'))
+augroup END
+augroup fmt
+  autocmd!
+  autocmd BufWritePre * undojoin | Neoformat
+augroup END
 
 " Hotkeys
 " Select all
@@ -524,7 +538,9 @@ let g:lion_squeeze_spaces = 1
 " Search in all the files
 :map <leader>f :Files<cr>
 " Object view
-:map  <C-t> :TagbarToggle<CR>
+:map <C-t> :TagbarToggle<CR>
+" Format
+:map <leader>f :Neoformat<CR>
 " Undo tree tab
 :map <leader>H :GundoToggle<CR>
 " Fold code open/close with click
