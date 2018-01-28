@@ -178,6 +178,7 @@ Plugin 'wincent/ferret'
 Plugin 'ap/vim-css-color'
 " Search stuff, helpful on editing
 Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'tacahiroy/ctrlp-funky'
 " WordPress
 Plugin 'salcode/vim-wordpress-dict'
 Plugin 'sudar/vim-wordpress-snippets'
@@ -225,9 +226,13 @@ Plugin 'senderle/restoreview'
 Plugin 'terryma/vim-multiple-cursors'
 " Improve scrolloff area
 Plugin 'drzel/vim-scroll-off-fraction'
-Plugin 'scrooloose/nerdcommenter'
 " Format code
 Plugin 'sbdchd/neoformat'
+" Misc
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'itchyny/vim-cursorword'
+Plugin 'bradford-smith94/quick-scope'
+Plugin 'drzel/vim-in-proportion'
 call vundle#end()
 
 " Add support of stuff on different files
@@ -353,6 +358,8 @@ let g:ctrlp_custom_ignore = {
 	\ 'dir':  '\v[\/]\.(git|hg|svn)$',
 	\ 'file': '\v\.(exe|so|dll)$',
 	\ }
+let g:ctrlp_funky_syntax_highlight = 1
+let g:ctrlp_funky_matchtype = 'path'
 " vdebug
 let g:vdebug_options = {}
 let g:vdebug_options["port"] = 9000
@@ -478,6 +485,9 @@ let g:vimjs#smartcomplete = 1
 " Ale linting (installed on system: phpmd, phpcs, coffeelint, sass-lint, htmlhint, prettier)
 let g:ale_php_phpcs_standard  = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
 let g:ale_php_phpmd_ruleset = 'cleancode,codesize,design,naming,unusedcode'
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\}
 let g:ale_sign_error = 'EE'
 let g:ale_sign_warning = 'WW'
 let g:ale_change_sign_column_color = 1
@@ -513,14 +523,18 @@ augroup fmt
 augroup END
 
 " Hotkeys
+" Remove spaces at the end of lines
+nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
+" Fold code open/close with click
+:map <expr> <2-LeftMouse> foldclosed(line('.')) == -1 ? 'za' : 'zo'
+" Deoplete
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " Select all
 :map <C-a> GVgg
 " Save file
 :map <C-s> :w <Enter>
 " Replace
 :map <C-r> :Ack
-" Close tab
-:map <C-w> :bd <Enter>
 " Search in the file
 :map <leader>t /
 " Search in the project files
@@ -535,24 +549,10 @@ augroup END
 :map <leader>h :History<cr>
 " View all the files
 :map <leader>b :Buffers<cr>
-" Search in all the files
-:map <leader>f :Files<cr>
 " Object view
 :map <C-t> :TagbarToggle<CR>
-" Format
-:map <leader>f :Neoformat<CR>
 " Undo tree tab
-:map <leader>H :GundoToggle<CR>
-" Fold code open/close with click
-:map <expr> <2-LeftMouse> foldclosed(line('.')) == -1 ? 'za' : 'zo'
-" Format code
-autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
-" for json
-autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
-" for html
-autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
-" for css or scss
-autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+:map <leader>g :GundoToggle<CR>
 " Emmett
 let g:user_emmet_leader_key='<C-E>' " require also a comma ,
 " navigate between errors
@@ -560,14 +560,8 @@ let g:user_emmet_leader_key='<C-E>' " require also a comma ,
 :map <silent> <C-j> <Plug>(ale_next_wrap)
 " Toggle comments
 :map <C-d> <plug>NERDCommenterToggle<CR>
-" Align =
-:map <C-=> <ESC>gl=<CR>
-" Remove spaces at the end of lines
-nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
-" Deoplete
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " Append ; to the end of the line -> CTRL+C
-:map <C-c> :call setline('.', getline('.') . ';')<CR>
+:map <C-m> :call setline('.', getline('.') . ';')<CR>
 " PHP documenter script bound
 autocmd FileType php inoremap <C-d> <ESC>:call PhpDocSingle()<CR>i
 autocmd FileType php nnoremap <C-d> :call PhpDocSingle()<CR>
@@ -594,8 +588,22 @@ inoremap <D-v> <Esc>"+gpa
 " On visual mode . repeat the last thing you done in edit mode
 " * highlight the word where it is your cursor
 " :e and write the path
-" tab for autocomplete of snippets
 " :vsplit file to open a vertical window
 " :hide close current window but not file
+" tab for autocomplete of snippets
 " ctrl+n for multiple selection of the word selected
 " ctrl+d comment the line selected
+" ctrl+a select all
+" ctrl+s save file
+" ctrl+r replace file
+" ctrl+h search all
+" ctrl+t object view
+" ctrl+e emmet
+" ctrl+d toggle comments
+" ctrl+k/ctrl+j navigate between errors
+" leader+t search in file
+" leader+a search in project
+" leader+h search on history
+" leader+g undo tree
+" b/w move to next word
+" ( ) move between sentences
