@@ -153,6 +153,7 @@ Plugin 'joonty/vdebug'
 " object view
 Plugin 'majutsushi/tagbar'
 Plugin 'hushicai/tagbar-javascript.vim'
+Plugin 'mtscout6/vim-tagbar-css'
 " Folding fast is important
 Plugin 'Konfekt/FastFold'
 " Nerdtree + modifications: git icons plugin, color filetype plugin
@@ -222,8 +223,6 @@ Plugin 'wincent/terminus'
 Plugin 'nathanaelkane/vim-indent-guides'
 " Remember the folding and the cursor position
 Plugin 'senderle/restoreview'
-" Multiple cursors
-Plugin 'terryma/vim-multiple-cursors'
 " Improve scrolloff area
 Plugin 'drzel/vim-scroll-off-fraction'
 " Format code
@@ -232,7 +231,6 @@ Plugin 'sbdchd/neoformat'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'itchyny/vim-cursorword'
 Plugin 'bradford-smith94/quick-scope'
-Plugin 'drzel/vim-in-proportion'
 call vundle#end()
 
 " Add support of stuff on different files
@@ -511,6 +509,24 @@ let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 " Align text around a chosen character
 let g:lion_squeeze_spaces = 1
+" Tagbar
+autocmd BufEnter * nested :call tagbar#autoopen(0)
+let g:tagbar_width = 35
+let g:tagbar_indent = 1
+let g:tagbar_autoshowtag = 2
+let g:tagbar_show_linenumbers = 1
+let g:tagbar_singleclick = 1
+let g:tagbar_sort = 1
+let g:tagbar_type_php  = {
+\ 'kinds'     : [
+    \ 'i:interfaces',
+    \ 'c:classes',
+    \ 'd:constant definitions',
+    \ 'f:functions',
+    \ 'j:javascript functions:1',
+     \ 'v:variables:1'
+\ ]
+\ }
 
 augroup PHP
   autocmd!
@@ -531,8 +547,6 @@ nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " Select all
 :map <C-a> GVgg
-" Save file
-:map <C-s> :w <Enter>
 " Replace
 :map <C-r> :Ack
 " Search in the file
@@ -547,8 +561,6 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 :map <C-p> :NERDTreeTabsToggle<CR>
 " To search on history with fuzzy
 :map <leader>h :History<cr>
-" View all the files
-:map <leader>b :Buffers<cr>
 " Object view
 :map <C-t> :TagbarToggle<CR>
 " Undo tree tab
@@ -561,7 +573,7 @@ let g:user_emmet_leader_key='<C-E>' " require also a comma ,
 " Toggle comments
 :map <C-d> <plug>NERDCommenterToggle<CR>
 " Append ; to the end of the line -> CTRL+C
-:map <C-m> :call setline('.', getline('.') . ';')<CR>
+:map <C-i> :call setline('.', getline('.') . ';')<CR>
 " PHP documenter script bound
 autocmd FileType php inoremap <C-d> <ESC>:call PhpDocSingle()<CR>i
 autocmd FileType php nnoremap <C-d> :call PhpDocSingle()<CR>
@@ -587,9 +599,8 @@ inoremap <D-v> <Esc>"+gpa
 " leader = \
 " On visual mode . repeat the last thing you done in edit mode
 " * highlight the word where it is your cursor
-" :e and write the path
+" :e/:tabe and write the path to edit a file
 " :vsplit file to open a vertical window
-" :hide close current window but not file
 " tab for autocomplete of snippets
 " ctrl+n for multiple selection of the word selected
 " ctrl+d comment the line selected
@@ -601,7 +612,7 @@ inoremap <D-v> <Esc>"+gpa
 " ctrl+e emmet
 " ctrl+d toggle comments
 " ctrl+k/ctrl+j navigate between errors
-" leader+t search in file
+" leader+t search in the file
 " leader+a search in project
 " leader+h search on history
 " leader+g undo tree
