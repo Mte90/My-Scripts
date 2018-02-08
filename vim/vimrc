@@ -1,11 +1,8 @@
 " not load for tiny vi
 if !1 | finish | endif
 
-filetype off                   " required!
-
-:filetype plugin indent on
-:filetype plugin on
-:filetype indent on
+filetype plugin on
+filetype indent on
 syntax on
 
 set number      " Show line numbers
@@ -14,8 +11,8 @@ set showmatch   " Highlight matching brace
 set visualbell  " Use visual bell (no beeping)
 set title             " change the terminal's title
 set mouse=a           " enable mouse in all modes
-set clipboard=unnamedplus
-set go+=a
+set clipboard^=unnamedplus
+set guioptions+=a
 " New splits open to right and bottom
 set splitbelow
 set splitright
@@ -25,8 +22,6 @@ set foldnestmax=10
 set nofoldenable
 set foldcolumn=2
 set report=0
-" Encoding
-set encoding=utf-8
 " Search option
 set hlsearch
 set incsearch
@@ -67,8 +62,6 @@ set shiftwidth=4     " Number of auto-indent spaces
 set smarttab         " Enable smart-tabs
 set softtabstop=4    " Number of spaces per Tab
 set expandtab
-" Enable smart-indent
-set smartindent
 " Auto-indent new lines
 set autoindent
 " Set the file path as pwd
@@ -80,10 +73,8 @@ set breakindent
 set showbreak=\\\\\
 set wildmenu
 " Set color
-set background=dark
 set guifont=DroidSansMono\ Nerd\ Font\ 11
 colorscheme valloric
-syntax enable
 " exclusions from the autocomplete menu
 set wildoptions=tagfile
 set wildignorecase
@@ -542,38 +533,38 @@ augroup END
 " Remove spaces at the end of lines
 nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
 " Fold code open/close with click
-:map <expr> <2-LeftMouse> foldclosed(line('.')) == -1 ? 'za' : 'zo'
+nmap <expr> <2-LeftMouse> foldclosed(line('.')) == -1 ? 'za' : 'zo'
 " Deoplete
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " Select all
-:map <C-a> GVgg
+nmap <C-a> GVgg
 " Replace
-:map <C-r> :Ack
+nmap <C-r> :Ack
 " Search in the file
-:map <leader>t /
+nmap <leader>t /
 " Search in the project files
-:map <leader>a :Rg<space>
+nmap <leader>a :Rg<space>
 " Search all
-:map <C-h> :%s/
+nmap <C-h> :%s/
 " Open Folder tab current directory
-:map <leader>n :call NERDTreeToggleInCurDir()<CR>
+nmap <leader>n :call NERDTreeToggleInCurDir()<CR>
 " Open folder tab
-:map <C-p> :NERDTreeTabsToggle<CR>
+nmap <C-p> :NERDTreeTabsToggle<CR>
 " To search on history with fuzzy
-:map <leader>h :History<cr>
+nmap <leader>h :History<cr>
 " Object view
-:map <C-t> :TagbarToggle<CR>
+nmap <C-t> :TagbarToggle<CR>
 " Undo tree tab
-:map <leader>g :GundoToggle<CR>
+nmap <leader>g :GundoToggle<CR>
 " Emmett
 let g:user_emmet_leader_key='<C-E>' " require also a comma ,
 " navigate between errors
-:map <silent> <C-k> <Plug>(ale_previous_wrap)
-:map <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 " Toggle comments
-:map <C-d> <plug>NERDCommenterToggle<CR>
+nmap <C-d> <plug>NERDCommenterToggle<CR>
 " Append ; to the end of the line -> CTRL+C
-:map <C-i> :call setline('.', getline('.') . ';')<CR>
+nmap <C-i> :call setline('.', getline('.') . ';')<CR>
 " PHP documenter script bound
 autocmd FileType php inoremap <C-d> <ESC>:call PhpDocSingle()<CR>i
 autocmd FileType php nnoremap <C-d> :call PhpDocSingle()<CR>
