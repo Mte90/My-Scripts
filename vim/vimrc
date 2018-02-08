@@ -362,8 +362,8 @@ let g:vdebug_keymap = {
 \    "close" : "<F6>",
 \    "detach" : "<F7>",
 \    "set_breakpoint" : "<F10>",
-\    "get_context" : "<F11>",
-\    "eval_under_cursor" : "<F12>",
+\    "get_context" : "<leader-F11>",
+\    "eval_under_cursor" : "<leader-F12>",
 \    "eval_visual" : "<F8>",
 \}
 let g:vdebug_options["path_maps"] = {
@@ -609,3 +609,6 @@ inoremap <D-v> <Esc>"+gpa
 " leader+g undo tree
 " b/w move to next word
 " ( ) move between sentences
+" F5 run, F9 run to cursor, F2 step over, F3 step into, F4 step out,
+" F6 close, F7 detach, F10 breakpoint, leader-F11 get context, leader-F12 eval under cursor
+" F8 eval visual
