@@ -35,7 +35,7 @@ set wrapscan        " Searches wrap around the end of the file
 set showmatch       " Jump to matching bracket
 " Cleanup
 set nobackup
-set nowb
+set nowritebackup
 set noswapfile
 set hidden
 " Statusline
@@ -56,7 +56,7 @@ set scrolloff=2         " Keep at least 2 lines above/below
 set sidescrolloff=5     " Keep at least 5 lines left/right
 set noshowcmd           " Don't show command in status line
 " Enable indent
-set ai
+set autoindent
 set sw=4
 set shiftwidth=4     " Number of auto-indent spaces
 set smarttab         " Enable smart-tabs
@@ -224,15 +224,18 @@ Plugin 'itchyny/vim-cursorword'
 Plugin 'bradford-smith94/quick-scope'
 call vundle#end()
 
-" Add support of stuff on different files
-autocmd BufReadPost * if line("'\"") && line("'\"") <= line("$") | exe "normal `\"" | endif
-au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
-autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
-autocmd FileType php.wordpress setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
-autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
-autocmd FileType php let b:surround_45 = "<?php \r ?>"
-" Alias for git add
-autocmd User fugitive command! -bar -buffer -nargs=* Gadd :Gwrite <args>
+augroup default
+    autocmd!
+    " Add support of stuff on different files
+    autocmd BufReadPost * if line("'\"") && line("'\"") <= line("$") | exe "normal `\"" | endif
+    au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
+    autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
+    autocmd FileType php.wordpress setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
+    autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+    autocmd FileType php let b:surround_45 = "<?php \r ?>"
+    " Alias for git add
+    autocmd User fugitive command! -bar -buffer -nargs=* Gadd :Gwrite <args>
+augroup END
 " nerdtree configuration
 function! NERDTreeToggleInCurDir()
   " If NERDTree is open in the current buffer
@@ -281,22 +284,25 @@ else
 endif
 " fzf for search files
 if !has('gui_running')
-    autocmd VimEnter * command! -nargs=* Ag call fzf#run({
-    \ 'source':  printf('ag -U --nogroup --column --color "%s"',
-    \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
-    \ 'sink*':    function('<sid>ag_handler'),
-    \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
-    \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
-    \            '--color hl:68,hl+:110',
-    \ 'down':    '50%'
-    \ })
+    augroup fzf_search
+        autocmd!
+        autocmd VimEnter * command! -nargs=* Ag call fzf#run({
+        \ 'source':  printf('ag -U --nogroup --column --color "%s"',
+        \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+        \ 'sink*':    function('<sid>ag_handler'),
+        \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+        \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
+        \            '--color hl:68,hl+:110',
+        \ 'down':    '50%'
+        \ })
 
-    autocmd VimEnter * command! -nargs=* Rg
-    \ call fzf#vim#grep(
-    \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1,
-    \   <bang>0 ? fzf#vim#with_preview('up:60%')
-    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-    \ <bang>0)
+        autocmd VimEnter * command! -nargs=* Rg
+        \ call fzf#vim#grep(
+        \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1,
+        \   <bang>0 ? fzf#vim#with_preview('up:60%')
+        \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+        \ <bang>0)
+    augroup END
 endif
 " deoplete
 let g:deoplete#enable_at_startup = 1
@@ -372,9 +378,12 @@ let g:vdebug_options["path_maps"] = {
 \       "/srv/www/glossary": "/home/www/VVV/www/glossary",
 \       "/srv/www/demo": "/home/www/VVV/www/demo"
 \}
-"  redefine the characters
-autocmd VimEnter * sign define breakpt text= texthl=DbgBreakptSign linehl=DbgBreakptLine
-autocmd VimEnter * sign define current text= texthl=DbgCurrentSign linehl=DbgCurrentLine
+augroup vdebug
+    autocmd!
+    "  redefine the characters
+    autocmd VimEnter * sign define breakpt text= texthl=DbgBreakptSign linehl=DbgBreakptLine
+    autocmd VimEnter * sign define current text= texthl=DbgCurrentSign linehl=DbgCurrentLine
+augroup END
 " GutenTags
 let g:gutentags_enabled                  = 1
 let g:gutentags_generate_on_missing      = 1
@@ -533,7 +542,7 @@ augroup END
 " Remove spaces at the end of lines
 nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
 " Fold code open/close with click
-nmap <expr> <2-LeftMouse> foldclosed(line('.')) == -1 ? 'za' : 'zo'
+nmap <expr> <2-LeftMouse> 'za'
 " Deoplete
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " Select all
