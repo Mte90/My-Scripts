@@ -354,8 +354,6 @@ let g:ctrlp_custom_ignore = {
 	\ 'dir':  '\v[\/]\.(git|hg|svn)$',
 	\ 'file': '\v\.(exe|so|dll)$',
 	\ }
-let g:ctrlp_funky_syntax_highlight = 1
-let g:ctrlp_funky_matchtype = 'path'
 " vdebug
 let g:vdebug_options = {}
 let g:vdebug_options["port"] = 9000
@@ -494,7 +492,6 @@ let g:ale_sign_warning = 'WW'
 let g:ale_change_sign_column_color = 1
 " php
 let g:PHP_autoformatcomment = 1
-let g:neoformat_enabled_php = ['php_beautifier']
 " Indent lines
 let g:indent_guides_guide_size = 1
 let g:indent_guides_color_change_percent = 3
@@ -503,10 +500,11 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
-" Align text around a chosen character
-let g:lion_squeeze_spaces = 1
 " Tagbar
-autocmd BufEnter * nested :call tagbar#autoopen(0)
+augroup tagbar
+  autocmd!
+  autocmd BufEnter * nested :call tagbar#autoopen(0)
+augroup END
 let g:tagbar_width = 35
 let g:tagbar_indent = 1
 let g:tagbar_autoshowtag = 2
