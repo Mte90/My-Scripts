@@ -125,9 +125,10 @@ Plugin 'sniphpets/sniphpets-common'
 " markdown
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
-" php autocompletion engine and tools
+" PHP autocompletion engine and tools
 Plugin 'padawan-php/padawan.vim'
 Plugin 'padawan-php/deoplete-padawan'
+" PHP syntax
 Plugin 'StanAngeloff/php.vim'
 Plugin 'arnaud-lb/vim-php-namespace'
 Plugin '2072/vim-syntax-for-PHP.git'
@@ -135,8 +136,6 @@ Plugin 'nishigori/vim-php-dictionary'
 Plugin '2072/PHP-Indenting-for-VIm'
 " php doc autocompletion
 Plugin 'tobyS/vmustache' | Plugin 'tobyS/pdv'
-" Syntax highlighting for vue js framework
-Plugin 'posva/vim-vue'
 " autoclose bracket and parenthesis when open
 Plugin 'Townk/vim-autoclose'
 " debugger, https://github.com/joonty/vdebug/pull/316
@@ -170,34 +169,10 @@ Plugin 'wincent/ferret'
 Plugin 'chrisbra/colorizer'
 " Search stuff, helpful on editing
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'tacahiroy/ctrlp-funky'
-" WordPress
-Plugin 'salcode/vim-wordpress-dict'
-Plugin 'sudar/vim-wordpress-snippets'
-" Web
-Plugin 'othree/html5.vim'
-Plugin 'tpope/vim-haml'
-Plugin 'hail2u/vim-css3-syntax'
-Plugin 'mattn/emmet-vim'
-Plugin 'mklabs/grunt.vim'
-Plugin 'groenewege/vim-less'
+" Valloric/MatchTagAlways
 Plugin 'Valloric/MatchTagAlways'
-Plugin 'othree/csscomplete.vim'
 " close tags on </
 Plugin 'docunext/closetag.vim'
-" Javascript
-Plugin 'nono/jquery.vim'
-Plugin 'othree/javascript-libraries-syntax.vim'
-Plugin 'moll/vim-node'
-Plugin 'pangloss/vim-javascript'
-Plugin 'mxw/vim-jsx'
-Plugin 'vim-scripts/vim-coffee-script'
-Plugin 'mattn/webapi-vim'
-Plugin 'elzr/vim-json'
-Plugin '1995eaton/vim-better-javascript-completion'
-Plugin 'lukaszkorecki/CoffeeTags'
-" Align code
-Plugin 'tommcdo/vim-lion'
 " Cool icons"
 Plugin 'ryanoasis/vim-devicons'
 " Report lint errors
@@ -215,12 +190,39 @@ Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'senderle/restoreview'
 " Improve scrolloff area
 Plugin 'drzel/vim-scroll-off-fraction'
-" Format code
-Plugin 'sbdchd/neoformat'
-" Misc
+" Comments
 Plugin 'scrooloose/nerdcommenter'
+" Underlines the words under your cursor
 Plugin 'itchyny/vim-cursorword'
+" highlights which characters to target
 Plugin 'bradford-smith94/quick-scope'
+" WordPress
+Plugin 'salcode/vim-wordpress-dict'
+Plugin 'sudar/vim-wordpress-snippets'
+" Web
+Plugin 'othree/html5.vim'
+Plugin 'tpope/vim-haml'
+Plugin 'mattn/emmet-vim'
+Plugin 'hail2u/vim-css3-syntax'
+Plugin 'groenewege/vim-less'
+Plugin 'othree/csscomplete.vim'
+" Javascript
+Plugin 'moll/vim-node'
+Plugin 'pangloss/vim-javascript'
+Plugin 'othree/javascript-libraries-syntax.vim'
+Plugin '1995eaton/vim-better-javascript-completion'
+Plugin 'mklabs/grunt.vim'
+" Syntax highlighting for vue js framework
+Plugin 'posva/vim-vue'
+" Syntax highlighting for JSX
+Plugin 'mxw/vim-jsx'
+" Syntax highlighting for cofeescript
+Plugin 'vim-scripts/vim-coffee-script'
+Plugin 'lukaszkorecki/CoffeeTags'
+" Syntax highlighting for webapi
+Plugin 'mattn/webapi-vim'
+" Syntax highlighting for json
+Plugin 'elzr/vim-json'
 call vundle#end()
 
 augroup default
@@ -466,6 +468,8 @@ let g:startify_files_number = 5
 let g:startify_padding_left = 5
 " Emmett
 let g:user_emmet_install_global = 1
+" Editorconfig
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 " PhpDoc
 let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
 " Padawan stuff
@@ -491,13 +495,6 @@ let g:ale_change_sign_column_color = 1
 " php
 let g:PHP_autoformatcomment = 1
 let g:neoformat_enabled_php = ['php_beautifier']
-" Enable alignment
-let g:neoformat_basic_format_align = 1
-" Enable tab to spaces conversion
-let g:neoformat_basic_format_retab = 1
-" Enable trimmming of trailing whitespace
-let g:neoformat_basic_format_trim = 1
-let g:neoformat_only_msg_on_error = 1
 " Indent lines
 let g:indent_guides_guide_size = 1
 let g:indent_guides_color_change_percent = 3
@@ -534,7 +531,8 @@ augroup PHP
 augroup END
 augroup fmt
   autocmd!
-  autocmd BufWritePre * undojoin | Neoformat
+  " Autoformat in tabs
+  autocmd BufWritePre * :normal =G
 augroup END
 
 " Hotkeys
@@ -543,11 +541,11 @@ nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
 " Fold code open/close with click
 nmap <expr> <2-LeftMouse> 'za'
 " Deoplete
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 " Select all
 nmap <C-a> GVgg
-" Replace
-nmap <C-r> :Ack
+" Align code
+nmap <C-e> =G | retab
 " Search in the file
 nmap <leader>t /
 " Search in the project files
@@ -571,8 +569,8 @@ nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 " Toggle comments
 nmap <C-d> <plug>NERDCommenterToggle<CR>
-" Append ; to the end of the line -> CTRL+C
-nmap <C-i> :call setline('.', getline('.') . ';')<CR>
+" Append ; to the end of the line -> CTRL+B
+nmap <C-b> :call setline('.', getline('.') . ';')<CR>
 " PHP documenter script bound
 autocmd FileType php inoremap <C-d> <ESC>:call PhpDocSingle()<CR>i
 autocmd FileType php nnoremap <C-d> :call PhpDocSingle()<CR>
@@ -605,18 +603,19 @@ inoremap <D-v> <Esc>"+gpa
 " ctrl+d comment the line selected
 " ctrl+a select all
 " ctrl+s save file
-" ctrl+r replace file
 " ctrl+h search all
 " ctrl+t object view
 " ctrl+e emmet
 " ctrl+d toggle comments
 " ctrl+k/ctrl+j navigate between errors
+" ctrl+b add semicomma
 " leader+t search in the file
 " leader+a search in project
 " leader+h search on history
 " leader+g undo tree
 " b/w move to next word
 " ( ) move between sentences
+" f<char> to move on that word
 " F5 run, F9 run to cursor, F2 step over, F3 step into, F4 step out,
-" F6 close, F7 detach, F10 breakpoint, leader-F11 get context, leader-F12 eval under cursor
-" F8 eval visual
+" F6 close, F7 detach, F10 breakpoint, leader-F11 get context
+" leader-F12 eval under cursor, F8 eval visual
