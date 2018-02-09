@@ -167,7 +167,7 @@ endif
 " allow multisearch in current directory / multi replace as well
 Plugin 'wincent/ferret'
 " display the hexadecimal colors - useful for css and color config
-Plugin 'ap/vim-css-color'
+Plugin 'chrisbra/colorizer'
 " Search stuff, helpful on editing
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tacahiroy/ctrlp-funky'
@@ -179,7 +179,6 @@ Plugin 'othree/html5.vim'
 Plugin 'tpope/vim-haml'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'mattn/emmet-vim'
-Plugin 'chrisbra/colorizer'
 Plugin 'mklabs/grunt.vim'
 Plugin 'groenewege/vim-less'
 Plugin 'Valloric/MatchTagAlways'
