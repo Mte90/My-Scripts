@@ -569,10 +569,6 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap)
 nmap <C-d> <plug>NERDCommenterToggle<CR>
 " Append ; to the end of the line -> CTRL+B
 nmap <C-b> :call setline('.', getline('.') . ';')<CR>
-" PHP documenter script bound
-autocmd FileType php inoremap <C-d> <ESC>:call PhpDocSingle()<CR>i
-autocmd FileType php nnoremap <C-d> :call PhpDocSingle()<CR>
-autocmd FileType php vnoremap <C-d> :call PhpDocRange()<CR>
 " Change size of split windows
 nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
@@ -598,13 +594,10 @@ inoremap <D-v> <Esc>"+gpa
 " :vsplit file to open a vertical window
 " tab for autocomplete of snippets
 " ctrl+n for multiple selection of the word selected
-" ctrl+d comment the line selected
 " ctrl+a select all
-" ctrl+s save file
 " ctrl+h search all
 " ctrl+t object view
 " ctrl+e emmet
-" ctrl+d toggle comments
 " ctrl+k/ctrl+j navigate between errors
 " ctrl+b add semicomma
 " leader+t search in the file
@@ -614,6 +607,11 @@ inoremap <D-v> <Esc>"+gpa
 " b/w move to next word
 " ( ) move between sentences
 " f<char> to move on that word
+" :<number> move to number line
+" cw change word, cc change line, dd remove line
+" za/zc open/close fold, zR open all fold
+" :e! revert to file saved version
+" :tabc close tab, :tabe edit file in a tab, Ctrl+PgUp/PgDown move to tab
 " F5 run, F9 run to cursor, F2 step over, F3 step into, F4 step out,
 " F6 close, F7 detach, F10 breakpoint, leader-F11 get context
 " leader-F12 eval under cursor, F8 eval visual
