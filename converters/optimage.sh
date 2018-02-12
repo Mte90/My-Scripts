@@ -2,7 +2,7 @@
 shopt -s globstar nullglob
 basename=$PWD
 for dir in ./**/;do
-cd "$basename/$dir" 
+cd "$basename/$dir"
 echo Optimization on $dir
-image_optim -r *.{jpg,png,gif,jpeg}
+image_optim -r *.{jpg,png,gif,jpeg} --no-advpng
 done

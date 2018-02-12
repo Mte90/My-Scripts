@@ -108,10 +108,12 @@ Plugin 'tpope/vim-abolish'
 " Match more stuff with % (html tag, LaTeX...)
 Plugin 'tmhedberg/matchit'
 " Autocomplete system in real time
-Plugin 'Shougo/deoplete.nvim'
-if !has('nvim')
+if has('nvim')
+    Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
     Plugin 'roxma/vim-hug-neovim-rpc'
     Plugin 'roxma/nvim-yarp'
+    Plugin 'Shougo/deoplete.nvim'
 endif
 " Displays function signatures
 Plugin 'Shougo/echodoc.vim'
@@ -126,8 +128,8 @@ Plugin 'sniphpets/sniphpets-common'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 " PHP autocompletion engine and tools
-Plugin 'padawan-php/padawan.vim'
 Plugin 'padawan-php/deoplete-padawan'
+Plugin 'padawan-php/padawan.vim'
 " PHP syntax
 Plugin 'StanAngeloff/php.vim'
 Plugin 'arnaud-lb/vim-php-namespace'
@@ -167,7 +169,7 @@ endif
 Plugin 'wincent/ferret'
 " display the hexadecimal colors - useful for css and color config
 Plugin 'chrisbra/colorizer'
-" Search stuff, helpful on editing
+" Search file
 Plugin 'ctrlpvim/ctrlp.vim'
 " Valloric/MatchTagAlways
 Plugin 'Valloric/MatchTagAlways'
@@ -552,6 +554,7 @@ nmap <leader>a :Rg<space>
 nmap <C-h> :%s/
 " Open Folder tab current directory
 nmap <leader>n :call NERDTreeToggleInCurDir()<CR>
+nmap <M-n> :call NERDTreeToggleInCurDir()<CR>
 " Open folder tab
 nmap <C-p> :NERDTreeTabsToggle<CR>
 " To search on history with fuzzy
@@ -561,7 +564,11 @@ nmap <C-t> :TagbarToggle<CR>
 " Undo tree tab
 nmap <leader>g :GundoToggle<CR>
 " Emmett
-let g:user_emmet_leader_key='<C-E>' " require also a comma ,
+if has('nvim')
+    let g:user_emmet_leader_key='<C-E>' " require also a comma ,
+else
+    let g:user_emmet_leader_key='<M-E>' " require also a comma ,
+endif
 " navigate between errors
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
@@ -569,6 +576,7 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap)
 nmap <C-d> <plug>NERDCommenterToggle<CR>
 " Append ; to the end of the line -> CTRL+B
 nmap <C-b> :call setline('.', getline('.') . ';')<CR>
+nmap <M-s> :call setline('.', getline('.') . ';')<CR>
 " Change size of split windows
 nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
