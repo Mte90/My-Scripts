@@ -548,8 +548,10 @@ nmap <C-a> GVgg
 nmap <C-e> =G | retab
 " Search in the file
 nmap <leader>t /
+nmap <M-T> /
 " Search in the project files
 nmap <leader>a :Rg<space>
+nmap <M-A> :Rg<space>
 " Search all
 nmap <C-h> :%s/
 " Open Folder tab current directory
@@ -559,10 +561,12 @@ nmap <M-n> :call NERDTreeToggleInCurDir()<CR>
 nmap <C-p> :NERDTreeTabsToggle<CR>
 " To search on history with fuzzy
 nmap <leader>h :History<cr>
+nmap <M-H> :History<cr>
 " Object view
 nmap <C-t> :TagbarToggle<CR>
 " Undo tree tab
 nmap <leader>g :GundoToggle<CR>
+nmap <M-G> :GundoToggle<CR>
 " Emmett
 if has('nvim')
     let g:user_emmet_leader_key='<C-E>' " require also a comma ,
@@ -593,6 +597,10 @@ vnoremap <C-x> "+d
 vnoremap <D-x> "+d
 inoremap <C-v> <Esc>"+gpa
 inoremap <D-v> <Esc>"+gpa
+vnoremap <C-s> :w<CR>
+vnoremap <C-z> "u
+nmap <M-Right> :tabnext
+nmap <M-Left> :tabprevious
 
 " C = Ctrl
 " leader = \
@@ -605,13 +613,13 @@ inoremap <D-v> <Esc>"+gpa
 " ctrl+a select all
 " ctrl+h search all
 " ctrl+t object view
-" ctrl+e emmet
+" ctrl+e/alt+e emmet
 " ctrl+k/ctrl+j navigate between errors
-" ctrl+b add semicomma
-" leader+t search in the file
-" leader+a search in project
-" leader+h search on history
-" leader+g undo tree
+" ctrl+b/alt+s add semicomma
+" leader+t/alt+t search in the file
+" leader+a/alt+a search in project
+" leader+h/alt+h search on history
+" leader+g/alt+g undo tree
 " b/w move to next word
 " ( ) move between sentences
 " f<char> to move on that word
