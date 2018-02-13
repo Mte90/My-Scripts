@@ -599,8 +599,8 @@ inoremap <C-v> <Esc>"+gpa
 inoremap <D-v> <Esc>"+gpa
 vnoremap <C-s> :w<CR>
 vnoremap <C-z> "u
-nmap <M-Right> :tabnext
-nmap <M-Left> :tabprevious
+nmap <M-Right> :tabnext<CR>
+nmap <M-Left> :tabprevious<CR>
 
 " C = Ctrl
 " leader = \
