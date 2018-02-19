@@ -115,12 +115,18 @@ alias kate='kate -b'
 # dev
 # https://github.com/gleitz/howdoi
 alias howdoi='howdoi -c'
-alias phpdoc='phpcs -p -d memory_limit=512M --ignore=*composer*,*.js,*.css,*vendor*,*/lib,index.php,*tests*,*config* --standard=PHPDoc ./'
-alias phpdoccbf='phpcbf -p -d memory_limit=512M --ignore=*composer*,*.js,*.css,*vendor*,*/lib,index.php,*tests*,*config* --standard=PHPDoc ./'
-alias qafoo='/opt/QualityAnalyzer/bin/analyze --exclude=lib,composer,node_modules'
+alias codeatcs='phpcs -p -d memory_limit=512M --ignore=*composer*,*.js,*.css,*vendor*,*/lib,index.php,*tests*,*config* --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml '
+alias codeatcscbf='phpcbf -p -d memory_limit=512M --ignore=*composer*,*.js,*.css,*vendor*,*/lib,index.php,*tests*,*config* --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml '
+alias padawan-generate='/opt/padawan/padawan.php/bin/padawan generate '
 export PATH=./vendor/bin:$PATH
 export PATH=./composer/bin:$PATH
 export PATH=~/.composer/vendor/bin:$PATH
+
+PULSE_DIR="/tmp/$( whoami )-pulse"
+mkdir -p $PULSE_DIR && chmod 777 $PULSE_DIR && chown mte90:mte90 $PULSE_DIR
+export PULSE_CONFIG_PATH=$PULSE_DIR
+export PULSE_STATE_PATH=$PULSE_DIR
+export PULSE_RUNTIME_PATH=$PULSE_DIR
 
 up(){ DEEP=$1; [ -z "${DEEP}" ] && { DEEP=1; }; for i in $(seq 1 ${DEEP}); do cd ../; done; }
 
@@ -169,3 +175,11 @@ export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"   # mem/file s
 # if this is interactive shell, then bind hh to Ctrl-r (for Vi mode check doc)
 if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hh -- \C-j"'; fi
 
+/usr/share/autojump/autojump.sh
+
+export XDG_RUNTIME_DIR=""
+
+# added by travis gem
+[ -f /home/mte90/.travis/travis.sh ] && source /home/mte90/.travis/travis.sh
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
