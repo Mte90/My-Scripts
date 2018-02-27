@@ -208,6 +208,7 @@ Plugin 'mattn/emmet-vim'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'groenewege/vim-less'
 Plugin 'othree/csscomplete.vim'
+Plugin 'stephpy/vim-yaml'
 " Javascript
 Plugin 'moll/vim-node'
 Plugin 'pangloss/vim-javascript'
