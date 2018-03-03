@@ -226,6 +226,8 @@ Plugin 'lukaszkorecki/CoffeeTags'
 Plugin 'mattn/webapi-vim'
 " Syntax highlighting for json
 Plugin 'elzr/vim-json'
+" Interface for search/replace
+Plugin 'brooth/far.vim'
 call vundle#end()
 
 augroup default
