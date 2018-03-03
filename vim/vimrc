@@ -489,6 +489,8 @@ let g:vimjs#smartcomplete = 1
 " Ale linting (installed on system: phpmd, phpcs, coffeelint, sass-lint, htmlhint, prettier)
 let g:ale_php_phpcs_standard  = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
 let g:ale_php_phpmd_ruleset = 'cleancode,codesize,design,naming,unusedcode'
+let g:ale_php_cs_fixer_use_global = 1
+let g:ale_php_cs_fixer_executable = 'php-cs-fixer --rules=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \}
