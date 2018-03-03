@@ -489,11 +489,17 @@ let g:vimjs#smartcomplete = 1
 " Ale linting (installed on system: phpmd, phpcs, coffeelint, sass-lint, htmlhint, prettier)
 let g:ale_php_phpcs_standard  = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
 let g:ale_php_phpmd_ruleset = 'cleancode,codesize,design,naming,unusedcode'
-let g:ale_php_cs_fixer_use_global = 1
-let g:ale_php_cs_fixer_executable = 'php-cs-fixer --rules=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
+let g:ale_php_phpcbf_use_global = 1
+let g:ale_php_phpcbf_standard = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \}
+let g:ale_fixers = {
+\   'php': [
+\     'phpcbf'
+\   ],
+\}
+let g:ale_fix_on_save = 1
 let g:ale_sign_error = 'EE'
 let g:ale_sign_warning = 'WW'
 let g:ale_change_sign_column_color = 1
@@ -606,6 +612,7 @@ vnoremap <C-s> :w<CR>
 vnoremap <C-z> "u
 nmap <M-Right> :tabnext<CR>
 nmap <M-Left> :tabprevious<CR>
+nmap <M-F> <Plug>(ale_fix)
 
 " C = Ctrl
 " leader = \
