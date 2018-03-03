@@ -555,14 +555,8 @@ nmap <expr> <2-LeftMouse> 'za'
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 " Select all
 nmap <C-a> GVgg
-" Align code
-nmap <C-e> =G | retab
-" Search in the file
-nmap <leader>t /
-nmap <M-T> /
 " Search in the project files
 nmap <leader>a :Rg<space>
-nmap <M-A> :Rg<space>
 " Search all
 nmap <C-h> :%s/
 " Open Folder tab current directory
@@ -577,7 +571,7 @@ nmap <M-H> :History<cr>
 nmap <C-t> :TagbarToggle<CR>
 " Undo tree tab
 nmap <leader>g :GundoToggle<CR>
-nmap <M-G> :GundoToggle<CR>
+nmap <M-g> :GundoToggle<CR>
 " Emmett
 if has('nvim')
     let g:user_emmet_leader_key='<C-E>' " require also a comma ,
