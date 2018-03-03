@@ -587,6 +587,7 @@ endif
 " navigate between errors
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <silent> <M-q> <Plug>(ale_fix)
 " Toggle comments
 nmap <C-d> <plug>NERDCommenterToggle<CR>
 " Append ; to the end of the line -> CTRL+B
@@ -612,7 +613,6 @@ vnoremap <C-s> :w<CR>
 vnoremap <C-z> "u
 nmap <M-Right> :tabnext<CR>
 nmap <M-Left> :tabprevious<CR>
-nmap <M-F> <Plug>(ale_fix)
 
 " C = Ctrl
 " leader = \
