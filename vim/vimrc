@@ -408,7 +408,7 @@ let g:gutentags_ctags_exclude = ['*lock', '*.json', '*.xml', '*.yml',
                             \ '*var/cache*', '*var/log*'
 \ ]
 let g:gutentags_cache_dir = '~/.vim/tags/'
-let g:gutentags_project_root = ['/var/www/VVV/www']
+let g:gutentags_project_root = ['/var/www/VVV/www/']
 " A better line
 let g:lightline = {
     \ 'colorscheme': 'tender',
@@ -489,17 +489,11 @@ let g:vimjs#smartcomplete = 1
 " Ale linting (installed on system: phpmd, phpcs, coffeelint, sass-lint, htmlhint, prettier)
 let g:ale_php_phpcs_standard  = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
 let g:ale_php_phpmd_ruleset = 'cleancode,codesize,design,naming,unusedcode'
-let g:ale_php_phpcbf_use_global = 1
-let g:ale_php_phpcbf_standard = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \}
-let g:ale_fixers = {
-\   'php': [
-\     'phpcbf'
-\   ],
-\}
-let g:ale_fix_on_save = 1
+" Sometimes phpcbf replace the content of the file with the output of the command with ale
+let g:ale_fix_on_save = 0
 let g:ale_sign_error = 'EE'
 let g:ale_sign_warning = 'WW'
 let g:ale_change_sign_column_color = 1
@@ -539,6 +533,7 @@ augroup PHP
   autocmd!
   " Check for PHP syntax errors after saving a file
   autocmd BufWritePost {*.php} echom system("php -l ".expand('%'))
+  autocmd BufWritePost {*.php} echom system("phpcbf -p -d memory_limit=512M --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml ".expand('%'))
 augroup END
 augroup fmt
   autocmd!
