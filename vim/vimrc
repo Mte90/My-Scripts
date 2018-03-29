@@ -581,7 +581,6 @@ nmap <silent> <M-q> <Plug>(ale_fix)
 nmap <C-d> <plug>NERDCommenterToggle<CR>
 " Append ; to the end of the line -> CTRL+B
 nmap <C-b> :call setline('.', getline('.') . ';')<CR>
-nmap <M-s> :call setline('.', getline('.') . ';')<CR>
 " Change size of split windows
 nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
