@@ -169,8 +169,6 @@ endif
 Plugin 'wincent/ferret'
 " display the hexadecimal colors - useful for css and color config
 Plugin 'chrisbra/colorizer'
-" Search file
-Plugin 'ctrlpvim/ctrlp.vim'
 " Valloric/MatchTagAlways
 Plugin 'Valloric/MatchTagAlways'
 " close tags on </
@@ -226,8 +224,8 @@ Plugin 'lukaszkorecki/CoffeeTags'
 Plugin 'mattn/webapi-vim'
 " Syntax highlighting for json
 Plugin 'elzr/vim-json'
-" Interface for search/replace
-Plugin 'brooth/far.vim'
+" Auto cwd
+Plugin 'airblade/vim-rooter'
 call vundle#end()
 
 augroup default
@@ -267,11 +265,6 @@ let g:NERDTreeWinSize=35
 "  change the arrows
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
-if !has('gui_running')
-    " Open by default
-    autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-    autocmd StdinReadPre * let s:std_in=1
-endif
 "  ignore files
 let NERDTreeIgnore = [
 	\ '\.git$', '\.hg$', '\.svn$', '\.stversions$', '\.pyc$', '\.svn$', '__init__.py',
@@ -289,27 +282,26 @@ else
   let entry_format .= '. entry_path'
 endif
 " fzf for search files
-if !has('gui_running')
-    augroup fzf_search
-        autocmd!
-        autocmd VimEnter * command! -nargs=* Ag call fzf#run({
-        \ 'source':  printf('ag -U --nogroup --column --color "%s"',
-        \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
-        \ 'sink*':    function('<sid>ag_handler'),
-        \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
-        \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
-        \            '--color hl:68,hl+:110',
-        \ 'down':    '50%'
-        \ })
+augroup fzf_search
+    autocmd!
+    autocmd VimEnter * command! -nargs=* Ag call fzf#run({
+    \ 'source':  printf('ag -U --nogroup --column --color "%s"',
+    \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+    \ 'sink*':    function('<sid>ag_handler'),
+    \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+    \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
+    \            '--color hl:68,hl+:110',
+    \ 'down':    '50%'
+    \ })
 
-        autocmd VimEnter * command! -nargs=* Rg
-        \ call fzf#vim#grep(
-        \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1,
-        \   <bang>0 ? fzf#vim#with_preview('up:60%')
-        \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-        \ <bang>0)
-    augroup END
-endif
+    autocmd VimEnter * command! -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:60%')
+    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+    \ <bang>0)
+augroup END
+
 " deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_completion_start_length = 1
@@ -340,8 +332,7 @@ let g:deoplete#omni#functions.markdown = 'htmlcomplete#CompleteTags'
 let g:deoplete#omni#functions.php = 'padawan#Complete'
 let g:deoplete#omni_patterns = get(g:, 'deoplete#omni_patterns', {})
 let g:deoplete#omni_patterns.html = '<[^>]*'
-let g:deoplete#omni_patterns.php =
-	\ '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+let g:deoplete#omni_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 let g:deoplete#omni#input_patterns = get(g:, 'deoplete#omni#input_patterns', {})
 let g:deoplete#omni#input_patterns.xml = '<[^>]*'
 let g:deoplete#omni#input_patterns.md = '<[^>]*'
@@ -350,15 +341,6 @@ let g:deoplete#omni#input_patterns.scss = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
 let g:deoplete#omni#input_patterns.sass = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
 let g:deoplete#omni#input_patterns.python = ''
 let g:deoplete#omni#input_patterns.javascript = ''
-" CtrlP
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.(git|hg|svn|composer|lib))$',
-  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
-\}
-let g:ctrlp_custom_ignore = {
-	\ 'dir':  '\v[\/]\.(git|hg|svn)$',
-	\ 'file': '\v\.(exe|so|dll)$',
-	\ }
 " vdebug
 let g:vdebug_options = {}
 let g:vdebug_options["port"] = 9000
@@ -460,8 +442,6 @@ let g:startify_bookmarks = [
             \ {'g': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
             \ {'w': '/var/www/VVV/www/woocommerce/htdocs/wp-content/plugins/woo-fiscalita-italiana/woo-fiscalita-italiana.php'},
             \ {'b': '/var/www/VVV/www/boilerplate/htdocs/wp-content/plugins/'},
-            \ {'c': '/var/www/VVV/www/runexp/htdocs/wp-content/plugins/crm-runningexperience/'},
-            \ {'l': '/var/www/VVV/www/lifter/htdocs/'},
             \ {'o': '/home/mte90/Desktop/Prog/GlotDict/'},
             \ {'s': '/home/mte90/Desktop/Prog/Share-Backported/'}
 \]
@@ -532,8 +512,7 @@ let g:tagbar_type_php  = {
 augroup PHP
   autocmd!
   " Check for PHP syntax errors after saving a file
-  autocmd BufWritePost {*.php} echom system("php -l ".expand('%'))
-  autocmd BufWritePost {*.php} echom system("phpcbf -p -d memory_limit=512M --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml ".expand('%'))
+  autocmd BufWritePost {*.php} system("phpcbf -p -d memory_limit=512M --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml ".expand('%'))
 augroup END
 augroup fmt
   autocmd!
@@ -544,6 +523,8 @@ augroup END
 " Hotkeys
 " Remove spaces at the end of lines
 nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
+" Remove highlights
+map <esc> :noh<cr>
 " Fold code open/close with click
 nmap <expr> <2-LeftMouse> 'za'
 " Deoplete
@@ -556,17 +537,17 @@ nmap <leader>a :Rg<space>
 nmap <C-h> :%s/
 " Open Folder tab current directory
 nmap <leader>n :call NERDTreeToggleInCurDir()<CR>
-nmap <M-n> :call NERDTreeToggleInCurDir()<CR>
 " Open folder tab
 nmap <C-p> :NERDTreeTabsToggle<CR>
 " To search on history with fuzzy
 nmap <leader>h :History<cr>
-nmap <M-H> :History<cr>
 " Object view
 nmap <C-t> :TagbarToggle<CR>
 " Undo tree tab
 nmap <leader>g :GundoToggle<CR>
-nmap <M-g> :GundoToggle<CR>
+" Search in files
+nmap <leader>f <Plug>(FerretAck)
+nmap <leader>x :Files<CR>
 " Emmett
 if has('nvim')
     let g:user_emmet_leader_key='<C-E>' " require also a comma ,
@@ -580,7 +561,7 @@ nmap <silent> <M-q> <Plug>(ale_fix)
 " Toggle comments
 nmap <C-d> <plug>NERDCommenterToggle<CR>
 " Append ; to the end of the line -> CTRL+B
-nmap <C-b> :call setline('.', getline('.') . ';')<CR>
+map <C-b> :call setline('.', getline('.') . ';')<CR>
 " Change size of split windows
 nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
