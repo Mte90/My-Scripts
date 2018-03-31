@@ -517,7 +517,10 @@ augroup END
 augroup fmt
   autocmd!
   " Autoformat in tabs
-  autocmd BufWritePre * :normal =G
+  autocmd BufWritePre {*.php} :normal =G
+  autocmd BufWritePre {*.js} :normal =G
+  autocmd BufWritePre {*.css} :normal =G
+  autocmd BufWritePre {*.sass} :normal =G
 augroup END
 
 " Hotkeys
