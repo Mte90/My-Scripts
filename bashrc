@@ -105,7 +105,6 @@ fi
 alias casa='cd /home/mte90/Desktop'
 alias www='cd /var/www'
 alias vvv='cd /var/www/VVV/www'
-alias back='cd "$OLDPWD"'
 alias wpp='cd ./htdocs/wp-content/plugins 2>/dev/null;cd ./wp-content/plugins 2>/dev/null'
 alias wpt='cd ./htdocs/wp-content/themes 2>/dev/null;cd ./wp-content/themes 2>/dev/null'
 # Misc
