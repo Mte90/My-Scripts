@@ -512,15 +512,15 @@ let g:tagbar_type_php  = {
 augroup PHP
   autocmd!
   " Check for PHP syntax errors after saving a file
-  autocmd BufWritePost {*.php} system("phpcbf -p -d memory_limit=512M --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml ".expand('%'))
+  autocmd BufWritePost *.php call system("phpcbf -p -d memory_limit=512M --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml ".expand('%:'))
 augroup END
 augroup fmt
   autocmd!
   " Autoformat in tabs
-  autocmd BufWritePre {*.php} :normal =G
-  autocmd BufWritePre {*.js} :normal =G
-  autocmd BufWritePre {*.css} :normal =G
-  autocmd BufWritePre {*.sass} :normal =G
+  autocmd BufWritePre *.php :normal =G
+  autocmd BufWritePre *.js :normal =G
+  autocmd BufWritePre *.css :normal =G
+  autocmd BufWritePre *.sass :normal =G
 augroup END
 
 " Hotkeys
