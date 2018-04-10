@@ -508,11 +508,16 @@ let g:tagbar_type_php  = {
      \ 'v:variables:1'
 \ ]
 \ }
-
+fun! s:Phpcbf() abort
+    let out = system("phpcbf -p -d memory_limit=512M --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml ".expand('%:'))
+    if !empty(out)
+      echo out
+    endif
+endfun
 augroup PHP
   autocmd!
   " Check for PHP syntax errors after saving a file
-  autocmd BufWritePost *.php call system("phpcbf -p -d memory_limit=512M --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml ".expand('%:'))
+  autocmd BufWritePost *.php call <SID>Phpcbf()
 augroup END
 augroup fmt
   autocmd!
