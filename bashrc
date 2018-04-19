@@ -174,6 +174,10 @@ export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"   # mem/file s
 # if this is interactive shell, then bind hh to Ctrl-r (for Vi mode check doc)
 if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hh -- \C-j"'; fi
 
+export WP_TESTS_DB_HOST=localhost
+export WP_TESTS_DB_USER=root
+export WP_TESTS_DB_PASSWORD='test'
+
 /usr/share/autojump/autojump.sh
 
 export XDG_RUNTIME_DIR=""

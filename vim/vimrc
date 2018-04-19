@@ -226,6 +226,8 @@ Plugin 'mattn/webapi-vim'
 Plugin 'elzr/vim-json'
 " Auto cwd
 Plugin 'airblade/vim-rooter'
+" Ratio size window
+Plugin 'roman/golden-ratio'
 call vundle#end()
 
 augroup default
@@ -510,9 +512,6 @@ let g:tagbar_type_php  = {
 \ }
 fun! s:Phpcbf() abort
     let out = system("phpcbf -p -d memory_limit=512M --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml ".expand('%:'))
-    if !empty(out)
-      echo out
-    endif
 endfun
 augroup PHP
   autocmd!
