@@ -226,8 +226,6 @@ Plugin 'mattn/webapi-vim'
 Plugin 'elzr/vim-json'
 " Auto cwd
 Plugin 'airblade/vim-rooter'
-" Ratio size window
-Plugin 'roman/golden-ratio'
 call vundle#end()
 
 augroup default
