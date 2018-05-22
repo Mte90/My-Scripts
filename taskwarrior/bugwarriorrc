@@ -1,0 +1,40 @@
+[general]
+targets = github, gitlab, bitbucket
+
+shorten = False
+
+inline_links = False
+# Setting this to True will include a link to the ticket as an annotation
+annotation_links = True
+annotation_comments = False
+legacy_matching = True
+
+# Configure the default description or annotation length.
+annotation_length = 0
+
+[github]
+service = github
+github.only_if_assigned = Mte90
+github.query = assignee:mte90 is:open
+github.username = mte90
+github.login = mte90
+github.token = token
+github.description_template = {{githubnumber}}: {{githubtitle}} - {{githuburl}}
+
+[bitbucket]
+service = bitbucket
+bitbucket.username = codeatcode
+bitbucket.only_if_assigned = mte90
+bitbucket.login = daniele@codeat.it
+bitbucket.key = key
+bitbucket.secret = token
+bitbucket.password = Bitbucket9
+bitbucket.description_template = {{bitbuckettitle}} - {{bitbucketurl}}
+
+[gitlab]
+service = gitlab
+gitlab.only_if_assigned = Mte90
+gitlab.token = token
+gitlab.login = Mte90
+gitlab.host = gitlab.com
+gitlab.description_template = {{gitlabnumber}}: {{gitlabtitle}} - {{gitlaburl}}
