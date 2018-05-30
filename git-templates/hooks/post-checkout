@@ -6,7 +6,7 @@
 function composer_run() {
     REPO=$(readlink -m $(dirname .))
     if [ -f $REPO/composer.json ]; then
-        composer install
+        composer install --no-dev
     fi
 }
 

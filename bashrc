@@ -160,6 +160,7 @@ alias git-restage="git update-index --again"
 alias gitar="git ls-files -d -m -o -z --exclude-standard | xargs -0 git update-index --add --remove"
 function git-merge-last-commit() { git reset --soft HEAD~$1 && git commit; }
 function commit() { commit=$(kdialog --title 'Commit message' --inputbox 'Insert the commit' '') && git commit -m "$commit" && echo "$commit"; }
+function git-stat-months() { git diff --shortstat "@{$1 month ago}""; }
 
 # https://github.com/riobard/bash-powerline
 . ~/.bash_powerline
