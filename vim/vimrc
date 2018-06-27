@@ -473,6 +473,7 @@ let g:ale_php_phpmd_ruleset = 'cleancode,codesize,design,naming,unusedcode'
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \}
+let g:PHP_vintage_case_default_indent = 1
 " Sometimes phpcbf replace the content of the file with the output of the command with ale
 let g:ale_fix_on_save = 0
 let g:ale_sign_error = 'EE'

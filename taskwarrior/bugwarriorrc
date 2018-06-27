@@ -1,5 +1,5 @@
 [general]
-targets = github, gitlab, bitbucket
+targets = github, gitlab, bitbucket, bugzilla
 
 shorten = False
 
@@ -38,3 +38,10 @@ gitlab.token = token
 gitlab.login = Mte90
 gitlab.host = gitlab.com
 gitlab.description_template = {{gitlabnumber}}: {{gitlabtitle}} - {{gitlaburl}}
+
+[bugzilla]
+service = bugzilla
+bugzilla.base_uri = bugzilla.mozilla.org
+bugzilla.username = mte90net@gmail.combugzilla.query_url = https://bugzilla.mozilla.org/query.cgi?query_format=advanced&short_desc_type=allwordssubstr&short_desc=&bug_status=ASSIGNED&longdesc_type=allwordssubstr&longdesc=&bug_file_loc_type=allwordssubstr&bug_file_loc=&status_whiteboard_type=allwordssubstr&status_whiteboard=&keywords_type=allwords&keywords=&bug_id=&bug_id_type=anyexact&votes=&votes_type=greaterthaneq&emailassigned_to1=1&emailtype1=exact&email1=mte90net@gmail.com&emailtype2=substring&email2=&emailtype3=substring&email3=&chfieldvalue=&chfieldfrom=&chfieldto=Now&j_top=AND&f1=noop&o1=noop&v1=
+bugzilla.description_template = {{bugzillasummary}} - {{url}}
+
