@@ -3,6 +3,7 @@
 function parse_tasks($file){
     //Open the pending tasks
     $file_handle = fopen($file, "r");
+    $assigned = array();
 
     //Parse all lines
     while (!feof($file_handle)) {
@@ -35,10 +36,25 @@ function parse_tasks($file){
                 case "tags:":
                    $task->tags = $value;
                    break;
+                case "githuburl:":
+                   $task->url = $value;
+                   break;
+                case "bugzillaurl:":
+                   $task->url = $value;
+                   break;
+                case "gitlaburl:":
+                   $task->url = $value;
+                   break;
+                case "bitbucketurl:":
+                   $task->url = $value;
+                   break;
             }
-        }
 
-        $tasks[] = $task;
+        }
+        if(!$assigned[$task->url]) {
+            $tasks[] = $task;
+            $assigned[$task->url] = true;
+        }
     }
 
     //Close the file

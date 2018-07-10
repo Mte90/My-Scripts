@@ -5,5 +5,6 @@
 		public $uuid = "";
         public $entry = "";
         public $tags = "";
+        public $url = "";
 	}
 ?>
