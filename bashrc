@@ -179,7 +179,7 @@ export WP_TESTS_DB_HOST=localhost
 export WP_TESTS_DB_USER=root
 export WP_TESTS_DB_PASSWORD='test'
 
-/usr/share/autojump/autojump.sh
+source /usr/share/autojump/autojump.sh
 
 export XDG_RUNTIME_DIR=""
 

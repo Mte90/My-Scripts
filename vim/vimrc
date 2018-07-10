@@ -226,7 +226,7 @@ Plugin 'mattn/webapi-vim'
 Plugin 'elzr/vim-json'
 " Auto cwd
 Plugin 'airblade/vim-rooter'
-Plugin 'jbgutierrez/vim-better-comments'
+"Plugin 'jbgutierrez/vim-better-comments'
 call vundle#end()
 
 augroup default
