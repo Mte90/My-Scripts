@@ -101,6 +101,24 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# if the command-not-found package is installed, use it
+if [ -x /usr/lib/command-not-found -o -x /usr/share/command-not-found/command-not-found ]; then
+	function command_not_found_handle {
+	        # check because c-n-f could've been removed in the meantime
+                if [ -x /usr/lib/command-not-found ]; then
+		   /usr/lib/command-not-found -- "$1"
+                   return $?
+                elif [ -x /usr/share/command-not-found/command-not-found ]; then
+		   /usr/share/command-not-found/command-not-found -- "$1"
+                   return $?
+		else
+		   printf "%s: command not found\n" "$1" >&2
+		   return 127
+		fi
+	}
+fi
+
+
 # CD stuff
 alias casa='cd /home/mte90/Desktop'
 alias www='cd /var/www'
@@ -156,6 +174,9 @@ alias git-remove-last-commit='git reset --soft HEAD~1'
 alias git-pass='ssh-add -t 36000'
 alias gpm="git push origin master"
 alias git-restage="git update-index --again"
+alias git-rename-branch="git rename-branch"
+alias git-create-branch="git create-branch -r"
+alias git-delete-branch="git delete-branch"
 # add and remove new/deleted files from git index automatically
 alias gitar="git ls-files -d -m -o -z --exclude-standard | xargs -0 git update-index --add --remove"
 function git-merge-last-commit() { git reset --soft HEAD~$1 && git commit; }
