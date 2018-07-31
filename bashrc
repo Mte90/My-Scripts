@@ -208,6 +208,4 @@ export XDG_RUNTIME_DIR=""
 [ -f /home/mte90/.travis/travis.sh ] && source /home/mte90/.travis/travis.sh
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64"
-export CUDA_HOME=/usr/local/cuda
-export PATH=/usr/local/cuda/bin/:$PATH
+export PATH=$PATH:/usr/local/sbin

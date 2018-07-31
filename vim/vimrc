@@ -186,8 +186,6 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'wincent/terminus'
 " Indentation is very helpful
 Plugin 'nathanaelkane/vim-indent-guides'
-" Remember the folding and the cursor position
-Plugin 'senderle/restoreview'
 " Improve scrolloff area
 Plugin 'drzel/vim-scroll-off-fraction'
 " Comments
@@ -226,7 +224,11 @@ Plugin 'mattn/webapi-vim'
 Plugin 'elzr/vim-json'
 " Auto cwd
 Plugin 'airblade/vim-rooter'
-"Plugin 'jbgutierrez/vim-better-comments'
+
+
+" Remember the folding and the cursor position
+" Plugin 'senderle/restoreview'
+" Plugin 'jbgutierrez/vim-better-comments'
 call vundle#end()
 
 augroup default
