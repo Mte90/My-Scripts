@@ -224,11 +224,8 @@ Plugin 'mattn/webapi-vim'
 Plugin 'elzr/vim-json'
 " Auto cwd
 Plugin 'airblade/vim-rooter'
-
-
-" Remember the folding and the cursor position
-" Plugin 'senderle/restoreview'
 " Plugin 'jbgutierrez/vim-better-comments'
+Plugin 'rhysd/devdocs.vim'
 call vundle#end()
 
 augroup default
@@ -528,6 +525,7 @@ augroup fmt
   autocmd BufWritePre *.css :normal =G
   autocmd BufWritePre *.sass :normal =G
 augroup END
+let g:devdocs_open_cmd = 'firefox'
 
 " Hotkeys
 " Remove spaces at the end of lines
@@ -591,6 +589,7 @@ vnoremap <C-s> :w<CR>
 vnoremap <C-z> "u
 nmap <M-Right> :tabnext<CR>
 nmap <M-Left> :tabprevious<CR>
+nmap K <Plug>(devdocs-under-cursor)
 
 " C = Ctrl
 " leader = \
