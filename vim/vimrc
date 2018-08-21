@@ -128,8 +128,8 @@ Plugin 'sniphpets/sniphpets-common'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 " PHP autocompletion engine and tools
-Plugin 'padawan-php/deoplete-padawan'
-Plugin 'padawan-php/padawan.vim'
+Plugin 'phpactor/phpactor'
+Plugin 'kristijanhusak/deoplete-phpactor'
 " PHP syntax
 Plugin 'StanAngeloff/php.vim'
 Plugin 'arnaud-lb/vim-php-namespace'
@@ -315,21 +315,19 @@ let g:deoplete#auto_refresh_delay= 5
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#enable_camel_case = 1
 let g:deoplete#enable_refresh_always = 1
-let g:deoplete#sources#padawan#add_parentheses = 1
 let g:deoplete#skip_chars = ['$']
 "  compatibility with phpcd
 let g:deoplete_ignore_sources = get(g:, 'deoplete#ignore_sources', {})
 "  Compatibility with phpcomplete
 let g:deoplete#omni_patterns = {}
 let g:deoplete#sources = {}
-let g:deoplete#sources.php = ['ultisnips', 'padawan', 'buffer']
+let g:deoplete#sources.php = ['ultisnips', 'buffer']
 "  Other stuff
 let g:deoplete_ignore_sources.html = ['syntax']
 let g:deoplete#omni#functions = get(g:, 'deoplete#omni#functions', {})
 let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
 let g:deoplete#omni#functions.html = 'htmlcomplete#CompleteTags'
 let g:deoplete#omni#functions.markdown = 'htmlcomplete#CompleteTags'
-let g:deoplete#omni#functions.php = 'padawan#Complete'
 let g:deoplete#omni_patterns = get(g:, 'deoplete#omni_patterns', {})
 let g:deoplete#omni_patterns.html = '<[^>]*'
 let g:deoplete#omni_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
@@ -354,8 +352,8 @@ let g:vdebug_keymap = {
 \    "close" : "<F6>",
 \    "detach" : "<F7>",
 \    "set_breakpoint" : "<F10>",
-\    "get_context" : "<leader-F11>",
-\    "eval_under_cursor" : "<leader-F12>",
+\    "get_context" : "<leader-F>",
+\    "eval_under_cursor" : "<leader-G>",
 \    "eval_visual" : "<F8>",
 \}
 let g:vdebug_options["path_maps"] = {
@@ -455,12 +453,6 @@ let g:user_emmet_install_global = 1
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 " PhpDoc
 let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
-" Padawan stuff
-let g:padawan#cli = '/opt/padawan/padawan.php/bin/padawan'
-let g:padawan#server_command = '/opt/padawan/padawan.php/bin/padawan-server'
-"  Run with vim
-:call padawan#StopServer()
-:call padawan#StartServer()
 " Ultisnip
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsEditSplit="vertical"
