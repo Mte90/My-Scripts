@@ -92,150 +92,151 @@ set wildignore+=.DS_Store
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" Package manager
-Plugin 'VundleVim/Vundle.vim'
-" display the result when searching
-Plugin 'henrik/vim-indexed-search'
-" wrapper for git and display git diff in the left gutter
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
-" Save session
-Plugin 'wting/gitsessions.vim'
-" surrounding with whatever you want (paranthesis, quotes...)
-Plugin 'tpope/vim-surround'
-" easily search, substitute and abbreviate multiple version of words
-Plugin 'tpope/vim-abolish'
-" Match more stuff with % (html tag, LaTeX...)
-Plugin 'tmhedberg/matchit'
-" Autocomplete system in real time
-if has('nvim')
-    Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-    Plugin 'roxma/vim-hug-neovim-rpc'
-    Plugin 'roxma/nvim-yarp'
-    Plugin 'Shougo/deoplete.nvim'
-endif
-" Displays function signatures
-Plugin 'Shougo/echodoc.vim'
-" startify for a cool home page
-Plugin 'mhinz/vim-startify'
-" Snippets engine and... snippets!
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'sniphpets/sniphpets'
-Plugin 'sniphpets/sniphpets-common'
-" markdown
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-" PHP autocompletion engine and tools
-Plugin 'phpactor/phpactor'
-Plugin 'kristijanhusak/deoplete-phpactor'
-" PHP syntax
-Plugin 'StanAngeloff/php.vim'
-Plugin 'arnaud-lb/vim-php-namespace'
-Plugin '2072/vim-syntax-for-PHP.git'
-Plugin 'nishigori/vim-php-dictionary'
-Plugin '2072/PHP-Indenting-for-VIm'
-" php doc autocompletion
-Plugin 'tobyS/vmustache' | Plugin 'tobyS/pdv'
-" autoclose bracket and parenthesis when open
-Plugin 'Townk/vim-autoclose'
-" object view
-Plugin 'majutsushi/tagbar'
-Plugin 'hushicai/tagbar-javascript.vim'
-Plugin 'mtscout6/vim-tagbar-css'
-" Folding fast is important
-Plugin 'Konfekt/FastFold'
-" Nerdtree + modifications: git icons plugin, color filetype plugin
-Plugin 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind']}
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-Bundle 'jistr/vim-nerdtree-tabs'
-" Status bar
-Plugin 'jacoborus/tender.vim'
-Plugin 'itchyny/lightline.vim'
-" Tags are very important
-Plugin 'ludovicchabant/vim-gutentags'
-" undo tree
-Plugin 'sjl/gundo.vim'
-if !has('gui_running')
-    " fzf - poweful search
-    Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-    Plugin 'junegunn/fzf.vim'
-endif
-" allow multisearch in current directory / multi replace as well
-Plugin 'wincent/ferret'
-" display the hexadecimal colors - useful for css and color config
-Plugin 'chrisbra/colorizer'
-" Valloric/MatchTagAlways
-Plugin 'Valloric/MatchTagAlways'
-" close tags on </
-Plugin 'docunext/closetag.vim'
-" Cool icons"
-Plugin 'ryanoasis/vim-devicons'
-" Report lint errors
-Plugin 'w0rp/ale'
-Plugin 'maximbaz/lightline-ale'
-" Wakatime
-Plugin 'wakatime/vim-wakatime'
-" Misc
-Plugin 'editorconfig/editorconfig-vim'
-" Better terminal detection
-Plugin 'wincent/terminus'
-" Indentation is very helpful
-Plugin 'nathanaelkane/vim-indent-guides'
-" Improve scrolloff area
-Plugin 'drzel/vim-scroll-off-fraction'
-" Comments
-Plugin 'scrooloose/nerdcommenter'
-" Underlines the words under your cursor
-Plugin 'itchyny/vim-cursorword'
-" highlights which characters to target
-Plugin 'bradford-smith94/quick-scope'
-" WordPress
-Plugin 'salcode/vim-wordpress-dict'
-Plugin 'sudar/vim-wordpress-snippets'
-" Web
-Plugin 'othree/html5.vim'
-Plugin 'mattn/emmet-vim'
-Plugin 'hail2u/vim-css3-syntax'
-Plugin 'groenewege/vim-less'
-Plugin 'othree/csscomplete.vim'
-Plugin 'stephpy/vim-yaml'
-" Javascript
-Plugin 'moll/vim-node'
-Plugin 'pangloss/vim-javascript'
-Plugin 'othree/javascript-libraries-syntax.vim'
-Plugin '1995eaton/vim-better-javascript-completion'
-Plugin 'mklabs/grunt.vim'
-" Syntax highlighting for vue js framework
-Plugin 'posva/vim-vue'
-" Syntax highlighting for JSX
-Plugin 'mxw/vim-jsx'
-" Syntax highlighting for cofeescript
-Plugin 'vim-scripts/vim-coffee-script'
-Plugin 'lukaszkorecki/CoffeeTags'
-" Syntax highlighting for webapi
-Plugin 'mattn/webapi-vim'
-" Syntax highlighting for json
-Plugin 'elzr/vim-json'
-" Auto cwd
-Plugin 'airblade/vim-rooter'
-" Plugin 'jbgutierrez/vim-better-comments'
-Plugin 'rhysd/devdocs.vim'
+    " Package manager
+    Plugin 'VundleVim/Vundle.vim'
+    " Show "Match 123 of 456 /search term/" in Vim searches
+    Plugin 'henrik/vim-indexed-search'
+    " wrapper for git and display git diff in the left gutter
+    Plugin 'tpope/vim-fugitive'
+    Plugin 'airblade/vim-gitgutter'
+    " surrounding with whatever you want (paranthesis, quotes...)
+    Plugin 'tpope/vim-surround'
+    " autoclose bracket and parenthesis when open
+    Plugin 'Townk/vim-autoclose'
+    " Valloric/MatchTagAlways
+    Plugin 'Valloric/MatchTagAlways'
+    " close tags on </
+    Plugin 'docunext/closetag.vim'
+    " Better terminal detection
+    Plugin 'wincent/terminus'
+    " Indentation is very helpful
+    Plugin 'nathanaelkane/vim-indent-guides'
+    " Folding fast is important
+    Plugin 'Konfekt/FastFold'
+    " Improve scrolloff area
+    Plugin 'drzel/vim-scroll-off-fraction'
+    " Underlines the words under your cursor
+    Plugin 'itchyny/vim-cursorword'
+    " Auto cwd
+    Plugin 'airblade/vim-rooter'
+    " startify for a cool home page
+    Plugin 'mhinz/vim-startify'
+    " session
+    Plugin 'xolox/vim-misc'
+    Plugin 'xolox/vim-session'
+    " Autocomplete system in real time
+    if has('nvim')
+        Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    else
+        Plugin 'roxma/vim-hug-neovim-rpc'
+        Plugin 'roxma/nvim-yarp'
+        Plugin 'Shougo/deoplete.nvim'
+    endif
+    " Snippets engine and... snippets!
+    Plugin 'SirVer/ultisnips'
+    Plugin 'honza/vim-snippets'
+    Plugin 'sniphpets/sniphpets'
+    Plugin 'sniphpets/sniphpets-common'
+    " markdown
+    Plugin 'plasticboy/vim-markdown'
+    " PHP autocompletion engine and tools
+    Plugin 'phpactor/phpactor'
+    Plugin 'kristijanhusak/deoplete-phpactor'
+    " php doc autocompletion
+    Plugin 'tobyS/vmustache' | Plugin 'tobyS/pdv'
+    " object view
+    Plugin 'majutsushi/tagbar'
+    Plugin 'lvht/tagbar-markdown'
+    Plugin 'hushicai/tagbar-javascript.vim'
+    Plugin 'mtscout6/vim-tagbar-css'
+    " Nerdtree + modifications: git icons plugin, color filetype plugin
+    Plugin 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind']}
+    Plugin 'Xuyuanp/nerdtree-git-plugin'
+    Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+    Plugin 'jistr/vim-nerdtree-tabs'
+    " Status bar
+    Plugin 'jacoborus/tender.vim'
+    Plugin 'itchyny/lightline.vim'
+    Plugin 'macthecadillac/lightline-gitdiff'
+    " Tags are very important
+    Plugin 'ludovicchabant/vim-gutentags'
+    " undo tree
+    Plugin 'sjl/gundo.vim'
+    " select text
+    Plugin 'terryma/vim-expand-region'
+    if !has('gui_running')
+        " fzf - poweful search
+        Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+        Plugin 'junegunn/fzf.vim'
+    endif
+    " allow multisearch in current directory / multi replace as well
+    Plugin 'wincent/ferret'
+    " display the hexadecimal colors - useful for css and color config
+    Plugin 'chrisbra/colorizer'
+    " Cool icons"
+    Plugin 'ryanoasis/vim-devicons'
+    " Report lint errors
+    Plugin 'w0rp/ale'
+    Plugin 'maximbaz/lightline-ale'
+    " Wakatime
+    Plugin 'wakatime/vim-wakatime'
+    " Misc
+    Plugin 'editorconfig/editorconfig-vim'
+    " PHP syntax
+    Plugin 'StanAngeloff/php.vim'
+    Plugin 'arnaud-lb/vim-php-namespace'
+    Plugin '2072/vim-syntax-for-PHP.git'
+    Plugin 'nishigori/vim-php-dictionary'
+    Plugin '2072/PHP-Indenting-for-VIm'
+    " Comments
+    Plugin 'scrooloose/nerdcommenter'
+    " highlights which characters to target
+    Plugin 'bradford-smith94/quick-scope'
+    " WordPress
+    Plugin 'salcode/vim-wordpress-dict'
+    Plugin 'sudar/vim-wordpress-snippets'
+    " Web
+    Plugin 'othree/html5.vim'
+    Plugin 'mattn/emmet-vim'
+    Plugin 'hail2u/vim-css3-syntax'
+    Plugin 'groenewege/vim-less'
+    Plugin 'othree/csscomplete.vim'
+    Plugin 'stephpy/vim-yaml'
+    " Javascript
+    Plugin 'moll/vim-node'
+    Plugin 'pangloss/vim-javascript'
+    Plugin 'othree/javascript-libraries-syntax.vim'
+    Plugin '1995eaton/vim-better-javascript-completion'
+    Plugin 'mklabs/grunt.vim'
+    " Syntax highlighting for vue js framework
+    Plugin 'posva/vim-vue'
+    " Syntax highlighting for JSX
+    Plugin 'mxw/vim-jsx'
+    " Syntax highlighting for coffeescript
+    Plugin 'kchmck/vim-coffee-script'
+    Plugin 'lukaszkorecki/CoffeeTags'
+    " Syntax highlighting for webapi
+    Plugin 'mattn/webapi-vim'
+    " Syntax highlighting for json
+    Plugin 'elzr/vim-json'
+    " Open docs on K
+    Plugin 'rhysd/devdocs.vim'
 call vundle#end()
 
+let g:sessions_dir = '~/.vim/sessions'
 augroup default
     autocmd!
     " Add support of stuff on different files
     autocmd BufReadPost * if line("'\"") && line("'\"") <= line("$") | exe "normal `\"" | endif
-    au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
+    autocmd BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
     autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
     autocmd FileType php.wordpress setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
     autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
     autocmd FileType php let b:surround_45 = "<?php \r ?>"
     " Alias for git add
     autocmd User fugitive command! -bar -buffer -nargs=* Gadd :Gwrite <args>
+    " Autosave session
+    autocmd BufRead,BufReadPost,BufNewFile,BufFilePost * :SaveSession
 augroup END
 " nerdtree configuration
 function! NERDTreeToggleInCurDir()
@@ -264,7 +265,7 @@ let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
 "  ignore files
 let NERDTreeIgnore = [
-	\ '\.git$', '\.hg$', '\.svn$', '\.stversions$', '\.pyc$', '\.svn$', '__init__.py',
+	\ '\.git$', '\.hg$', '\.svn$', '\.stversions$', '\.pyc$', '\.svn$', '__init__.py', 'vendor',
 	\ '\.DS_Store$', '\.sass*$', '__pycache__$', '\.egg-info$', '\.cache$','composer','node_modules'
 \ ]
 " Webdevicons
@@ -282,7 +283,7 @@ endif
 augroup fzf_search
     autocmd!
     autocmd VimEnter * command! -nargs=* Ag call fzf#run({
-    \ 'source':  printf('ag -U --nogroup --column --color "%s"',
+    \ 'source':  printf('ag --hidden --ignore-dir .sass-cache --ignore-dir node_modules --ignore-dir vendor -U --nogroup --column --color -g "%s"',
     \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
     \ 'sink*':    function('<sid>ag_handler'),
     \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
@@ -299,6 +300,31 @@ augroup fzf_search
     \ <bang>0)
 augroup END
 
+let g:session_directory = '~/.vim/sessions'
+let g:session_autoload = 'no'
+let g:session_autosave = 'yes'
+let g:session_autosave_periodic = 1
+let g:session_silent = 1
+" Home tab
+let g:startify_bookmarks = [
+            \ {'g': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
+            \ {'w': '/var/www/VVV/www/woocommerce/htdocs/wp-content/plugins/woo-fiscalita-italiana/woo-fiscalita-italiana.php'},
+            \ {'b': '/var/www/VVV/www/boilerplate/htdocs/wp-content/plugins/'},
+            \ {'o': '/home/mte90/Desktop/Prog/GlotDict/'},
+            \ {'s': '/home/mte90/Desktop/Prog/Share-Backported/'}
+\]
+let g:startify_session_dir = '~/.vim/sessions'
+let g:startify_lists = [
+          \ { 'type': 'files',     'header': ['   Most Recent']    },
+          \ { 'type': 'sessions',  'header': ['   Sessions']       },
+          \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+          \ { 'type': 'commands',  'header': ['   Commands']       },
+\ ]
+let g:startify_custom_header = map(split(system('fortune | cowsay -W 70 -f eyes'), '\n'), '" ". v:val')
+let g:startify_files_number = 5
+let g:startify_padding_left = 5
+" Find root
+let g:rooter_patterns = ['.git/']
 " deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_completion_start_length = 1
@@ -358,20 +384,28 @@ let g:gutentags_ctags_exclude = ['*lock', '*.json', '*.xml', '*.yml',
 let g:gutentags_cache_dir = '~/.vim/tags/'
 let g:gutentags_project_root = ['/var/www/VVV/www/']
 " A better line
+let g:lightline_gitdiff#indicator_added = '+'
+let g:lightline_gitdiff#indicator_deleted = '-'
+let g:lightline_gitdiff#indicator_modified = '!'
+let g:lightline_gitdiff#min_winwidth = '70'
 let g:lightline = {
     \ 'colorscheme': 'tender',
     \ 'active': {
-    \   'left': [['mode', 'paste'], ['readonly', 'filename', 'modified'], ['tagbar', 'gitbranch']],
+    \   'left': [['mode', 'paste'], ['readonly', 'filename', 'modified'], ['tagbar', 'gitbranch', 'gitstatus']],
     \   'right': [['lineinfo'], ['filetype'], [ 'linter_errors', 'linter_warnings', 'linter_ok' ]]
     \ },
     \ 'inactive': {
-    \   'left': [['mode', 'paste'], ['readonly', 'filename', 'modified'], ['tagbar', 'gitbranch']],
+    \   'left': [['mode', 'paste'], ['readonly', 'filename', 'modified'], ['tagbar', 'gitbranch', 'gitstatus']],
     \   'right': [['lineinfo'], ['filetype']]
     \ },
     \ 'component': {
     \   'lineinfo': '%l\%L [%p%%]',
     \   'tagbar': '%{tagbar#currenttag("[%s]", "", "f")}',
-    \   'gitbranch': '%{&filetype=="help"?"":exists("*fugitive#head")?fugitive#head():""}'
+    \   'gitbranch': '%{&filetype=="help"?"":exists("*fugitive#head")?fugitive#head():""}',
+    \   'gitstatus': '%<%{lightline_gitdiff#get_status()}',
+    \ },
+    \ 'component_visible_condition': {
+    \   'gitstatus': 'lightline_gitdiff#get_status() !=# ""',
     \ },
     \ 'component_function': {
     \   'filetype': 'MyFiletype',
@@ -403,18 +437,6 @@ endfunction
 function! MyFileformat()
   return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
 endfunction
-" Home tab
-let g:startify_bookmarks = [
-            \ {'g': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
-            \ {'w': '/var/www/VVV/www/woocommerce/htdocs/wp-content/plugins/woo-fiscalita-italiana/woo-fiscalita-italiana.php'},
-            \ {'b': '/var/www/VVV/www/boilerplate/htdocs/wp-content/plugins/'},
-            \ {'o': '/home/mte90/Desktop/Prog/GlotDict/'},
-            \ {'s': '/home/mte90/Desktop/Prog/Share-Backported/'}
-\]
-let g:startify_list_order = ['files', 'bookmarks', 'commands']
-let g:startify_custom_header = map(split(system('fortune | cowsay -W 70 -f eyes'), '\n'), '" ". v:val')
-let g:startify_files_number = 8
-let g:startify_padding_left = 5
 " Emmett
 let g:user_emmet_install_global = 1
 " Editorconfig
@@ -430,7 +452,28 @@ let g:vimjs#smartcomplete = 1
 let g:ale_php_phpcs_standard  = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
 let g:ale_php_phpmd_ruleset = 'cleancode,codesize,design,naming,unusedcode'
 let g:ale_linters = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'bash': ['shellcheck'],
+\   'coffee': ['coffelint'],
+\   'css': ['prettier'],
+\   'html': ['htmlhint'],
 \   'javascript': ['eslint'],
+\   'markdown': ['remark-lint'],
+\   'php': ['phpcs', 'phpmd'],
+\   'sass': ['sass-lint'],
+\   'scss': ['sass-lint'],
+\}
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'bash': ['shellcheck'],
+\   'coffee': ['coffelint'],
+\   'css': ['prettier'],
+\   'html': ['htmlhint'],
+\   'javascript': ['eslint', 'prettier'],
+\   'markdown': ['remark-lint'],
+\   'php': ['php-cs-fixer', 'phpmd', 'prettier'],
+\   'sass': ['sass-lint'],
+\   'scss': ['sass-lint'],
 \}
 let g:PHP_vintage_case_default_indent = 1
 " Sometimes phpcbf replace the content of the file with the output of the command with ale
@@ -438,6 +481,7 @@ let g:ale_fix_on_save = 0
 let g:ale_sign_error = 'EE'
 let g:ale_sign_warning = 'WW'
 let g:ale_change_sign_column_color = 1
+let g:ale_completion_enabled = 1
 " php
 let g:PHP_autoformatcomment = 1
 " Indent lines
@@ -453,21 +497,20 @@ augroup tagbar
   autocmd!
   autocmd BufEnter * nested :call tagbar#autoopen(0)
 augroup END
-let g:tagbar_width = 35
+let g:tagbar_width = 30
 let g:tagbar_indent = 1
 let g:tagbar_autoshowtag = 2
-let g:tagbar_show_linenumbers = 1
 let g:tagbar_singleclick = 1
 let g:tagbar_sort = 1
 let g:tagbar_type_php  = {
-\ 'kinds'     : [
-    \ 'i:interfaces',
-    \ 'c:classes',
-    \ 'd:constant definitions',
-    \ 'f:functions',
-    \ 'j:javascript functions:1',
-     \ 'v:variables:1'
-\ ]
+    \ 'kinds'     : [
+        \ 'i:interfaces',
+        \ 'c:classes',
+        \ 'd:constant definitions',
+        \ 'f:functions',
+        \ 'j:javascript functions:1',
+        \ 'v:variables:1'
+    \ ]
 \ }
 fun! s:Phpcbf() abort
     let out = system("phpcbf -p -d memory_limit=512M --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml ".expand('%:'))
@@ -486,6 +529,9 @@ augroup fmt
   autocmd BufWritePre *.sass :normal =G
 augroup END
 let g:devdocs_open_cmd = 'firefox'
+" Trigger a highlight only when pressing f and F.
+let g:qs_highlight_on_keys = ['f']
+let g:qs_max_chars=80
 
 " Hotkeys
 " Remove spaces at the end of lines
@@ -499,9 +545,7 @@ inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 " Select all
 nmap <C-a> GVgg
 " Search in the project files
-nmap <leader>a :Rg<space>
-" Search all
-nmap <C-h> :%s/
+nmap <leader>f :Rg<space>
 " Open Folder tab current directory
 nmap <leader>n :call NERDTreeToggleInCurDir()<CR>
 " Open folder tab
@@ -512,9 +556,9 @@ nmap <leader>h :History<cr>
 nmap <C-t> :TagbarToggle<CR>
 " Undo tree tab
 nmap <leader>g :GundoToggle<CR>
-" Search in files
-nmap <leader>f <Plug>(FerretAck)
 nmap <leader>x :Files<CR>
+map <silent> <C-e> <Plug>(expand_region_expand)
+map <silent> <C-r> <Plug>(expand_region_shrink)
 " Emmett
 if has('nvim')
     let g:user_emmet_leader_key='<C-E>' " require also a comma ,
@@ -524,14 +568,11 @@ endif
 " navigate between errors
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
-nmap <silent> <M-q> <Plug>(ale_fix)
+nmap <silent> <C-q> <Plug>(ale_fix)
 " Toggle comments
 nmap <C-d> <plug>NERDCommenterToggle<CR>
 " Append ; to the end of the line -> CTRL+B
 map <C-b> :call setline('.', getline('.') . ';')<CR>
-" Change size of split windows
-nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
-nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
 " Granular undo
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
@@ -550,33 +591,3 @@ vnoremap <C-z> "u
 nmap <M-Right> :tabnext<CR>
 nmap <M-Left> :tabprevious<CR>
 nmap K <Plug>(devdocs-under-cursor)
-
-" C = Ctrl
-" leader = \
-" On visual mode . repeat the last thing you done in edit mode
-" * highlight the word where it is your cursor
-" :e/:tabe and write the path to edit a file
-" :vsplit file to open a vertical window
-" tab for autocomplete of snippets
-" ctrl+n for multiple selection of the word selected
-" ctrl+a select all
-" ctrl+h search all
-" ctrl+t object view
-" ctrl+e/alt+e emmet
-" ctrl+k/ctrl+j navigate between errors
-" ctrl+b/alt+s add semicomma
-" leader+t/alt+t search in the file
-" leader+a/alt+a search in project
-" leader+h/alt+h search on history
-" leader+g/alt+g undo tree
-" b/w move to next word
-" ( ) move between sentences
-" f<char> to move on that word
-" :<number> move to number line
-" cw change word, cc change line, dd remove line
-" za/zc open/close fold, zR open all fold
-" :e! revert to file saved version
-" :tabc close tab, :tabe edit file in a tab, Ctrl+PgUp/PgDown move to tab
-" F5 run, F9 run to cursor, F2 step over, F3 step into, F4 step out,
-" F6 close, F7 detach, F10 breakpoint, leader-F11 get context
-" leader-F12 eval under cursor, F8 eval visual
