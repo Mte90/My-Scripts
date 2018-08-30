@@ -140,8 +140,6 @@ Plugin '2072/PHP-Indenting-for-VIm'
 Plugin 'tobyS/vmustache' | Plugin 'tobyS/pdv'
 " autoclose bracket and parenthesis when open
 Plugin 'Townk/vim-autoclose'
-" debugger, https://github.com/joonty/vdebug/pull/316
-Plugin 'joonty/vdebug'
 " object view
 Plugin 'majutsushi/tagbar'
 Plugin 'hushicai/tagbar-javascript.vim'
@@ -199,7 +197,6 @@ Plugin 'salcode/vim-wordpress-dict'
 Plugin 'sudar/vim-wordpress-snippets'
 " Web
 Plugin 'othree/html5.vim'
-Plugin 'tpope/vim-haml'
 Plugin 'mattn/emmet-vim'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'groenewege/vim-less'
@@ -339,35 +336,6 @@ let g:deoplete#omni#input_patterns.scss = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
 let g:deoplete#omni#input_patterns.sass = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
 let g:deoplete#omni#input_patterns.python = ''
 let g:deoplete#omni#input_patterns.javascript = ''
-" vdebug
-let g:vdebug_options = {}
-let g:vdebug_options["port"] = 9000
-let g:vdebug_options["ide_key"] = "VVVDEBUG"
-let g:vdebug_keymap = {
-\    "run" : "<F5>",
-\    "run_to_cursor" : "<F9>",
-\    "step_over" : "<F2>",
-\    "step_into" : "<F3>",
-\    "step_out" : "<F4>",
-\    "close" : "<F6>",
-\    "detach" : "<F7>",
-\    "set_breakpoint" : "<F10>",
-\    "get_context" : "<leader-F>",
-\    "eval_under_cursor" : "<leader-G>",
-\    "eval_visual" : "<F8>",
-\}
-let g:vdebug_options["path_maps"] = {
-\       "/srv/www/runexp": "/home/www/VVV/www/runexp",
-\       "/srv/www/woocommerce": "/home/www/VVV/www/woocommerce",
-\       "/srv/www/glossary": "/home/www/VVV/www/glossary",
-\       "/srv/www/demo": "/home/www/VVV/www/demo"
-\}
-augroup vdebug
-    autocmd!
-    "  redefine the characters
-    autocmd VimEnter * sign define breakpt text= texthl=DbgBreakptSign linehl=DbgBreakptLine
-    autocmd VimEnter * sign define current text= texthl=DbgCurrentSign linehl=DbgCurrentLine
-augroup END
 " GutenTags
 let g:gutentags_enabled                  = 1
 let g:gutentags_generate_on_missing      = 1
@@ -445,7 +413,7 @@ let g:startify_bookmarks = [
 \]
 let g:startify_list_order = ['files', 'bookmarks', 'commands']
 let g:startify_custom_header = map(split(system('fortune | cowsay -W 70 -f eyes'), '\n'), '" ". v:val')
-let g:startify_files_number = 5
+let g:startify_files_number = 8
 let g:startify_padding_left = 5
 " Emmett
 let g:user_emmet_install_global = 1
