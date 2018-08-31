@@ -135,7 +135,7 @@ alias howdoi='howdoi -c'
 alias codeatcs='phpcs -p -d memory_limit=512M --ignore=*composer*,*.js,*.css,*vendor*,*/lib,index.php,*tests*,*config* --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml '
 alias codeatcscbf='phpcbf -p -d memory_limit=512M --ignore=*composer*,*.js,*.css,*vendor*,*/lib,index.php,*tests*,*config* --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml '
 alias padawan-generate='/opt/padawan/padawan.php/bin/padawan generate '
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore-dir .sass-cache --ignore-dir node_modules --ignore-dir vendor -g "" -U --nogroup --column'
+export FZF_DEFAULT_COMMAND='ag --ignore-dir .sass-cache --ignore-dir _output --ignore-dir node_modules --ignore-dir vendor -g "" -U --nogroup --column --nocolor --php --html --css --js'
 export PATH=./vendor/bin:$PATH
 export PATH=./composer/bin:$PATH
 export PATH=~/.composer/vendor/bin:$PATH

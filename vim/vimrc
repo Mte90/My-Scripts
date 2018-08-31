@@ -123,6 +123,7 @@ call vundle#begin()
     Plugin 'mhinz/vim-startify'
     " session
     Plugin 'xolox/vim-misc'
+    " check https://github.com/xolox/vim-session/pull/144
     Plugin 'xolox/vim-session'
     " Autocomplete system in real time
     if has('nvim')
@@ -279,26 +280,10 @@ if exists('*WebDevIconsGetFileTypeSymbol')  " support for vim-devicons
 else
   let entry_format .= '. entry_path'
 endif
-" fzf for search files
-augroup fzf_search
-    autocmd!
-    autocmd VimEnter * command! -nargs=* Ag call fzf#run({
-    \ 'source':  printf('ag --hidden --ignore-dir .sass-cache --ignore-dir node_modules --ignore-dir vendor -U --nogroup --column --color -g "%s"',
-    \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
-    \ 'sink*':    function('<sid>ag_handler'),
-    \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
-    \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
-    \            '--color hl:68,hl+:110',
-    \ 'down':    '50%'
-    \ })
-
-    autocmd VimEnter * command! -nargs=* Rg
-    \ call fzf#vim#grep(
-    \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1,
-    \   <bang>0 ? fzf#vim#with_preview('up:60%')
-    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-    \ <bang>0)
-augroup END
+let g:fzf_action = {
+  \ 'return': 'tab split',
+\}
+let $FZF_DEFAULT_COMMAND = 'ag --ignore-dir .sass-cache --ignore-dir _output --ignore-dir node_modules --ignore-dir vendor -g "" -U --nogroup --column --nocolor --php --html --css --js'
 
 let g:session_directory = '~/.vim/sessions'
 let g:session_autoload = 'no'
@@ -493,10 +478,6 @@ let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 " Tagbar
-augroup tagbar
-  autocmd!
-  autocmd BufEnter * nested :call tagbar#autoopen(0)
-augroup END
 let g:tagbar_width = 30
 let g:tagbar_indent = 1
 let g:tagbar_autoshowtag = 2
@@ -557,7 +538,7 @@ nmap <C-t> :TagbarToggle<CR>
 " Undo tree tab
 nmap <leader>g :GundoToggle<CR>
 nmap <leader>x :Files<CR>
-map <silent> <C-e> <Plug>(expand_region_expand)
+map <silent> <C-w> <Plug>(expand_region_expand)
 map <silent> <C-r> <Plug>(expand_region_shrink)
 " Emmett
 if has('nvim')
