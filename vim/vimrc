@@ -141,7 +141,7 @@ call vundle#begin()
     " markdown
     Plugin 'plasticboy/vim-markdown'
     " PHP autocompletion engine and tools
-    Plugin 'phpactor/phpactor'
+    Plugin 'phpactor/phpactor', {'for': 'php', 'do': 'composer install'}
     Plugin 'kristijanhusak/deoplete-phpactor'
     " php doc autocompletion
     Plugin 'tobyS/vmustache' | Plugin 'tobyS/pdv'
@@ -230,8 +230,8 @@ augroup default
     " Add support of stuff on different files
     autocmd BufReadPost * if line("'\"") && line("'\"") <= line("$") | exe "normal `\"" | endif
     autocmd BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
-    autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
-    autocmd FileType php.wordpress setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
+    autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent omnifunc=phpactor#Complete
+    autocmd FileType php.wordpress setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent omnifunc=phpactor#Complete
     autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
     autocmd FileType php let b:surround_45 = "<?php \r ?>"
     " Alias for git add
@@ -310,10 +310,12 @@ let g:startify_files_number = 5
 let g:startify_padding_left = 5
 " Find root
 let g:rooter_patterns = ['.git/']
+let g:rooter_use_lcd = 1
+let g:rooter_resolve_links = 1
 " deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_completion_start_length = 1
-let g:deoplete#skip_chars = ['(', ')', '<', '>']
+let g:deoplete#skip_chars = ['(', ')', '<', '>', '$']
 let g:deoplete#tag#cache_limit_size = 800000
 "  deoplete tab-complete
 let g:deoplete#file#enable_buffer_path = 1
@@ -323,14 +325,12 @@ let g:deoplete#auto_refresh_delay= 5
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#enable_camel_case = 1
 let g:deoplete#enable_refresh_always = 1
-let g:deoplete#skip_chars = ['$']
-"  compatibility with phpcd
-let g:deoplete_ignore_sources = get(g:, 'deoplete#ignore_sources', {})
-"  Compatibility with phpcomplete
+"  Other stuff
 let g:deoplete#omni_patterns = {}
 let g:deoplete#sources = {}
-let g:deoplete#sources.php = ['ultisnips', 'buffer']
-"  Other stuff
+let g:deoplete#sources.php = ['omni', 'phpactor', 'ultisnips', 'buffer']
+let g:deoplete#delimiters = ['/', '.', '::', ':', '#', '->']
+let g:deoplete_ignore_sources = {}
 let g:deoplete_ignore_sources.html = ['syntax']
 let g:deoplete#omni#functions = get(g:, 'deoplete#omni#functions', {})
 let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
@@ -426,6 +426,8 @@ endfunction
 let g:user_emmet_install_global = 1
 " Editorconfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+" PhpActor
+let g:phpactorOmniError = v:true
 " PhpDoc
 let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
 " Ultisnip
