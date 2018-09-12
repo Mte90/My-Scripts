@@ -202,7 +202,7 @@ export WP_TESTS_DB_PASSWORD='test'
 
 source /usr/share/autojump/autojump.sh
 
-export XDG_RUNTIME_DIR=""
+export XDG_RUNTIME_DIR="/run/user/1000"
 
 # added by travis gem
 [ -f /home/mte90/.travis/travis.sh ] && source /home/mte90/.travis/travis.sh
