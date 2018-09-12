@@ -141,8 +141,8 @@ call vundle#begin()
     " markdown
     Plugin 'plasticboy/vim-markdown'
     " PHP autocompletion engine and tools
-    Plugin 'phpactor/phpactor', {'for': 'php', 'do': 'composer install'}
-    Plugin 'kristijanhusak/deoplete-phpactor'
+    Plugin 'padawan-php/deoplete-padawan'
+    Plugin 'padawan-php/padawan.vim'
     " php doc autocompletion
     Plugin 'tobyS/vmustache' | Plugin 'tobyS/pdv'
     " object view
@@ -230,8 +230,8 @@ augroup default
     " Add support of stuff on different files
     autocmd BufReadPost * if line("'\"") && line("'\"") <= line("$") | exe "normal `\"" | endif
     autocmd BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
-    autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent omnifunc=phpactor#Complete
-    autocmd FileType php.wordpress setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent omnifunc=phpactor#Complete
+    autocmd FileType php setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
+    autocmd FileType php.wordpress setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent
     autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
     autocmd FileType php let b:surround_45 = "<?php \r ?>"
     " Alias for git add
@@ -300,10 +300,10 @@ let g:startify_bookmarks = [
 \]
 let g:startify_session_dir = '~/.vim/sessions'
 let g:startify_lists = [
-          \ { 'type': 'files',     'header': ['   Most Recent']    },
-          \ { 'type': 'sessions',  'header': ['   Sessions']       },
-          \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
-          \ { 'type': 'commands',  'header': ['   Commands']       },
+          \ { 'type': 'files',     'header': ['   Most Recent'] },
+          \ { 'type': 'sessions',  'header': ['   Sessions']    },
+          \ { 'type': 'bookmarks', 'header': ['   Bookmarks']   },
+          \ { 'type': 'commands',  'header': ['   Commands']    },
 \ ]
 let g:startify_custom_header = map(split(system('fortune | cowsay -W 70 -f eyes'), '\n'), '" ". v:val')
 let g:startify_files_number = 5
@@ -328,7 +328,11 @@ let g:deoplete#enable_refresh_always = 1
 "  Other stuff
 let g:deoplete#omni_patterns = {}
 let g:deoplete#sources = {}
-let g:deoplete#sources.php = ['omni', 'phpactor', 'ultisnips', 'buffer']
+let g:deoplete#sources#padawan#add_parentheses = 1
+let g:deoplete#sources#padawan#auto_update = 1
+let g:deoplete#sources#padawan#server_addr = 'http://127.0.0.1:15155'
+let g:deoplete#sources#padawan#log_file = "/tmp/padawan-server.log"
+let g:deoplete#sources.php = ['ultisnips', 'padawan', 'buffer']
 let g:deoplete#delimiters = ['/', '.', '::', ':', '#', '->']
 let g:deoplete_ignore_sources = {}
 let g:deoplete_ignore_sources.html = ['syntax']
@@ -430,6 +434,11 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 let g:phpactorOmniError = v:true
 " PhpDoc
 let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
+" Padawan stuff
+let g:padawan#cli = 'padawan'
+let g:padawan#server_command = 'padawan-server'
+:call padawan#StopServer()
+:call padawan#StartServer()
 " Ultisnip
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsEditSplit="vertical"
