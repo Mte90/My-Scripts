@@ -312,10 +312,11 @@ let g:startify_padding_left = 5
 let g:rooter_patterns = ['.git/']
 let g:rooter_use_lcd = 1
 let g:rooter_resolve_links = 1
+let g:rooter_silent_chdir = 1
 " deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_completion_start_length = 1
-let g:deoplete#skip_chars = ['(', ')', '<', '>', '$']
+let g:deoplete#skip_chars = ['(', ')', '<', '>']
 let g:deoplete#tag#cache_limit_size = 800000
 "  deoplete tab-complete
 let g:deoplete#file#enable_buffer_path = 1
@@ -330,9 +331,7 @@ let g:deoplete#omni_patterns = {}
 let g:deoplete#sources = {}
 let g:deoplete#sources#padawan#add_parentheses = 1
 let g:deoplete#sources#padawan#auto_update = 1
-let g:deoplete#sources#padawan#server_addr = 'http://127.0.0.1:15155'
-let g:deoplete#sources#padawan#log_file = "/tmp/padawan-server.log"
-let g:deoplete#sources.php = ['ultisnips', 'padawan', 'buffer']
+let g:deoplete#sources.php = ['ultisnips', 'padawan', 'buffer', 'omni']
 let g:deoplete#delimiters = ['/', '.', '::', ':', '#', '->']
 let g:deoplete_ignore_sources = {}
 let g:deoplete_ignore_sources.html = ['syntax']
@@ -351,6 +350,8 @@ let g:deoplete#omni#input_patterns.scss = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
 let g:deoplete#omni#input_patterns.sass = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
 let g:deoplete#omni#input_patterns.python = ''
 let g:deoplete#omni#input_patterns.javascript = ''
+" Close the documentation window when completion is done
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 " GutenTags
 let g:gutentags_enabled                  = 1
 let g:gutentags_generate_on_missing      = 1
