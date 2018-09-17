@@ -64,6 +64,7 @@ set softtabstop=4    " Number of spaces per Tab
 set expandtab
 " Auto-indent new lines
 set autoindent
+set pumheight = 15
 " Set the file path as pwd
 set autochdir
 " Set global replacement as the default
@@ -331,7 +332,7 @@ let g:deoplete#omni_patterns = {}
 let g:deoplete#sources = {}
 let g:deoplete#sources#padawan#add_parentheses = 1
 let g:deoplete#sources#padawan#auto_update = 1
-let g:deoplete#sources.php = ['ultisnips', 'padawan', 'buffer', 'omni']
+let g:deoplete#sources.php = ['ultisnips', 'buffer', 'padawan', 'omni']
 let g:deoplete#delimiters = ['/', '.', '::', ':', '#', '->']
 let g:deoplete_ignore_sources = {}
 let g:deoplete_ignore_sources.html = ['syntax']
