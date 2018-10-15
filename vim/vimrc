@@ -64,7 +64,7 @@ set softtabstop=4    " Number of spaces per Tab
 set expandtab
 " Auto-indent new lines
 set autoindent
-set pumheight = 15
+set pumheight=15
 " Set the file path as pwd
 set autochdir
 " Set global replacement as the default
@@ -114,6 +114,8 @@ call vundle#begin()
     Plugin 'nathanaelkane/vim-indent-guides'
     " Folding fast is important
     Plugin 'Konfekt/FastFold'
+    " Remove trailing whitespaces
+    Plugin 'vim-scripts/DeleteTrailingWhitespace'
     " Improve scrolloff area
     Plugin 'drzel/vim-scroll-off-fraction'
     " Underlines the words under your cursor
@@ -306,7 +308,7 @@ let g:startify_lists = [
           \ { 'type': 'bookmarks', 'header': ['   Bookmarks']   },
           \ { 'type': 'commands',  'header': ['   Commands']    },
 \ ]
-let g:startify_custom_header = map(split(system('fortune | cowsay -W 70 -f eyes'), '\n'), '" ". v:val')
+let g:startify_custom_header = map(split(system('fortune | cowsay -W 90 -f eyes'), '\n'), '" ". v:val')
 let g:startify_files_number = 5
 let g:startify_padding_left = 5
 " Find root
@@ -316,13 +318,12 @@ let g:rooter_resolve_links = 1
 let g:rooter_silent_chdir = 1
 " deoplete
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#auto_completion_start_length = 1
+let g:deoplete#min_pattern_length = 1
 let g:deoplete#skip_chars = ['(', ')', '<', '>']
 let g:deoplete#tag#cache_limit_size = 800000
 "  deoplete tab-complete
 let g:deoplete#file#enable_buffer_path = 1
 "  delay for auto complete and refresh
-let g:deoplete#auto_complete_delay= 75
 let g:deoplete#auto_refresh_delay= 5
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#enable_camel_case = 1
@@ -486,6 +487,7 @@ let g:PHP_autoformatcomment = 1
 let g:indent_guides_guide_size = 1
 let g:indent_guides_color_change_percent = 3
 let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'startify']
 " Nerdcommenter for... better comments
 let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
