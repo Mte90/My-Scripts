@@ -38,6 +38,8 @@ set nobackup
 set nowritebackup
 set noswapfile
 set hidden
+set completefunc=LanguageClient#complete
+set completeopt=menu,noinsert
 " Statusline
 set laststatus=2
 " Tabbar
@@ -107,7 +109,7 @@ call vundle#begin()
     " Better terminal detection
     Plugin 'wincent/terminus'
     " Indentation is very helpful
-    Plugin 'noscript/vim-indent-guides'
+    Plugin 'Yggdroot/indentLine'
     " Folding fast is important
     Plugin 'Konfekt/FastFold'
     " Remove trailing whitespaces
@@ -140,8 +142,7 @@ call vundle#begin()
     " markdown
     Plugin 'plasticboy/vim-markdown'
     " PHP autocompletion engine and tools
-    Plugin 'padawan-php/deoplete-padawan'
-    Plugin 'padawan-php/padawan.vim'
+    Plugin 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
     " php doc autocompletion
     Plugin 'tobyS/vmustache' | Plugin 'tobyS/pdv'
     " object view
@@ -327,9 +328,7 @@ let g:deoplete#enable_refresh_always = 1
 "  Other stuff
 let g:deoplete#omni_patterns = {}
 let g:deoplete#sources = {}
-let g:deoplete#sources#padawan#add_parentheses = 1
-let g:deoplete#sources#padawan#auto_update = 1
-let g:deoplete#sources.php = ['ultisnips', 'buffer', 'padawan', 'omni']
+let g:deoplete#sources.php = ['ultisnips', 'buffer', 'omni']
 let g:deoplete#delimiters = ['/', '.', '::', ':', '#', '->']
 let g:deoplete_ignore_sources = {}
 let g:deoplete_ignore_sources.html = ['syntax']
@@ -433,11 +432,14 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 let g:phpactorOmniError = v:true
 " PhpDoc
 let g:pdv_template_dir = $HOME .'/.vim/bundle/pdv/templates_snip'
-" Padawan stuff
-let g:padawan#cli = 'padawan'
-let g:padawan#server_command = 'padawan-server'
-:call padawan#StopServer()
-:call padawan#StartServer()
+" Autocomplete stuff
+let g:LanguageClient_serverCommands = {
+    \ 'php': ['php', '/opt/php-language-server/bin/php-language-server.php'],
+    \ }
+let g:LanguageClient_rootMarkers = {
+        \ 'js': ['package.json', '.git'],
+        \ 'php': ['composer.json', '.git'],
+\ }
 " Ultisnip
 let g:UltiSnipsExpandTrigger='<tab>'
 let g:UltiSnipsEditSplit='vertical'
@@ -480,10 +482,8 @@ let g:ale_completion_enabled = 1
 " php
 let g:PHP_autoformatcomment = 1
 " Indent lines
-let g:indent_guides_guide_size = 1
-let g:indent_guides_color_change_percent = 3
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'startify']
+let g:indentLine_fileTypeExclude = ['help', 'nerdtree', 'startify']
+let g:indentLine_char = '┊'
 " Nerdcommenter for... better comments
 let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
@@ -533,7 +533,8 @@ map <esc> :noh<cr>
 " Fold code open/close with click
 nmap <expr> <2-LeftMouse> 'za'
 " Deoplete
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 " Select all
 nmap <C-a> GVgg
 " Search in the project files
@@ -565,6 +566,9 @@ nmap <silent> <C-q> <Plug>(ale_fix)
 nmap <C-d> <plug>NERDCommenterToggle<CR>
 " Append ; to the end of the line -> CTRL+B
 map <C-b> :call setline('.', getline('.') . ';')<CR>
+" LanguageServer
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> G :call LanguageClient#textDocument_hover()<CR>
 " Granular undo
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
