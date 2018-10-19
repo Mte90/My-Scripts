@@ -27,7 +27,7 @@ set hlsearch
 set incsearch
 set cursorline            " Color the cursorline
 set undolevels=2000       " Number of undo levels
-set backspace=indent,eol,start  " Backspace behaviour
+set backspace=indent,eol,start  " Intuitive backspacing in insert mode
 set ignorecase
 set smartcase
 set infercase       " Adjust case in insert completion mode
@@ -48,7 +48,6 @@ set updatetime=250
 " Behaviour
 set nostartofline               " Cursor in same column for few commands
 set whichwrap+=h,l,<,>,[,],~    " Move to following line on certain keys
-set backspace=indent,eol,start  " Intuitive backspacing in insert mode
 set showfulltag                 " Show tag and tidy search in completion
 set noshowmode          " Don't show mode in cmd window
 set shortmess=aoOTI     " Shorten messages and don't show intro
@@ -62,8 +61,6 @@ set shiftwidth=4     " Number of auto-indent spaces
 set smarttab         " Enable smart-tabs
 set softtabstop=4    " Number of spaces per Tab
 set expandtab
-" Auto-indent new lines
-set autoindent
 set pumheight=15
 " Set the file path as pwd
 set autochdir
@@ -81,15 +78,14 @@ set wildoptions=tagfile
 set wildignorecase
 set wildignore+=*.so
 set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
-set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**
+set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.log,**/tmp/**
 set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
 set wildignore+=__pycache__,*.egg-info
 set wildignore+=*.o,*.out,*.obj,*.rbc,*.rbo,*.class,*.gem
-set wildignore+=*.gif,*.jpg,*.png,*.log
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
 set wildignore+=*.swp,*~,._*,*/vendor/cache/*,*/.sass-cache/*
 set wildignore+=*/public/assets/*,*/tmp/cache/assets/*/sass/*
-set wildignore+=.DS_Store
+set wildignore+=*DS_Store*
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -111,7 +107,7 @@ call vundle#begin()
     " Better terminal detection
     Plugin 'wincent/terminus'
     " Indentation is very helpful
-    Plugin 'nathanaelkane/vim-indent-guides'
+    Plugin 'noscript/vim-indent-guides'
     " Folding fast is important
     Plugin 'Konfekt/FastFold'
     " Remove trailing whitespaces
@@ -245,13 +241,13 @@ augroup END
 " nerdtree configuration
 function! NERDTreeToggleInCurDir()
   " If NERDTree is open in the current buffer
-  if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
-    exe ":NERDTreeClose"
+  if (exists('t:NERDTreeBufName') && bufwinnr(t:NERDTreeBufName) != -1)
+    exe ':NERDTreeClose'
   else
-    if (expand("%:t") != '')
-      exe ":NERDTreeFind"
+    if (expand('%:t') != '')
+      exe ':NERDTreeFind'
     else
-      exe ":NERDTreeToggle"
+      exe ':NERDTreeToggle'
     endif
   endif
 endfunction
@@ -369,8 +365,8 @@ let g:gutentags_file_list_command = {
 \ }
 let g:gutentags_ctags_exclude = ['*lock', '*.json', '*.xml', '*.yml',
                             \ '*.phar', '*.ini', '*.rst', '*.md',
-                            \ '*vendor/*/test*', "*lib/**",
-                            \ "*vendor/**", "*tests*",
+                            \ '*vendor/*/test*', '*lib/**',
+                            \ '*vendor/**', '*tests*',
                             \ '*var/cache*', '*var/log*'
 \ ]
 let g:gutentags_cache_dir = '~/.vim/tags/'
@@ -436,15 +432,15 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 " PhpActor
 let g:phpactorOmniError = v:true
 " PhpDoc
-let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
+let g:pdv_template_dir = $HOME .'/.vim/bundle/pdv/templates_snip'
 " Padawan stuff
 let g:padawan#cli = 'padawan'
 let g:padawan#server_command = 'padawan-server'
 :call padawan#StopServer()
 :call padawan#StartServer()
 " Ultisnip
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsExpandTrigger='<tab>'
+let g:UltiSnipsEditSplit='vertical'
 " JS smart complete
 let g:vimjs#smartcomplete = 1
 " Ale linting (installed on system: phpmd, phpcs, coffeelint, sass-lint, htmlhint, prettier)
@@ -509,7 +505,7 @@ let g:tagbar_type_php  = {
     \ ]
 \ }
 fun! s:Phpcbf() abort
-    let out = system("phpcbf -p -d memory_limit=512M --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml ".expand('%:'))
+    let out = system('phpcbf -p -d memory_limit=512M --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml '.expand('%:'))
 endfun
 augroup PHP
   autocmd!
