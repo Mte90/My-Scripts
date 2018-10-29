@@ -162,6 +162,21 @@ function vvv-debug(){
     multitail -cS php -m 600 /var/www/VVV/www/$1/htdocs/wp-content/debug.log;
 }
 
+function git-fork() {
+    url=$1
+    url=${url%/}
+    echo "$url download in progress"
+    git clone git@github.com:$url &> /dev/null
+    user=$(echo "$url" | awk -F/ '{print $1}')
+    repo=$(echo "$url" | awk -F/ '{print $NF}')
+    cd $repo
+    remote=$(curl -s "https://api.github.com/repos/$user/$repo" | jq -r '.parent.clone_url' | tail -c +20)
+    if [ "$remote" != "" ]; then
+        echo "$remote download in progress"
+        git remote add upstream "git@github.com:$remote" &> /dev/null
+        git fetch --all &> /dev/null
+    fi
+}
 
 # https://github.com/github/hub
 if [ -f /hub.bash_completion ]; then
