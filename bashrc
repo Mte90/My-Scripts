@@ -123,7 +123,7 @@ fi
 alias casa='cd /home/mte90/Desktop'
 alias www='cd /var/www'
 alias vvv='cd /var/www/VVV/www'
-alias wpp='cd ./public_html/src/wp-content/plugins 2>/dev/null;cd ./htdocs/wp-content/plugins 2>/dev/null;cd ./wp-content/plugins 2>/dev/null'
+alias wpp='cd ./public_html/build/wp-content/plugins 2>/dev/null;cd ./htdocs/wp-content/plugins 2>/dev/null;cd ./wp-content/plugins 2>/dev/null'
 alias wpt='cd ./htdocs/wp-content/themes 2>/dev/null;cd ./wp-content/themes 2>/dev/null'
 # Misc
 alias biggest='BLOCKSIZE=1048576; du -x -h | sort -nr | head -10'
@@ -165,15 +165,16 @@ function vvv-debug(){
 function git-fork() {
     url=$1
     url=${url%/}
+    url=$(echo $url | sed 's/.git//g' | sed 's/git\@//g' | sed 's/github.com\://g')
     echo "$url download in progress"
-    git clone git@github.com:$url &> /dev/null
+    git clone git@github.com:$url.git &> /dev/null
     user=$(echo "$url" | awk -F/ '{print $1}')
     repo=$(echo "$url" | awk -F/ '{print $NF}')
     cd $repo
     remote=$(curl -s "https://api.github.com/repos/$user/$repo" | jq -r '.parent.clone_url' | tail -c +20)
     if [ "$remote" != "" ]; then
         echo "$remote download in progress"
-        git remote add upstream "git@github.com:$remote" &> /dev/null
+        git remote add upstream "git@github.com:$remote.git" &> /dev/null
         git fetch --all &> /dev/null
     fi
 }
