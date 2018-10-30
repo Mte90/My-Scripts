@@ -174,7 +174,7 @@ function git-fork() {
     remote=$(curl -s "https://api.github.com/repos/$user/$repo" | jq -r '.parent.clone_url' | tail -c +20)
     if [ "$remote" != "" ]; then
         echo "$remote download in progress"
-        git remote add upstream "git@github.com:$remote.git" &> /dev/null
+        git remote add upstream "git@github.com:$remote" &> /dev/null
         git fetch --all &> /dev/null
     fi
 }
