@@ -192,7 +192,7 @@ call vundle#begin()
     " Comments
     Plugin 'scrooloose/nerdcommenter'
     " highlights which characters to target
-    Plugin 'bradford-smith94/quick-scope'
+    Plugin 'unblevable/quick-scope'
     " WordPress
     Plugin 'salcode/vim-wordpress-dict'
     Plugin 'sudar/vim-wordpress-snippets'
