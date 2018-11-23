@@ -369,7 +369,7 @@ let g:gutentags_ctags_exclude = ['*lock', '*.json', '*.xml', '*.yml',
                             \ '*var/cache*', '*var/log*'
 \ ]
 let g:gutentags_cache_dir = '~/.vim/tags/'
-let g:gutentags_project_root = ['/var/www/VVV/www/']
+let g:gutentags_project_root = ['/var/www/VVV/www/', '/home/mte90/Desktop/VVV/www/']
 " A better line
 let g:lightline_gitdiff#indicator_added = '+'
 let g:lightline_gitdiff#indicator_deleted = '-'
