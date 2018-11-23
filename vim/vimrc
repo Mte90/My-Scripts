@@ -447,7 +447,7 @@ let g:ale_php_phpmd_ruleset = 'cleancode,codesize,design,naming,unusedcode'
 let g:ale_linters = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'bash': ['shellcheck'],
-\   'coffee': ['coffelint'],
+\   'coffee': ['coffeelint'],
 \   'css': ['prettier'],
 \   'html': ['htmlhint'],
 \   'javascript': ['eslint'],
@@ -459,7 +459,7 @@ let g:ale_linters = {
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'bash': ['shellcheck'],
-\   'coffee': ['coffelint'],
+\   'coffee': ['coffeelint'],
 \   'css': ['prettier'],
 \   'html': ['htmlhint'],
 \   'javascript': ['eslint', 'prettier'],
