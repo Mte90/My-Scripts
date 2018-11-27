@@ -141,8 +141,6 @@ call vundle#begin()
     Plugin 'sniphpets/sniphpets-common'
     " markdown
     Plugin 'plasticboy/vim-markdown'
-    " PHP autocompletion engine and tools
-    Plugin 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
     " php doc autocompletion
     Plugin 'tobyS/vmustache' | Plugin 'tobyS/pdv'
     " object view
@@ -328,14 +326,13 @@ let g:deoplete#enable_refresh_always = 1
 "  Other stuff
 let g:deoplete#omni_patterns = {}
 let g:deoplete#sources = {}
-let g:deoplete#sources.php = ['ultisnips', 'buffer', 'omni']
+let g:deoplete#sources.php = ['ultisnips', 'buffer', 'omni', 'LanguageServer']
 let g:deoplete#delimiters = ['/', '.', '::', ':', '#', '->']
 let g:deoplete_ignore_sources = {}
 let g:deoplete_ignore_sources.html = ['syntax']
 let g:deoplete#omni#functions = get(g:, 'deoplete#omni#functions', {})
 let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
 let g:deoplete#omni#functions.html = 'htmlcomplete#CompleteTags'
-let g:deoplete#omni#functions.markdown = 'htmlcomplete#CompleteTags'
 let g:deoplete#omni_patterns = get(g:, 'deoplete#omni_patterns', {})
 let g:deoplete#omni_patterns.html = '<[^>]*'
 let g:deoplete#omni_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
@@ -432,10 +429,6 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 let g:phpactorOmniError = v:true
 " PhpDoc
 let g:pdv_template_dir = $HOME .'/.vim/bundle/pdv/templates_snip'
-" Autocomplete stuff
-let g:LanguageClient_serverCommands = {
-    \ 'php': ['php', '/opt/php-language-server/bin/php-language-server.php'],
-    \ }
 " Ultisnip
 let g:UltiSnipsExpandTrigger='<tab>'
 let g:UltiSnipsEditSplit='vertical'
@@ -444,6 +437,7 @@ let g:vimjs#smartcomplete = 1
 " Ale linting (installed on system: phpmd, phpcs, coffeelint, sass-lint, htmlhint, prettier)
 let g:ale_php_phpcs_standard  = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
 let g:ale_php_phpmd_ruleset = 'cleancode,codesize,design,naming,unusedcode'
+let g:ale_php_langserver_executable = '/opt/php-language-server/bin/php-language-server.php'
 let g:ale_linters = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'bash': ['shellcheck'],
@@ -452,7 +446,7 @@ let g:ale_linters = {
 \   'html': ['htmlhint'],
 \   'javascript': ['eslint'],
 \   'markdown': ['remark-lint'],
-\   'php': ['phpcs', 'phpmd'],
+\   'php': ['phpcs', 'phpmd', 'langserver'],
 \   'sass': ['sass-lint'],
 \   'scss': ['sass-lint'],
 \}
@@ -564,6 +558,7 @@ nmap <C-d> <plug>NERDCommenterToggle<CR>
 map <C-b> :call setline('.', getline('.') . ';')<CR>
 " LanguageServer
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> G :call LanguageClient#textDocument_hover()<CR>
 " Granular undo
 inoremap <c-u> <c-g>u<c-u>
