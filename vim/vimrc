@@ -38,7 +38,6 @@ set nobackup
 set nowritebackup
 set noswapfile
 set hidden
-set completefunc=LanguageClient#complete
 set completeopt=menu,noinsert
 " Statusline
 set laststatus=2
@@ -159,6 +158,8 @@ call vundle#begin()
     Plugin 'macthecadillac/lightline-gitdiff'
     " Tags are very important
     Plugin 'ludovicchabant/vim-gutentags'
+    " https://github.com/vim-php/phpctags/pull/82/files
+    Plugin 'vim-php/tagbar-phpctags.vim'
     " undo tree
     Plugin 'sjl/gundo.vim'
     " select text
@@ -326,7 +327,7 @@ let g:deoplete#enable_refresh_always = 1
 "  Other stuff
 let g:deoplete#omni_patterns = {}
 let g:deoplete#sources = {}
-let g:deoplete#sources.php = ['ultisnips', 'buffer', 'omni', 'LanguageServer']
+let g:deoplete#sources.php = ['ultisnips', 'buffer', 'omni', 'tag']
 let g:deoplete#delimiters = ['/', '.', '::', ':', '#', '->']
 let g:deoplete_ignore_sources = {}
 let g:deoplete_ignore_sources.html = ['syntax']
@@ -556,10 +557,6 @@ nmap <silent> <C-q> <Plug>(ale_fix)
 nmap <C-d> <plug>NERDCommenterToggle<CR>
 " Append ; to the end of the line -> CTRL+B
 map <C-b> :call setline('.', getline('.') . ';')<CR>
-" LanguageServer
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-nnoremap <silent> G :call LanguageClient#textDocument_hover()<CR>
 " Granular undo
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
