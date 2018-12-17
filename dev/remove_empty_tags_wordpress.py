@@ -10,4 +10,4 @@ with open('tags.json') as f:
     tags = json.load(f)
     for taxonomy in tags:
         if taxonomy['count'] == 0:
-            os.system("wp term delete " + str(taxonomy['term_id']))
+            os.system("wp term delete post_tag " + str(taxonomy['term_id']))
