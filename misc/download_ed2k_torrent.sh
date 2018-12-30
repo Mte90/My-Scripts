@@ -15,5 +15,7 @@ if ls ./*.emulecollection 1> /dev/null 2>&1; then
 fi
 
 if ls ./*.torrent 1> /dev/null 2>&1; then
-    yes | transmission-remote -a *.torrent --auth transmission:torrent
+    for i in *.torrent; do
+        yes | transmission-remote -a *.torrent --auth transmission:torrent
+    done
 fi
