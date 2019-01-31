@@ -526,8 +526,6 @@ nmap <expr> <2-LeftMouse> 'za'
 " Deoplete
 inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-" Select all
-nmap <C-a> GVgg
 " Search in the project files
 nmap <leader>f :Rg<space>
 " Open Folder tab current directory
@@ -563,14 +561,7 @@ inoremap <c-w> <c-g>u<c-w>
 inoremap <bs>  <c-g>u<bs>
 inoremap <del> <c-g>u<del>
 imap <Space> <Space><C-G>u
-" Standard hotkeys
-vnoremap <C-c> "+y
-vnoremap <D-c> "+y
-vnoremap <C-x> "+d
-vnoremap <D-x> "+d
-inoremap <C-v> <Esc>"+gpa
-inoremap <D-v> <Esc>"+gpa
-vnoremap <C-z> "u
+
 nmap <M-Right> :tabnext<CR>
 nmap <M-Left> :tabprevious<CR>
 nmap K <Plug>(devdocs-under-cursor)
