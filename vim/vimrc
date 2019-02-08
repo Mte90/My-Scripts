@@ -459,7 +459,7 @@ let g:ale_fixers = {
 \   'html': ['htmlhint'],
 \   'javascript': ['eslint', 'prettier'],
 \   'markdown': ['remark-lint'],
-\   'php': ['php-cs-fixer', 'phpmd', 'prettier'],
+\   'php': ['php_cs_fixer', 'phpmd', 'prettier'],
 \   'sass': ['sass-lint'],
 \   'scss': ['sass-lint'],
 \}
@@ -530,8 +530,6 @@ inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 nmap <leader>f :Rg<space>
 " Open Folder tab current directory
 nmap <leader>n :call NERDTreeToggleInCurDir()<CR>
-" Open folder tab
-nmap <C-p> :NERDTreeTabsToggle<CR>
 " To search on history with fuzzy
 nmap <leader>h :History<cr>
 " Object view
@@ -553,14 +551,14 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap)
 nmap <silent> <C-q> <Plug>(ale_fix)
 " Toggle comments
 nmap <C-d> <plug>NERDCommenterToggle<CR>
-" Append ; to the end of the line -> CTRL+B
-map <C-b> :call setline('.', getline('.') . ';')<CR>
+" Append ; to the end of the line -> Leader+B
+map <leader>b :call setline('.', getline('.') . ';')<CR>
 " Granular undo
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
-inoremap <bs>  <c-g>u<bs>
-inoremap <del> <c-g>u<del>
 imap <Space> <Space><C-G>u
+" V-Block replace
+vnoremap <leader>r :%s/\%V//g
 
 nmap <M-Right> :tabnext<CR>
 nmap <M-Left> :tabprevious<CR>
