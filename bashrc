@@ -225,3 +225,5 @@ export XDG_RUNTIME_DIR="/run/user/1000"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 export PATH=$PATH:/usr/local/sbin
+
+export GTK_USE_PORTAL=1
