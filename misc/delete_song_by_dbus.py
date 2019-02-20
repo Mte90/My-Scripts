@@ -13,7 +13,7 @@ metadata = player.Get('org.mpris.MediaPlayer2.Player', 'Metadata', dbus_interfac
 
 path  = unquote(metadata['xesam:url']).replace('file://','')
 
-if "mp4" not in path or "avi" not in path:
+if ".mp4" not in path or ".avi" not in path:
     os.remove(path)
 
 interface.Next()
