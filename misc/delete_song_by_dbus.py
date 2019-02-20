@@ -11,6 +11,9 @@ player = session_bus.get_object('org.mpris.MediaPlayer2.vlc', '/org/mpris/MediaP
 interface = dbus.Interface(player, dbus_interface='org.mpris.MediaPlayer2.Player')
 metadata = player.Get('org.mpris.MediaPlayer2.Player', 'Metadata', dbus_interface='org.freedesktop.DBus.Properties')
 
-os.remove(unquote(metadata['xesam:url']).replace('file://',''))
+path  = unquote(metadata['xesam:url']).replace('file://','')
+
+if "mp4" not in path or "avi" not in path:
+    os.remove(path)
 
 interface.Next()
