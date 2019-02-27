@@ -72,7 +72,7 @@ set breakindent
 set showbreak=\\\\\
 set wildmenu
 " Set color
-set guifont=DroidSansMono\ Nerd\ Font\ 11
+set guifont=Droid\ Sans\ Mono\ Nerd\ Font:h10
 colorscheme valloric
 " exclusions from the autocomplete menu
 set wildoptions=tagfile
