@@ -294,6 +294,7 @@ let g:startify_bookmarks = [
             \ {'g': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
             \ {'w': '/var/www/VVV/www/woocommerce/htdocs/wp-content/plugins/woo-fiscalita-italiana/woo-fiscalita-italiana.php'},
             \ {'b': '/var/www/VVV/www/boilerplate/htdocs/wp-content/plugins/'},
+            \ {'d': '/var/www/VVV/www/daniele/htdocs/wp-content/themes/understrap'},
             \ {'o': '/home/mte90/Desktop/Prog/GlotDict/'},
             \ {'s': '/home/mte90/Desktop/Prog/Share-Backported/'}
 \]
