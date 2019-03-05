@@ -82,7 +82,7 @@ set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
 set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.log,**/tmp/**
 set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
 set wildignore+=__pycache__,*.egg-info
-set wildignore+=*.o,*.out,*.obj,*.rbc,*.rbo,*.class,*.gem
+set wildignore+=*.out,*.obj,*.gem,*.pyc
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
 set wildignore+=*.swp,*~,._*,*/vendor/cache/*,*/.sass-cache/*
 set wildignore+=*/public/assets/*,*/tmp/cache/assets/*/sass/*
@@ -294,7 +294,7 @@ let g:startify_bookmarks = [
             \ {'g': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
             \ {'w': '/var/www/VVV/www/woocommerce/htdocs/wp-content/plugins/woo-fiscalita-italiana/woo-fiscalita-italiana.php'},
             \ {'b': '/var/www/VVV/www/boilerplate/htdocs/wp-content/plugins/'},
-            \ {'d': '/var/www/VVV/www/daniele/htdocs/wp-content/themes/understrap'},
+            \ {'d': '/var/www/VVV/www/daniele/htdocs/wp-content/themes/understrap/'},
             \ {'o': '/home/mte90/Desktop/Prog/GlotDict/'},
             \ {'s': '/home/mte90/Desktop/Prog/Share-Backported/'}
 \]
@@ -357,8 +357,7 @@ let g:gutentags_define_advanced_commands = 1
 let g:gutentags_resolve_symlinks = 1
 let g:gutentags_file_list_command = {
       \   'markers': {
-      \     '.git': 'git ls-files',
-      \     '.hg': 'hg files',
+      \     '.git': 'git ls-files'
       \   },
 \ }
 let g:gutentags_ctags_exclude = ['*lock', '*.json', '*.xml', '*.yml',
@@ -440,6 +439,7 @@ let g:vimjs#smartcomplete = 1
 let g:ale_php_phpcs_standard  = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
 let g:ale_php_phpmd_ruleset = 'cleancode,codesize,design,naming,unusedcode'
 let g:ale_php_langserver_executable = '/opt/php-language-server/bin/php-language-server.php'
+let g:ale_php_langserver_use_global = 1
 let g:ale_linters = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'bash': ['shellcheck'],
@@ -457,7 +457,7 @@ let g:ale_fixers = {
 \   'bash': ['shellcheck'],
 \   'coffee': ['coffeelint'],
 \   'css': ['prettier'],
-\   'html': ['htmlhint'],
+\   'html': ['htmlhint', 'prettier'],
 \   'javascript': ['eslint', 'prettier'],
 \   'markdown': ['remark-lint'],
 \   'php': ['php_cs_fixer', 'phpmd', 'prettier'],
@@ -541,11 +541,7 @@ nmap <leader>x :Files<CR>
 map <silent> <C-w> <Plug>(expand_region_expand)
 map <silent> <C-r> <Plug>(expand_region_shrink)
 " Emmett
-if has('nvim')
-    let g:user_emmet_leader_key='<C-E>' " require also a comma ,
-else
-    let g:user_emmet_leader_key='<M-E>' " require also a comma ,
-endif
+let g:user_emmet_leader_key=',' " ,,
 " navigate between errors
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
