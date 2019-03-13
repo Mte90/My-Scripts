@@ -251,6 +251,16 @@ function! NERDTreeToggleInCurDir()
     endif
   endif
 endfunction
+fun! s:Phpcbf() abort
+    let out = system('phpcbf -p -d memory_limit=512M --standard=' . g:ale_php_phpcs_standard . ' '.expand('%:'))
+endfun
+function LoadNewPHPCS()
+    " Wait Rooter that set teh path
+    sleep 100m
+    if filereadable(getcwd() . '/phpcs.xml')
+        let g:ale_php_phpcs_standard = getcwd() . '/phpcs.xml'
+    endif
+endfunction
 "  don't display informations (type ? for help and so on)
 let g:NERDTreeMinimalUI = 1
 "  don't replace the native vim file explorer
@@ -294,7 +304,8 @@ let g:startify_bookmarks = [
             \ {'g': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
             \ {'w': '/var/www/VVV/www/woocommerce/htdocs/wp-content/plugins/woo-fiscalita-italiana/woo-fiscalita-italiana.php'},
             \ {'b': '/var/www/VVV/www/boilerplate/htdocs/wp-content/plugins/'},
-            \ {'d': '/var/www/VVV/www/daniele/htdocs/wp-content/themes/understrap/'},
+            \ {'d': '/var/www/VVV/www/daniele/htdocs/wp-content/themes/daniele.tech-2019/'},
+            \ {'c': '/var/www/VVV/www/cmlearning/htdocs/wp-content/plugins/cmlearning/'},
             \ {'o': '/home/mte90/Desktop/Prog/GlotDict/'},
             \ {'s': '/home/mte90/Desktop/Prog/Share-Backported/'}
 \]
@@ -496,13 +507,10 @@ let g:tagbar_type_php  = {
         \ 'v:variables:1'
     \ ]
 \ }
-fun! s:Phpcbf() abort
-    let out = system('phpcbf -p -d memory_limit=512M --standard=/home/mte90/Desktop/Prog/CodeatCS/codeat.xml '.expand('%:'))
-endfun
+
 augroup PHP
   autocmd!
-  " Check for PHP syntax errors after saving a file
-  autocmd BufWritePost *.php call <SID>Phpcbf()
+  autocmd BufReadPost,BufNewFile *.php call LoadNewPHPCS()
 augroup END
 augroup fmt
   autocmd!
