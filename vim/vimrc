@@ -105,8 +105,10 @@ call vundle#begin()
     Plugin 'Valloric/MatchTagAlways'
     " close tags on </
     Plugin 'docunext/closetag.vim'
-    " Better terminal detection
-    Plugin 'wincent/terminus'
+    if exists('g:GuiLoaded')
+        " Better terminal detection
+        Plugin 'wincent/terminus'
+    endif
     " Indentation is very helpful
     Plugin 'Yggdroot/indentLine'
     " Folding fast is important
