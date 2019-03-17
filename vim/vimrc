@@ -110,7 +110,7 @@ call vundle#begin()
     Plugin 'Valloric/MatchTagAlways'
     " close tags on </
     Plugin 'docunext/closetag.vim'
-    if exists('g:GuiLoaded')
+    if !exists('g:GuiLoaded')
         " Better terminal detection
         Plugin 'wincent/terminus'
     endif
@@ -231,6 +231,11 @@ call vundle#begin()
 call vundle#end()
 
 let g:sessions_dir = '~/.vim/sessions'
+let g:session_directory = '~/.vim/sessions'
+let g:session_autoload = 'no'
+let g:session_autosave = 'yes'
+let g:session_autosave_periodic = 1
+let g:session_silent = 1
 augroup default
     autocmd!
     " Add support of stuff on different files
@@ -258,11 +263,8 @@ function! NERDTreeToggleInCurDir()
     endif
   endif
 endfunction
-fun! s:Phpcbf() abort
-    let out = system('phpcbf -p -d memory_limit=512M --standard=' . g:ale_php_phpcs_standard . ' '.expand('%:'))
-endfun
 function LoadNewPHPCS()
-    " Wait Rooter that set teh path
+    " Wait Rooter that set the path
     sleep 100m
     if filereadable(getcwd() . '/phpcs.xml')
         let g:ale_php_phpcs_standard = getcwd() . '/phpcs.xml'
@@ -283,29 +285,23 @@ let g:NERDTreeDirArrowCollapsible = ''
 "  ignore files
 let NERDTreeIgnore = [
 	\ '\.git$', '\.hg$', '\.svn$', '\.stversions$', '\.pyc$', '\.svn$', '__init__.py', 'vendor',
-	\ '\.DS_Store$', '\.sass*$', '__pycache__$', '\.egg-info$', '\.cache$','composer','node_modules'
+	\ '\.DS_Store$', '\.sass*$', '__pycache__$', '\.egg-info$', '\.cache$','composer.lock','node_modules'
 \ ]
 " Webdevicons
 let g:webdevicons_enable = 1
 let g:webdevicons_enable_nerdtree = 1
 let entry_format = "'   ['. index .']'. repeat(' ', (3 - strlen(index)))"
 let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
-let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
+let g:WebDevIconsNerdTreeAfterGlyphPadding    = ' '
+let entry_format .= '. entry_path'
 if exists('*WebDevIconsGetFileTypeSymbol')  " support for vim-devicons
   let entry_format .= ". WebDevIconsGetFileTypeSymbol(entry_path) .' '.  entry_path"
-else
-  let entry_format .= '. entry_path'
 endif
 let g:fzf_action = {
   \ 'return': 'tab split',
 \}
 let $FZF_DEFAULT_COMMAND = 'ag --ignore-dir .sass-cache --ignore-dir _output --ignore-dir node_modules --ignore-dir vendor -g "" -U --nogroup --column --nocolor --php --html --css --js'
 
-let g:session_directory = '~/.vim/sessions'
-let g:session_autoload = 'no'
-let g:session_autosave = 'yes'
-let g:session_autosave_periodic = 1
-let g:session_silent = 1
 " Home tab
 let g:startify_bookmarks = [
             \ {'g': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
@@ -328,9 +324,8 @@ let g:startify_files_number = 5
 let g:startify_padding_left = 5
 " Find root
 let g:rooter_patterns = ['.git/']
-let g:rooter_use_lcd = 1
 let g:rooter_resolve_links = 1
-let g:rooter_silent_chdir = 1
+let g:rooter_silent_chdir  = 1
 " deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#min_pattern_length = 1
@@ -370,25 +365,26 @@ autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 let g:gutentags_enabled                  = 1
 let g:gutentags_generate_on_missing      = 1
 let g:gutentags_generate_on_new          = 1
-let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_write        = 1
 let g:gutentags_define_advanced_commands = 1
-let g:gutentags_resolve_symlinks = 1
+let g:gutentags_resolve_symlinks         = 1
 let g:gutentags_file_list_command = {
-      \   'markers': {
-      \     '.git': 'git ls-files'
-      \   },
+      \ 'markers': {
+      \   '.git': 'git ls-files'
+      \ },
 \ }
-let g:gutentags_ctags_exclude = ['*lock', '*.json', '*.xml', '*.yml',
-                            \ '*.phar', '*.ini', '*.rst', '*.md',
-                            \ '*vendor/*/test*', '*lib/**',
-                            \ '*vendor/**', '*tests*',
-                            \ '*var/cache*', '*var/log*'
+let g:gutentags_ctags_exclude = [
+      \ '*lock', '*.json', '*.xml', '*.yml',
+      \ '*.phar', '*.ini', '*.rst', '*.md',
+      \ '*vendor/*/test*', '*lib/**',
+      \ '*vendor/**', '*tests*',
+      \ '*var/cache*', '*var/log*'
 \ ]
 let g:gutentags_cache_dir = '~/.vim/tags/'
 let g:gutentags_project_root = ['/var/www/VVV/www/', '/home/mte90/Desktop/VVV/www/']
 " A better line
-let g:lightline_gitdiff#indicator_added = '+'
-let g:lightline_gitdiff#indicator_deleted = '-'
+let g:lightline_gitdiff#indicator_added    = '+'
+let g:lightline_gitdiff#indicator_deleted  = '-'
 let g:lightline_gitdiff#indicator_modified = '!'
 let g:lightline_gitdiff#min_winwidth = '70'
 let g:lightline = {
@@ -444,13 +440,11 @@ endfunction
 let g:user_emmet_install_global = 1
 " Editorconfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
-" PhpActor
-let g:phpactorOmniError = v:true
 " PhpDoc
 let g:pdv_template_dir = $HOME .'/.vim/bundle/pdv/templates_snip'
 " Ultisnip
 let g:UltiSnipsExpandTrigger='<tab>'
-let g:UltiSnipsEditSplit='vertical'
+let g:UltiSnipsEditSplit = 'vertical'
 " JS smart complete
 let g:vimjs#smartcomplete = 1
 " Ale linting (installed on system: phpmd, phpcs, coffeelint, sass-lint, htmlhint, prettier)
