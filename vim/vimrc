@@ -76,6 +76,10 @@ set guifont=Droid\ Sans\ Mono\ Nerd\ Font:h10
 colorscheme valloric
 " exclusions from the autocomplete menu
 set wildoptions=tagfile
+"if has('nvim')
+"    set pumblend=20
+"    set wildoptions+=pum
+"endif
 set wildignorecase
 set wildignore+=*.so
 set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
@@ -87,6 +91,7 @@ set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
 set wildignore+=*.swp,*~,._*,*/vendor/cache/*,*/.sass-cache/*
 set wildignore+=*/public/assets/*,*/tmp/cache/assets/*/sass/*
 set wildignore+=*DS_Store*
+
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -451,7 +456,7 @@ let g:vimjs#smartcomplete = 1
 " Ale linting (installed on system: phpmd, phpcs, coffeelint, sass-lint, htmlhint, prettier)
 let g:ale_php_phpcs_standard  = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
 let g:ale_php_phpmd_ruleset = 'cleancode,codesize,design,naming,unusedcode'
-let g:ale_php_langserver_executable = '/opt/php-language-server/bin/php-language-server.php'
+let g:ale_php_langserver_executable = 'php /opt/php-language-server/bin/php-language-server.php'
 let g:ale_php_langserver_use_global = 1
 let g:ale_linters = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
@@ -490,9 +495,11 @@ let g:PHP_autoformatcomment = 1
 let g:indentLine_fileTypeExclude = ['help', 'nerdtree', 'startify']
 let g:indentLine_char = '┊'
 " Nerdcommenter for... better comments
+let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
+let g:NERDCreateDefaultMappings = 0
 " Tagbar
 let g:tagbar_width = 30
 let g:tagbar_indent = 1
@@ -557,7 +564,7 @@ nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 nmap <silent> <C-q> <Plug>(ale_fix)
 " Toggle comments
-nmap <C-d> <plug>NERDCommenterToggle<CR>
+nmap <C-d> <Plug>NERDCommenterToggle('n', 'Toggle')<Cr>
 " Append ; to the end of the line -> Leader+B
 map <leader>b :call setline('.', getline('.') . ';')<CR>
 " Granular undo
