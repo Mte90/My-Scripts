@@ -33,7 +33,7 @@ set smartcase
 set infercase       " Adjust case in insert completion mode
 set wrapscan        " Searches wrap around the end of the file
 set showmatch       " Jump to matching bracket
-" Cleanup
+" Switch off automatic creation of backup files
 set nobackup
 set nowritebackup
 set noswapfile
@@ -57,19 +57,27 @@ set sidescrolloff=5     " Keep at least 5 lines left/right
 set noshowcmd           " Don't show command in status line
 " Enable indent
 set autoindent
+set autoindent                          " Uses indent from previous line
+set smartindent                         " Like cindent except lil' more clever
+set copyindent                          " Copy the structure of existing line's indent when autoin
 set sw=4
 set shiftwidth=4     " Number of auto-indent spaces
 set smarttab         " Enable smart-tabs
 set softtabstop=4    " Number of spaces per Tab
 set expandtab
 set pumheight=15
+set ruler
 " Set the file path as pwd
 set autochdir
 " Set global replacement as the default
 set gdefault
-" Better wrapping with indentation
+" Make every wrapped line visually indented.
 set breakindent
 set showbreak=\\\\\
+" Display extra whitespace.
+set list
+set listchars=tab:»·,trail:·,nbsp:·
+" automenu complete
 set wildmenu
 " Set color
 set guifont=Droid\ Sans\ Mono\ Nerd\ Font:h10
@@ -80,8 +88,10 @@ set wildoptions=tagfile
 "    set pumblend=20
 "    set wildoptions+=pum
 "endif
+" Ignore case when completing file names and directories.
 set wildignorecase
-set wildignore+=*.so
+" A list of file patterns to ignore when performing expansion and completion.
+set wildignore+=*.so,/min/*
 set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
 set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.log,**/tmp/**
 set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
@@ -102,11 +112,9 @@ call vundle#begin()
     " wrapper for git and display git diff in the left gutter
     Plugin 'tpope/vim-fugitive'
     Plugin 'airblade/vim-gitgutter'
-    " surrounding with whatever you want (paranthesis, quotes...)
-    Plugin 'tpope/vim-surround'
     " autoclose bracket and parenthesis when open
     Plugin 'Townk/vim-autoclose'
-    " Valloric/MatchTagAlways
+    " Always highlight enclosing tags
     Plugin 'Valloric/MatchTagAlways'
     " close tags on </
     Plugin 'docunext/closetag.vim'
@@ -195,6 +203,7 @@ call vundle#begin()
     Plugin '2072/vim-syntax-for-PHP.git'
     Plugin 'nishigori/vim-php-dictionary'
     Plugin '2072/PHP-Indenting-for-VIm'
+    Plugin 'captbaritone/better-indent-support-for-php-with-html'
     " Comments
     Plugin 'scrooloose/nerdcommenter'
     " highlights which characters to target
@@ -361,6 +370,12 @@ let g:deoplete#omni#input_patterns.python = ''
 let g:deoplete#omni#input_patterns.javascript = ''
 " Close the documentation window when completion is done
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'xhtml' : 1,
+    \ 'xml' : 1,
+    \ 'php' : 1,
+    \}
 " GutenTags
 let g:gutentags_enabled                  = 1
 let g:gutentags_generate_on_missing      = 1
@@ -383,10 +398,6 @@ let g:gutentags_ctags_exclude = [
 let g:gutentags_cache_dir = '~/.vim/tags/'
 let g:gutentags_project_root = ['/var/www/VVV/www/', '/home/mte90/Desktop/VVV/www/']
 " A better line
-let g:lightline_gitdiff#indicator_added    = '+'
-let g:lightline_gitdiff#indicator_deleted  = '-'
-let g:lightline_gitdiff#indicator_modified = '!'
-let g:lightline_gitdiff#min_winwidth = '70'
 let g:lightline = {
     \ 'colorscheme': 'tender',
     \ 'active': {
@@ -529,8 +540,13 @@ let g:qs_highlight_on_keys = ['f']
 let g:qs_max_chars=80
 
 " Hotkeys
+" Insert blank lines above and bellow current line, respectively.
+nnoremap [<Space> :<c-u>put! =repeat(nr2char(10), v:count1)<CR>
+nnoremap ]<Space> :<c-u>put =repeat(nr2char(10), v:count1)<CR>
 " Remove spaces at the end of lines
 nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
+" Save
+nnoremap <leader>x :w<CR>
 " Remove highlights
 map <esc> :noh<cr>
 " Fold code open/close with click
