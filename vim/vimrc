@@ -102,7 +102,6 @@ set wildignore+=*.swp,*~,._*,*/vendor/cache/*,*/.sass-cache/*
 set wildignore+=*/public/assets/*,*/tmp/cache/assets/*/sass/*
 set wildignore+=*DS_Store*
 
-
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
     " Package manager
@@ -179,11 +178,9 @@ call vundle#begin()
     Plugin 'sjl/gundo.vim'
     " select text
     Plugin 'terryma/vim-expand-region'
-    if !has('gui_running')
-        " fzf - poweful search
-        Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-        Plugin 'junegunn/fzf.vim'
-    endif
+    " fzf - poweful search
+    Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plugin 'junegunn/fzf.vim'
     " allow multisearch in current directory / multi replace as well
     Plugin 'wincent/ferret'
     " display the hexadecimal colors - useful for css and color config
@@ -239,6 +236,15 @@ call vundle#begin()
     Plugin 'rhysd/devdocs.vim'
 call vundle#end()
 
+if filereadable('/home/mte90/Desktop/Prog/My-Scripts/vim/vimrc')
+    source /home/mte90/Desktop/Prog/My-Scripts/vim/custom-nerdtree.vim
+    source /home/mte90/Desktop/Prog/My-Scripts/vim/custom-lightline.vim
+    source /home/mte90/Desktop/Prog/My-Scripts/vim/custom-deoplete.vim
+    source /home/mte90/Desktop/Prog/My-Scripts/vim/custom-ale.vim
+    source /home/mte90/Desktop/Prog/My-Scripts/vim/custom-gutentags.vim
+    source /home/mte90/Desktop/Prog/My-Scripts/vim/custom-startify.vim
+endif
+
 let g:sessions_dir = '~/.vim/sessions'
 let g:session_directory = '~/.vim/sessions'
 let g:session_autoload = 'no'
@@ -259,19 +265,6 @@ augroup default
     " Autosave session
     autocmd BufRead,BufReadPost,BufNewFile,BufFilePost * :SaveSession
 augroup END
-" nerdtree configuration
-function! NERDTreeToggleInCurDir()
-  " If NERDTree is open in the current buffer
-  if (exists('t:NERDTreeBufName') && bufwinnr(t:NERDTreeBufName) != -1)
-    exe ':NERDTreeClose'
-  else
-    if (expand('%:t') != '')
-      exe ':NERDTreeFind'
-    else
-      exe ':NERDTreeToggle'
-    endif
-  endif
-endfunction
 function LoadNewPHPCS()
     " Wait Rooter that set the path
     sleep 100m
@@ -279,174 +272,34 @@ function LoadNewPHPCS()
         let g:ale_php_phpcs_standard = getcwd() . '/phpcs.xml'
     endif
 endfunction
-"  don't display informations (type ? for help and so on)
-let g:NERDTreeMinimalUI = 1
-"  don't replace the native vim file explorer
-let g:NERDTreeHijackNetrw = 1
-let g:NERDTreeChDirMode = 2
-let g:NERDTreeAutoDeleteBuffer = 1
-let g:NERDTreeShowBookmarks = 0
-let g:NERDTreeCascadeOpenSingleChildDir = 1
-let g:NERDTreeWinSize=35
-"  change the arrows
-let g:NERDTreeDirArrowExpandable = ''
-let g:NERDTreeDirArrowCollapsible = ''
-"  ignore files
-let NERDTreeIgnore = [
-	\ '\.git$', '\.hg$', '\.svn$', '\.stversions$', '\.pyc$', '\.svn$', '__init__.py', 'vendor',
-	\ '\.DS_Store$', '\.sass*$', '__pycache__$', '\.egg-info$', '\.cache$','composer.lock','node_modules'
-\ ]
-" Webdevicons
-let g:webdevicons_enable = 1
-let g:webdevicons_enable_nerdtree = 1
-let entry_format = "'   ['. index .']'. repeat(' ', (3 - strlen(index)))"
-let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
-let g:WebDevIconsNerdTreeAfterGlyphPadding    = ' '
-let entry_format .= '. entry_path'
-if exists('*WebDevIconsGetFileTypeSymbol')  " support for vim-devicons
-  let entry_format .= ". WebDevIconsGetFileTypeSymbol(entry_path) .' '.  entry_path"
-endif
+augroup PHP
+  autocmd!
+  autocmd BufReadPost,BufNewFile *.php call LoadNewPHPCS()
+augroup END
+augroup fmt
+  autocmd!
+  " Autoformat in tabs
+  autocmd BufWritePre *.php :normal =G
+  autocmd BufWritePre *.js :normal =G
+  autocmd BufWritePre *.css :normal =G
+  autocmd BufWritePre *.sass :normal =G
+augroup END
+
 let g:fzf_action = {
   \ 'return': 'tab split',
 \}
 let $FZF_DEFAULT_COMMAND = 'ag --ignore-dir .sass-cache --ignore-dir _output --ignore-dir node_modules --ignore-dir vendor -g "" -U --nogroup --column --nocolor --php --html --css --js'
-
-" Home tab
-let g:startify_bookmarks = [
-            \ {'g': '/var/www/VVV/www/glossary/htdocs/wp-content/plugins/glossary/glossary.php'},
-            \ {'w': '/var/www/VVV/www/woocommerce/htdocs/wp-content/plugins/woo-fiscalita-italiana/woo-fiscalita-italiana.php'},
-            \ {'b': '/var/www/VVV/www/boilerplate/htdocs/wp-content/plugins/'},
-            \ {'d': '/var/www/VVV/www/daniele/htdocs/wp-content/themes/daniele.tech-2019/'},
-            \ {'c': '/var/www/VVV/www/cmlearning/htdocs/wp-content/plugins/cmlearning/'},
-            \ {'o': '/home/mte90/Desktop/Prog/GlotDict/'},
-            \ {'s': '/home/mte90/Desktop/Prog/Share-Backported/'}
-\]
-let g:startify_session_dir = '~/.vim/sessions'
-let g:startify_lists = [
-          \ { 'type': 'files',     'header': ['   Most Recent'] },
-          \ { 'type': 'sessions',  'header': ['   Sessions']    },
-          \ { 'type': 'bookmarks', 'header': ['   Bookmarks']   },
-          \ { 'type': 'commands',  'header': ['   Commands']    },
-\ ]
-let g:startify_custom_header = map(split(system('fortune | cowsay -W 90 -f eyes'), '\n'), '" ". v:val')
-let g:startify_files_number = 5
-let g:startify_padding_left = 5
 " Find root
 let g:rooter_patterns = ['.git/']
 let g:rooter_resolve_links = 1
 let g:rooter_silent_chdir  = 1
-" deoplete
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#min_pattern_length = 1
-let g:deoplete#skip_chars = ['(', ')', '<', '>']
-let g:deoplete#tag#cache_limit_size = 800000
-"  deoplete tab-complete
-let g:deoplete#file#enable_buffer_path = 1
-"  delay for auto complete and refresh
-let g:deoplete#auto_refresh_delay= 5
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#enable_camel_case = 1
-let g:deoplete#enable_refresh_always = 1
-"  Other stuff
-let g:deoplete#omni_patterns = {}
-let g:deoplete#sources = {}
-let g:deoplete#sources.php = ['ultisnips', 'buffer', 'omni', 'tag']
-let g:deoplete#delimiters = ['/', '.', '::', ':', '#', '->']
-let g:deoplete_ignore_sources = {}
-let g:deoplete_ignore_sources.html = ['syntax']
-let g:deoplete#omni#functions = get(g:, 'deoplete#omni#functions', {})
-let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
-let g:deoplete#omni#functions.html = 'htmlcomplete#CompleteTags'
-let g:deoplete#omni_patterns = get(g:, 'deoplete#omni_patterns', {})
-let g:deoplete#omni_patterns.html = '<[^>]*'
-let g:deoplete#omni_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-let g:deoplete#omni#input_patterns = get(g:, 'deoplete#omni#input_patterns', {})
-let g:deoplete#omni#input_patterns.xml = '<[^>]*'
-let g:deoplete#omni#input_patterns.md = '<[^>]*'
-let g:deoplete#omni#input_patterns.css  = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
-let g:deoplete#omni#input_patterns.scss = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
-let g:deoplete#omni#input_patterns.sass = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
-let g:deoplete#omni#input_patterns.python = ''
-let g:deoplete#omni#input_patterns.javascript = ''
-" Close the documentation window when completion is done
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+" Set MatchTagAlways support
 let g:mta_filetypes = {
     \ 'html' : 1,
     \ 'xhtml' : 1,
     \ 'xml' : 1,
     \ 'php' : 1,
     \}
-" GutenTags
-let g:gutentags_enabled                  = 1
-let g:gutentags_generate_on_missing      = 1
-let g:gutentags_generate_on_new          = 1
-let g:gutentags_generate_on_write        = 1
-let g:gutentags_define_advanced_commands = 1
-let g:gutentags_resolve_symlinks         = 1
-let g:gutentags_file_list_command = {
-      \ 'markers': {
-      \   '.git': 'git ls-files'
-      \ },
-\ }
-let g:gutentags_ctags_exclude = [
-      \ '*lock', '*.json', '*.xml', '*.yml',
-      \ '*.phar', '*.ini', '*.rst', '*.md',
-      \ '*vendor/*/test*', '*lib/**',
-      \ '*vendor/**', '*tests*',
-      \ '*var/cache*', '*var/log*'
-\ ]
-let g:gutentags_cache_dir = '~/.vim/tags/'
-let g:gutentags_project_root = ['/var/www/VVV/www/', '/home/mte90/Desktop/VVV/www/']
-" A better line
-let g:lightline = {
-    \ 'colorscheme': 'tender',
-    \ 'active': {
-    \   'left': [['mode', 'paste'], ['readonly', 'filename', 'modified'], ['tagbar', 'gitbranch', 'gitstatus']],
-    \   'right': [['lineinfo'], ['filetype'], [ 'linter_errors', 'linter_warnings', 'linter_ok' ]]
-    \ },
-    \ 'inactive': {
-    \   'left': [['mode', 'paste'], ['readonly', 'filename', 'modified'], ['tagbar', 'gitbranch', 'gitstatus']],
-    \   'right': [['lineinfo'], ['filetype']]
-    \ },
-    \ 'component': {
-    \   'lineinfo': '%l\%L [%p%%]',
-    \   'tagbar': '%{tagbar#currenttag("[%s]", "", "f")}',
-    \   'gitbranch': '%{&filetype=="help"?"":exists("*fugitive#head")?fugitive#head():""}',
-    \   'gitstatus': '%<%{lightline_gitdiff#get_status()}',
-    \ },
-    \ 'component_visible_condition': {
-    \   'gitstatus': 'lightline_gitdiff#get_status() !=# ""',
-    \ },
-    \ 'component_function': {
-    \   'filetype': 'MyFiletype',
-    \   'fileformat': 'MyFileformat',
-    \ },
-    \ 'component_expand': {
-    \   'linter_warnings': 'lightline#ale#warnings',
-    \   'linter_errors': 'lightline#ale#errors',
-    \   'linter_ok': 'lightline#ale#ok',
-    \ },
-    \ 'component_type': {
-    \   'linter_warnings': 'warning',
-    \   'linter_errors': 'error',
-    \ },
-    \ 'subseparator': {
-    \   'left': '', 'right': ''
-    \ },
-    \ 'separator': {
-    \   'left': '', 'right': ''
-    \ },
-    \ 'tabline': {
-    \   'left': [ ['tabs'] ],
-    \   'right': [ ['close'] ]
-    \ }
-\ }
-function! MyFiletype()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
-endfunction
-function! MyFileformat()
-  return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
-endfunction
 " Emmett
 let g:user_emmet_install_global = 1
 " Editorconfig
@@ -458,42 +311,6 @@ let g:UltiSnipsExpandTrigger='<tab>'
 let g:UltiSnipsEditSplit = 'vertical'
 " JS smart complete
 let g:vimjs#smartcomplete = 1
-" Ale linting (installed on system: phpmd, phpcs, coffeelint, sass-lint, htmlhint, prettier)
-let g:ale_php_phpcs_standard  = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
-let g:ale_php_phpmd_ruleset = '/home/mte90/Desktop/Prog/CodeatCS/codeat-phpmd.xml'
-let g:ale_php_langserver_executable = 'php /opt/php-language-server/bin/php-language-server.php'
-let g:ale_php_langserver_use_global = 1
-let g:ale_linters = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'bash': ['shellcheck'],
-\   'coffee': ['coffeelint'],
-\   'css': ['prettier'],
-\   'html': ['htmlhint'],
-\   'javascript': ['eslint'],
-\   'markdown': ['remark-lint'],
-\   'php': ['phpcs', 'phpmd', 'langserver'],
-\   'sass': ['sass-lint'],
-\   'scss': ['sass-lint'],
-\}
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'bash': ['shellcheck'],
-\   'coffee': ['coffeelint'],
-\   'css': ['prettier'],
-\   'html': ['htmlhint', 'prettier'],
-\   'javascript': ['eslint', 'prettier'],
-\   'markdown': ['remark-lint'],
-\   'php': ['php_cs_fixer', 'phpmd', 'prettier'],
-\   'sass': ['sass-lint'],
-\   'scss': ['sass-lint'],
-\}
-let g:PHP_vintage_case_default_indent = 1
-" Sometimes phpcbf replace the content of the file with the output of the command with ale
-let g:ale_fix_on_save = 0
-let g:ale_sign_error = 'EE'
-let g:ale_sign_warning = 'WW'
-let g:ale_change_sign_column_color = 1
-let g:ale_completion_enabled = 1
 " php
 let g:PHP_autoformatcomment = 1
 " Indent lines
@@ -521,19 +338,6 @@ let g:tagbar_type_php  = {
         \ 'v:variables:1'
     \ ]
 \ }
-
-augroup PHP
-  autocmd!
-  autocmd BufReadPost,BufNewFile *.php call LoadNewPHPCS()
-augroup END
-augroup fmt
-  autocmd!
-  " Autoformat in tabs
-  autocmd BufWritePre *.php :normal =G
-  autocmd BufWritePre *.js :normal =G
-  autocmd BufWritePre *.css :normal =G
-  autocmd BufWritePre *.sass :normal =G
-augroup END
 let g:devdocs_open_cmd = 'firefox'
 " Trigger a highlight only when pressing f and F.
 let g:qs_highlight_on_keys = ['f']
@@ -547,17 +351,14 @@ nnoremap ]<Space> :<c-u>put =repeat(nr2char(10), v:count1)<CR>
 nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
 " Save
 nnoremap <leader>x :w<CR>
+" Open Folder tab current directory
+nmap <leader>n :call NERDTreeToggleInCurDir()<CR>
 " Remove highlights
 map <esc> :noh<cr>
 " Fold code open/close with click
 nmap <expr> <2-LeftMouse> 'za'
-" Deoplete
-inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 " Search in the project files
 nmap <leader>f :Rg<space>
-" Open Folder tab current directory
-nmap <leader>n :call NERDTreeToggleInCurDir()<CR>
 " To search on history with fuzzy
 nmap <leader>h :History<cr>
 " Object view
