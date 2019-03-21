@@ -194,6 +194,7 @@ call vundle#begin()
     Plugin 'wakatime/vim-wakatime'
     " Misc
     Plugin 'editorconfig/editorconfig-vim'
+    Plugin 'tommcdo/vim-lion'
     " PHP syntax
     Plugin 'StanAngeloff/php.vim'
     Plugin 'arnaud-lb/vim-php-namespace'
@@ -388,3 +389,10 @@ vnoremap <leader>r :%s/\%V//g
 nmap <M-Right> :tabnext<CR>
 nmap <M-Left> :tabprevious<CR>
 nmap K <Plug>(devdocs-under-cursor)
+" align by cursor
+nmap <leader>t glip=
+
+" \\\\ correct :W to :w #typo
+cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
+" \\\\ correct :Q to :q #typo
+cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))

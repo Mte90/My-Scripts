@@ -23,7 +23,7 @@ let g:ale_fixers = {
 \   'html': ['htmlhint', 'prettier'],
 \   'javascript': ['eslint', 'prettier'],
 \   'markdown': ['remark-lint'],
-\   'php': ['php_cs_fixer', 'phpmd', 'prettier'],
+\   'php': ['php_cs_fixer', 'prettier'],
 \   'sass': ['sass-lint'],
 \   'scss': ['sass-lint'],
 \}

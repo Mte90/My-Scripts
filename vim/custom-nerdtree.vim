@@ -38,3 +38,10 @@ let entry_format .= '. entry_path'
 if exists('*WebDevIconsGetFileTypeSymbol')  " support for vim-devicons
   let entry_format .= ". WebDevIconsGetFileTypeSymbol(entry_path) .' '.  entry_path"
 endif
+function! NERDTreeRefresh()
+    if &filetype == "nerdtree"
+        silent exe substitute(mapcheck("R"), "<CR>", "", "")
+    endif
+endfunction
+
+autocmd BufEnter * call NERDTreeRefresh()
