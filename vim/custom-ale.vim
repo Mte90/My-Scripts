@@ -1,6 +1,8 @@
 " Ale linting (installed on system: phpmd, phpcs, coffeelint, sass-lint, htmlhint, prettier)
 let g:ale_php_phpcs_standard  = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
+let g:ale_php_phpcbf_standard  = '/home/mte90/Desktop/Prog/CodeatCS/codeat.xml'
 let g:ale_php_phpmd_ruleset = '/home/mte90/Desktop/Prog/CodeatCS/codeat-phpmd.xml'
+let g:ale_php_cs_fixer_options = 'position_after_functions_and_oop_constructs=same'
 let g:ale_php_langserver_executable = 'php /opt/php-language-server/bin/php-language-server.php'
 let g:ale_php_langserver_use_global = 1
 let g:ale_linters = {
@@ -15,6 +17,7 @@ let g:ale_linters = {
 \   'sass': ['sass-lint'],
 \   'scss': ['sass-lint'],
 \}
+ " removed php_cs_fixer
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'bash': ['shellcheck'],
@@ -23,7 +26,7 @@ let g:ale_fixers = {
 \   'html': ['htmlhint', 'prettier'],
 \   'javascript': ['eslint', 'prettier'],
 \   'markdown': ['remark-lint'],
-\   'php': ['php_cs_fixer', 'prettier'],
+\   'php': ['phpcbf'],
 \   'sass': ['sass-lint'],
 \   'scss': ['sass-lint'],
 \}
