@@ -152,6 +152,9 @@ function mkcd(){ mkdir -p $@ && cd $_; }
 
 function vvv-debug(){
     log="/var/www/VVV/www/$1/htdocs/wp-content/debug.log"
+    if [ ! -f $log ]; then
+        log="/var/www/VVV/www/$1/public_html/wp-content/debug.log"
+    fi
     if [ -f $log ]; then
         actualsize=$(du -k $log | cut -f 1)
         if [ $actualsize -ge 300 ]; then
