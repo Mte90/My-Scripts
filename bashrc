@@ -155,14 +155,17 @@ function vvv-debug(){
     if [ ! -f $log ]; then
         log="/var/www/VVV/www/$1/public_html/wp-content/debug.log"
     fi
+    
     if [ -f $log ]; then
         actualsize=$(du -k $log | cut -f 1)
         if [ $actualsize -ge 300 ]; then
             rm $log;
         fi
+        echo "" > $log
+        multitail -cS php -m 600 $log;
+    else
+        echo "Log not found"
     fi
-    echo "" > $log
-    multitail -cS php -m 600 /var/www/VVV/www/$1/htdocs/wp-content/debug.log;
 }
 
 function git-fork() {
