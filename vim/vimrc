@@ -184,7 +184,7 @@ call vundle#begin()
     " allow multisearch in current directory / multi replace as well
     Plugin 'wincent/ferret'
     " display the hexadecimal colors - useful for css and color config
-    Plugin 'chrisbra/colorizer'
+    Plugin 'RRethy/vim-hexokinase'
     " Cool icons"
     Plugin 'ryanoasis/vim-devicons'
     " Report lint errors
