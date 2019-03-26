@@ -18,3 +18,4 @@ let g:startify_lists = [
 let g:startify_custom_header = map(split(system('fortune | cowsay -W 90 -f eyes'), '\n'), '" ". v:val')
 let g:startify_files_number = 5
 let g:startify_padding_left = 5 
+let g:startify_change_to_vcs_root = 1
