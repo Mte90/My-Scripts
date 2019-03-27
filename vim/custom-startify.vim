@@ -15,7 +15,27 @@ let g:startify_lists = [
           \ { 'type': 'bookmarks', 'header': ['   Bookmarks']   },
           \ { 'type': 'commands',  'header': ['   Commands']    },
 \ ]
-let g:startify_custom_header = map(split(system('fortune | cowsay -W 90 -f eyes'), '\n'), '" ". v:val')
+let g:startify_custom_header=[
+    \ '                          ',
+    \ '    ##############..... ##############     ',
+    \ '      ##############......##############   ',
+    \ '        ##########..........##########     ',
+    \ '        ##########........##########       ',
+    \ '        ##########.......##########        ',
+    \ '        ##########.....##########..        ',
+    \ '        ##########....##########.....      ',
+    \ '      ..##########..##########.........    ',
+    \ '    ....##########.#########.............  ',
+    \ '      ..################JJJ............    ',
+    \ '        ################.............      ',
+    \ '        ##############.JJJ.JJJJJJJJJJ      ',
+    \ '        ############...JJ...JJ..JJ  JJ     ',
+    \ '        ##########....JJ...JJ..JJ  JJ      ',
+    \ '        ########......JJJ..JJJ JJJ JJJ     ',
+    \ '        ######    .........                ',
+    \ '                .....                  ',
+    \ '                                       ',
+\ ]
 let g:startify_files_number = 5
 let g:startify_padding_left = 5 
 let g:startify_change_to_vcs_root = 1
