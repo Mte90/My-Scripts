@@ -123,7 +123,7 @@ fi
 alias casa='cd /home/mte90/Desktop'
 alias www='cd /var/www'
 alias vvv='cd /var/www/VVV/www'
-alias wpp='cd ./public_html/build/wp-content/plugins 2>/dev/null;cd ./htdocs/wp-content/plugins 2>/dev/null;cd ./wp-content/plugins 2>/dev/null'
+alias wpp='cd ./public_html/wp-content/plugins 2>/dev/null;cd ./public_html/build/wp-content/plugins 2>/dev/null;cd ./htdocs/wp-content/plugins 2>/dev/null;cd ./wp-content/plugins 2>/dev/null'
 alias wpt='cd ./htdocs/wp-content/themes 2>/dev/null;cd ./wp-content/themes 2>/dev/null'
 # Misc
 alias biggest='BLOCKSIZE=1048576; du -x -h | sort -nr | head -10'
