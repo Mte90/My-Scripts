@@ -114,7 +114,7 @@ call vundle#begin()
     " autoclose bracket and parenthesis when open
     Plugin 'Townk/vim-autoclose'
     " Always highlight enclosing tags
-    Plugin 'Valloric/MatchTagAlways'
+    Plugin 'andymass/vim-matchup'
     " close tags on </
     Plugin 'docunext/closetag.vim'
     if !exists('g:GuiLoaded')
@@ -294,13 +294,6 @@ let $FZF_DEFAULT_COMMAND = 'ag --ignore-dir .sass-cache --ignore-dir _output --i
 let g:rooter_patterns = ['.git/']
 let g:rooter_resolve_links = 1
 let g:rooter_silent_chdir  = 1
-" Set MatchTagAlways support
-let g:mta_filetypes = {
-    \ 'html' : 1,
-    \ 'xhtml' : 1,
-    \ 'xml' : 1,
-    \ 'php' : 1,
-    \}
 " Emmett
 let g:user_emmet_install_global = 1
 " Editorconfig
@@ -385,11 +378,20 @@ inoremap <c-w> <c-g>u<c-w>
 imap <Space> <Space><C-G>u
 " V-Block replace
 vnoremap <leader>r :%s/\%V//g
-
+" Move between panes/split with Ctrl
+map <silent> <C-Up> :wincmd k<CR>
+map <silent> <C-Down> :wincmd j<CR>
+map <silent> <C-Left> :wincmd h<CR>
+map <silent> <C-Right> :wincmd l<CR>
+nmap <silent> <C-Up> :wincmd k<CR>
+nmap <silent> <C-Down> :wincmd j<CR>
+nmap <silent> <C-Left> :wincmd h<CR>
+nmap <silent> <C-Right> :wincmd l<CR>
+" Move between tabs with Alt
 nmap <M-Right> :tabnext<CR>
 nmap <M-Left> :tabprevious<CR>
 nmap K <Plug>(devdocs-under-cursor)
-" align by cursor
+" Align by cursor with plugin
 nmap <leader>t glip=
 
 " \\\\ correct :W to :w #typo
