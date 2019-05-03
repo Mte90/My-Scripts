@@ -1,13 +1,12 @@
 #!/usr/bin/python3
+import sys, os, json, zipfile
 
 print("Browser Extension packager by Mte90")
 print("The only parameter required is the folder path!")
 
-import sys, os, json, zipfile
-
-def zipdir(path,name):
+def zipdir(path, name):
     zipf = zipfile.ZipFile(name, 'w', zipfile.ZIP_DEFLATED)
-    exclude_prefixes = ['__', '.', 'jshintrc','tests']  # list of exclusion prefixes
+    exclude_prefixes = ['__', '.', 'jshintrc', 'tests']  # list of exclusion prefixes
     exclude_suffixes = ['.xpi', '.zip', '.md']  # list of exclusion suffix
     for dirpath, dirnames, filenames in os.walk(path):
         # exclude all dirs/files starting/endings
@@ -24,6 +23,7 @@ def zipdir(path,name):
         for file_found in filenames:
             zipf.write(os.path.join(dirpath, file_found))
     zipf.close()
+
 
 if len(sys.argv) > 1 and os.path.isdir(sys.argv[1]):
     manifest = sys.argv[1] + '/manifest.json'
@@ -52,5 +52,3 @@ if len(sys.argv) > 1 and os.path.isdir(sys.argv[1]):
 else:
     print("Path not found")
     sys.exit()
-    
-
