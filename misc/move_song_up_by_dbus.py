@@ -14,8 +14,8 @@ metadata = player.Get('org.mpris.MediaPlayer2.Player', 'Metadata', dbus_interfac
 path  = unquote(metadata['xesam:url']).replace('file://','')
 
 if ".mp4" not in path or ".avi" not in path:
-    folder = os.path.abspath(os.path.join(path, os.pardir))
-#    parent = os.path.abspath(os.path.join(folder, os.pardir))
+    folder = os.path.abspath(os.path.join(path, os.pardir)) + '/'
+    folder = os.path.abspath(os.path.join(folder, os.pardir)) + '/'
     os.rename(path, folder + os.path.basename(path))
 
 interface.Next()
