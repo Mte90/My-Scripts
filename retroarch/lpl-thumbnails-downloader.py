@@ -58,7 +58,7 @@ def download_image(folder, console, game):
 
 
 console = get_console_name(args.playlist)
-folder = create_folders(console)
+folder = create_folders(os.path.splitext(os.path.basename(args.playlist))[0])
 print('Downloading ' + console + ' thumbnails')
 with open(args.playlist, "r") as read_file:
     data = json.load(read_file)
