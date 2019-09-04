@@ -23,16 +23,20 @@ def get_console_name(console):
 console = get_console_name(args.playlist)
 roms = {}
 
-print('Scanning ' + console + ' thumbnails')
+print('Scanning ' + console + ' roms')
 with open(args.playlist, "r") as read_file:
     data = json.load(read_file)
+    print(str(len(data['items'])) + ' roms in the playlist')
     if len(data['items']) > 0:
         for item in data['items']:
-            roms[item['path'].replace('/media/', args.remap)] = True
+            path = item['path'].replace('/media/', args.remap).split('#')
+            roms[path[0]] = True
             rom_folder = os.path.dirname(item['path'].replace('/media/', args.remap))
     else:
         print('Empty playlist.')
         exit
+
+print('Local folder ' + rom_folder)
 
 for r, d, f in os.walk(rom_folder):
     for file in f:
