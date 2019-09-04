@@ -39,7 +39,7 @@ def get_console_name(console):
 
 
 def download_image(folder, console, game):
-    repo = "https://raw.githubusercontent.com/libretro-thumbnails/" + urllib.parse.quote(console) + "/master/"
+    repo = "https://raw.githubusercontent.com/libretro-thumbnails/" + urllib.parse.quote(console.replace(' ','_')) + "/master/"
     print(' Downloaded ' + game + ' thumbnails')
     original_game = game + '.png'
     game = urllib.parse.quote(game + '.png')
