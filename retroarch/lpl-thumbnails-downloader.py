@@ -61,7 +61,7 @@ def download_image(folder, console, game):
         pass
     
     if thumbnail == 0:
-        print("Not found " + repo + 'Named_Boxarts/' + game)
+        print("Not found " + clean_game + ' at ' + repo + 'Named_Boxarts/' + game)
     else:
         print(' Downloaded ' + clean_game + ' thumbnails')
 
