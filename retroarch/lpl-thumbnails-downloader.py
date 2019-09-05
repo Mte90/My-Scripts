@@ -40,21 +40,30 @@ def get_console_name(console):
 
 def download_image(folder, console, game):
     repo = "https://raw.githubusercontent.com/libretro-thumbnails/" + urllib.parse.quote(console.replace(' ','_')) + "/master/"
-    print(' Downloaded ' + game + ' thumbnails')
+    clean_game = game
     original_game = game + '.png'
     game = urllib.parse.quote(game + '.png')
+    thumbnail = 0
     try:
         urllib.request.urlretrieve(repo + 'Named_Boxarts/' + game, folder + '/Named_Boxarts/' + original_game)
+        thumbnail += 1
     except:
         pass
     try:
         urllib.request.urlretrieve(repo + 'Named_Snaps/' + game, folder + '/Named_Snaps/' + original_game)
+        thumbnail += 1
     except:
         pass
     try:
         urllib.request.urlretrieve(repo + 'Named_Titles/' + game, folder + '/Named_Titles/' + original_game)
+        thumbnail += 1
     except:
         pass
+    
+    if thumbnail == 0:
+        print("Not found " + repo + 'Named_Boxarts/' + game)
+    else:
+        print(' Downloaded ' + clean_game + ' thumbnails')
 
 
 console = get_console_name(args.playlist)
