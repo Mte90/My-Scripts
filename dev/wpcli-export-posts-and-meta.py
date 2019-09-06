@@ -6,7 +6,7 @@ import subprocess
 
 if not os.path.exists('list.json'):
     print('Generating post list')
-    os.system('wp post list --post_type=post --post_status=publish --format=json > list.json')
+    os.system('wp post list --post_type=post --fields=ID,post_title,post_name,post_date,post_status,post_content --post_status=publish --format=json > list.json')
 
 new_list = []
 i = 0
