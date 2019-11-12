@@ -1,0 +1,5 @@
+# Block port outside localhost access
+/usr/sbin/iptables -A INPUT ! -s 127.0.0.1 -p tcp -m tcp --dport 9090 -j DROP
+/usr/sbin/iptables -A INPUT ! -s 127.0.0.1 -p tcp -m tcp --dport 9217 -j DROP
+/usr/sbin/iptables -A INPUT ! -s 127.0.0.1 -p tcp -m tcp --dport 9271 -j DROP
+/usr/sbin/iptables -A INPUT ! -s 127.0.0.1 -p tcp -m tcp --dport 9100 -j DROP 

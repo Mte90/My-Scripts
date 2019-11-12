@@ -6,7 +6,7 @@ print("The only parameter required is the folder path!")
 
 def zipdir(path, name):
     zipf = zipfile.ZipFile(name, 'w', zipfile.ZIP_DEFLATED)
-    exclude_prefixes = ['__', '.', 'jshintrc', 'tests']  # list of exclusion prefixes
+    exclude_prefixes = ['__', '.', 'LICENSE', 'tests']  # list of exclusion prefixes
     exclude_suffixes = ['.xpi', '.zip', '.md']  # list of exclusion suffix
     for dirpath, dirnames, filenames in os.walk(path):
         # exclude all dirs/files starting/endings
