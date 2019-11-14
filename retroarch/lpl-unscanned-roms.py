@@ -2,6 +2,7 @@
 import argparse
 import json
 import os
+import sys
 
 parser = argparse.ArgumentParser(description='Scan a thumbnail from a .lpl')
 parser.add_argument('--playlist', help='Playlist file', nargs='?', action='store', const='', default='')
@@ -10,7 +11,7 @@ args = parser.parse_args()
 
 if not os.path.exists(args.playlist):
     print(args.playlist + ' doesn\'t exists.')
-    exit
+    sys.exit()
 
 
 def get_console_name(console):
@@ -34,7 +35,7 @@ with open(args.playlist, "r") as read_file:
             rom_folder = os.path.dirname(item['path'].replace('/media/', args.remap))
     else:
         print('Empty playlist.')
-        exit
+        sys.exit()
 
 print('Local folder ' + rom_folder)
 

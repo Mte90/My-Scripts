@@ -7,7 +7,7 @@ def main():
     pattern = r'(build|ci|docs|feat|fix|perf|refactor|style|test|revert)(\([\w\-]+\))?:\s.*'
     commit = sys.argv[1]
     m = re.match(pattern, commit)
-    if m == None:
+    if m is None:
         print('')
         print("Conventional commit validation failed")
         print("  Commit types: build|ci|docs|feat|fix|perf|refactor|style|test|revert")

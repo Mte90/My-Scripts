@@ -4,6 +4,7 @@ import json
 import os
 import urllib.request
 import urllib.parse
+import sys
 
 parser = argparse.ArgumentParser(description='Download a thumbnail from a .lpl')
 parser.add_argument('--playlist', help='Playlist file', nargs='?', action='store', const='', default='')
@@ -11,7 +12,7 @@ args = parser.parse_args()
 
 if not os.path.exists(args.playlist):
     print(args.playlist + ' doesn\'t exists.')
-    exit
+    sys.exit()
 
 
 def create_folders(console):
@@ -59,7 +60,7 @@ def download_image(folder, console, game):
         thumbnail += 1
     except:
         pass
-    
+
     if thumbnail == 0:
         print("Not found " + clean_game + ' at ' + repo + 'Named_Boxarts/' + game)
     else:
