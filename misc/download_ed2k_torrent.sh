@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir /tmp/download
+mkdir -p /tmp/download
 cd /tmp/download
 
 # First download the assets to elaborate
@@ -11,6 +11,7 @@ cd ./amule
 
 # Put in queue
 if ls ./*.emulecollection 1> /dev/null 2>&1; then
+    awk 'NF' *.emulecollection
     ed2k -e *.emulecollection
 fi
 
