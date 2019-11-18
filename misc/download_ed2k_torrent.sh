@@ -1,5 +1,6 @@
 #!/bin/bash
 
+rm -fr /tmp/download
 mkdir -p /tmp/download
 cd /tmp/download
 
@@ -17,6 +18,11 @@ fi
 
 if ls ./*.torrent 1> /dev/null 2>&1; then
     for i in *.torrent; do
-        yes | transmission-remote -a *.torrent --auth transmission:torrent
+        yes | transmission-remote -a "$i" --auth transmission:transmission
     done
 fi
+
+for filename in ./*; do
+    [ -e "$filename" ] || continue
+    curl --header "Authorization: Basic token" -X DELETE "[your-url]/public.php/webdav/$filename"
+done
