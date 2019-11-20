@@ -77,4 +77,4 @@ with open(args.playlist, "r") as read_file:
             download_image(folder, console, item['label'])
     else:
         print('Empty playlist.')
-        exit
+        sys.exit(1)
