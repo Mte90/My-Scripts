@@ -4,7 +4,6 @@ import json
 import os
 import urllib.request
 import urllib.parse
-import sys
 
 parser = argparse.ArgumentParser(description='Download a thumbnail from a .lpl')
 parser.add_argument('--playlist', help='Playlist file', nargs='?', action='store', const='', default='')
@@ -12,7 +11,7 @@ args = parser.parse_args()
 
 if not os.path.exists(args.playlist):
     print(args.playlist + ' doesn\'t exists.')
-    sys.exit()
+    exit
 
 
 def create_folders(console):
@@ -40,6 +39,7 @@ def get_console_name(console):
 
 
 def download_image(folder, console, game):
+    game = game.replace('/', '_')
     repo = "https://raw.githubusercontent.com/libretro-thumbnails/" + urllib.parse.quote(console.replace(' ','_')) + "/master/"
     clean_game = game
     original_game = game + '.png'
@@ -60,11 +60,11 @@ def download_image(folder, console, game):
         thumbnail += 1
     except:
         pass
-
+    
     if thumbnail == 0:
-        print("Not found " + clean_game + ' at ' + repo + 'Named_Boxarts/' + game)
+        print(" Not found " + clean_game + ' at ' + repo + 'Named_Boxarts/' + game)
     else:
-        print(' Downloaded ' + clean_game + ' thumbnails')
+        print('  Downloaded ' + clean_game + ' thumbnails')
 
 
 console = get_console_name(args.playlist)
@@ -77,4 +77,4 @@ with open(args.playlist, "r") as read_file:
             download_image(folder, console, item['label'])
     else:
         print('Empty playlist.')
-        sys.exit(1)
+        exit
