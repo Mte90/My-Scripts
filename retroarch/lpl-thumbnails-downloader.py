@@ -43,7 +43,7 @@ def download_image(folder, console, game):
     repo = "https://raw.githubusercontent.com/libretro-thumbnails/" + urllib.parse.quote(console.replace(' ','_')) + "/master/"
     clean_game = game
     original_game = game + '.png'
-    game = urllib.parse.quote(game.replace('&','_') + '.png')
+    game = urllib.parse.quote(game.replace('&','_') + '.png').replace('%3A', '_')
     thumbnail = 0
     try:
         urllib.request.urlretrieve(repo + 'Named_Boxarts/' + game, folder + '/Named_Boxarts/' + original_game)
