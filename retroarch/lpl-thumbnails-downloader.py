@@ -60,7 +60,7 @@ def download_image(folder, console, game):
         thumbnail += 1
     except:
         pass
-    
+
     if thumbnail == 0:
         print(" Not found " + clean_game + ' at ' + repo + 'Named_Boxarts/' + game)
     else:
@@ -77,4 +77,4 @@ with open(args.playlist, "r") as read_file:
             download_image(folder, console, item['label'])
     else:
         print('Empty playlist.')
-        exit
+        sys.exit(1)
