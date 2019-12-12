@@ -2,6 +2,7 @@
 import argparse
 import json
 import os
+import sys
 
 parser = argparse.ArgumentParser(description='Scan a thumbnail from a .lpl')
 parser.add_argument('--playlist', help='Playlist file', nargs='?', action='store', const='', default='')
@@ -34,7 +35,7 @@ with open(args.playlist, "r") as read_file:
             rom_folder = os.path.dirname(item['path'].replace('/media/', args.remap))
     else:
         print('Empty playlist.')
-        exit
+        sys.exit()
 
 print('Local folder ' + rom_folder)
 
