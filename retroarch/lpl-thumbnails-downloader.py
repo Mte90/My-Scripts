@@ -5,6 +5,7 @@ import os
 import urllib.request
 import urllib.parse
 import sys
+import re
 
 parser = argparse.ArgumentParser(description='Download a thumbnail from a .lpl')
 parser.add_argument('--playlist', help='Playlist file', nargs='?', action='store', const='', default='')
@@ -39,7 +40,7 @@ def get_console_name(console):
     return console
 
 
-def download_image(folder, console, game):
+def download_image(folder, console, game, retry):
     repo = "https://raw.githubusercontent.com/libretro-thumbnails/" + urllib.parse.quote(console.replace(' ','_')) + "/master/"
     clean_game = game
     original_game = game + '.png'
@@ -63,8 +64,14 @@ def download_image(folder, console, game):
 
     if thumbnail == 0:
         print("Not found " + clean_game + ' at ' + repo + 'Named_Boxarts/' + game)
+        # Try with switching stuff inside parenthesis because the game can have different filename
+        if retry is False:
+            s = re.findall('\((.*?)\)', clean_game).split(', ')
+            try_game_name = s[1] + ', ' + s[0].replace(', ', '')
+            clean_game = clean_game.replace(s[0] + ', ' + s[1], try_game_name)
+            download_image(folder, console, clean_game, True)
     else:
-        print(' Downloaded ' + clean_game + ' thumbnails')
+        print(' Downloaded ' + clean_game + ' ' + thumbnail + ' thumbnails')
 
 
 console = get_console_name(args.playlist)
@@ -74,7 +81,7 @@ with open(args.playlist, "r") as read_file:
     data = json.load(read_file)
     if len(data['items']) > 0:
         for item in data['items']:
-            download_image(folder, console, item['label'])
+            download_image(folder, console, item['label'], False)
     else:
         print('Empty playlist.')
         sys.exit()
