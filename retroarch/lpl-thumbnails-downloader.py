@@ -44,7 +44,7 @@ def download_image(folder, console, game, retry):
     repo = "https://raw.githubusercontent.com/libretro-thumbnails/" + urllib.parse.quote(console.replace(' ','_')) + "/master/"
     clean_game = game
     original_game = game + '.png'
-    game = urllib.parse.quote(game.replace('&','_') + '.png')
+    game = urllib.parse.quote(game.replace('&','_').replace(':','_') + '.png')
     thumbnail = 0
     try:
         urllib.request.urlretrieve(repo + 'Named_Boxarts/' + game, folder + '/Named_Boxarts/' + original_game)
@@ -66,12 +66,13 @@ def download_image(folder, console, game, retry):
         print("Not found " + clean_game + ' at ' + repo + 'Named_Boxarts/' + game)
         # Try with switching stuff inside parenthesis because the game can have different filename
         if retry is False:
-            s = re.findall('\((.*?)\)', clean_game).split(', ')
-            try_game_name = s[1] + ', ' + s[0].replace(', ', '')
-            clean_game = clean_game.replace(s[0] + ', ' + s[1], try_game_name)
-            download_image(folder, console, clean_game, True)
+            s = re.findall('\((.*?)\)', clean_game)[0].split(', ')
+            if len(s) > 1:
+                try_game_name = s[1] + ', ' + s[0].replace(', ', '')
+                clean_game = clean_game.replace(s[0] + ', ' + s[1], try_game_name)
+                download_image(folder, console, clean_game, True)
     else:
-        print(' Downloaded ' + clean_game + ' ' + thumbnail + ' thumbnails')
+        print(' Downloaded ' + clean_game + ' ' + str(thumbnail) + ' thumbnails')
 
 
 console = get_console_name(args.playlist)
