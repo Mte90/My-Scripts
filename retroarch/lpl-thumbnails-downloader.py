@@ -13,7 +13,7 @@ args = parser.parse_args()
 
 if not os.path.exists(args.playlist):
     print(args.playlist + ' doesn\'t exists.')
-    exit
+    sys.exit(1)
 
 
 def create_folders(console):
@@ -43,8 +43,8 @@ def get_console_name(console):
 def download_image(folder, console, game, retry):
     repo = "https://raw.githubusercontent.com/libretro-thumbnails/" + urllib.parse.quote(console.replace(' ','_')) + "/master/"
     clean_game = game
-    original_game = game.replace('/','_').replace(':','_') + '.png'
-    game = urllib.parse.quote(game.replace('&','_').replace(':','_').replace('/','_') + '.png')
+    original_game = game.replace('/', '_').replace(':', '_') + '.png'
+    game = urllib.parse.quote(game.replace('&', '_').replace(':', '_').replace('/', '_') + '.png')
     thumbnail = 0
     try:
         urllib.request.urlretrieve(repo + 'Named_Boxarts/' + game, folder + '/Named_Boxarts/' + original_game)

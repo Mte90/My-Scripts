@@ -12,7 +12,7 @@ args = parser.parse_args()
 
 if not os.path.exists(args.playlist):
     print(args.playlist + ' doesn\'t exists.')
-    exit
+    sys.exit(1)
 
 
 def get_console_name(console):
@@ -23,21 +23,22 @@ def get_console_name(console):
 
 
 def merge_mame_playlist(playlist):
-    result = [] 
+    result = []
     path = os.path.dirname(os.path.abspath(playlist))
     for f in glob.glob(path + "/MAME*.lpl"):
-        with open(f, "rb") as infile: 
+        with open(f, "rb") as infile:
             only_games = json.load(infile)
             result = only_games['items'] + result
 
-    with open("/tmp/merged_file.json", "w") as outfile: 
-        json.dump({ 'items': result}, outfile) 
-    
+    with open("/tmp/merged_file.json", "w") as outfile:
+        json.dump({'items': result}, outfile)
+
     return "/tmp/merged_file.json"
+
 
 console = get_console_name(args.playlist)
 playlist = args.playlist
-if console is 'MAME':
+if console == 'MAME':
     playlist = merge_mame_playlist(args.playlist)
 roms = {}
 
@@ -52,7 +53,7 @@ with open(playlist, "r") as read_file:
     else:
         print('Empty playlist.')
         sys.exit()
-    
+
     print(str(len(roms)) + ' roms in the playlist')
 
 print('Local folder ' + rom_folder)
