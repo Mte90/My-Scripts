@@ -6,13 +6,13 @@ spawn git pull
 expect "Enter passphrase for key '/your/key/path':"
 send -- "$pass\r"
 send -- "\r"
-interact
+expect eof
 cd ../another
 spawn git pull
 expect "Enter passphrase for key '/your/key/path':"
 send -- "$pass\r"
 send -- "\r"
-interact
+expect eof
 cd ../../themes/another-folder
 spawn git pull
 expect "Enter passphrase for key '/your/key/path':"
