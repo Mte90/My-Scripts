@@ -46,21 +46,30 @@ def download_image(folder, console, game, retry):
     original_game = game.replace('/', '_').replace(':', '_') + '.png'
     game = urllib.parse.quote(game.replace('&', '_').replace(':', '_').replace('/', '_') + '.png')
     thumbnail = 0
-    try:
-        urllib.request.urlretrieve(repo + 'Named_Boxarts/' + game, folder + '/Named_Boxarts/' + original_game)
+    if not os.path.exists(folder + '/Named_Boxarts/' + original_game):
+        try:
+            urllib.request.urlretrieve(repo + 'Named_Boxarts/' + game, folder + '/Named_Boxarts/' + original_game)
+            thumbnail += 1
+        except:
+            pass
+    else:
         thumbnail += 1
-    except:
-        pass
-    try:
-        urllib.request.urlretrieve(repo + 'Named_Snaps/' + game, folder + '/Named_Snaps/' + original_game)
+    if not os.path.exists(folder + '/Named_Snaps/' + original_game):
+        try:
+            urllib.request.urlretrieve(repo + 'Named_Snaps/' + game, folder + '/Named_Snaps/' + original_game)
+            thumbnail += 1
+        except:
+            pass
+    else:
         thumbnail += 1
-    except:
-        pass
-    try:
-        urllib.request.urlretrieve(repo + 'Named_Titles/' + game, folder + '/Named_Titles/' + original_game)
+    if not os.path.exists(folder + '/Named_Titles/' + original_game):
+        try:
+            urllib.request.urlretrieve(repo + 'Named_Titles/' + game, folder + '/Named_Titles/' + original_game)
+            thumbnail += 1
+        except:
+            pass
+    else:
         thumbnail += 1
-    except:
-        pass
 
     if thumbnail == 0:
         print("Not found " + clean_game + ' at ' + repo + 'Named_Boxarts/' + game)
@@ -73,6 +82,9 @@ def download_image(folder, console, game, retry):
                 clean_game = clean_game.replace(s[0] + ', ' + s[1], try_game_name)
                 download_image(folder, console, clean_game, True)
                 download_image(folder, console, clean_game.replace(',', ''), True)
+            if '(Euro)' in clean_game:
+                clean_game = clean_game.replace('(Euro)', '(bootleg)')
+                download_image(folder, console, clean_game, True)
     else:
         print(' Downloaded ' + clean_game + ' ' + str(thumbnail) + ' thumbnails')
 
