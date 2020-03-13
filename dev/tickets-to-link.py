@@ -9,17 +9,21 @@ parser.add_argument('-source', dest='source', required=True, type=str)
 args = parser.parse_args()
 
 lists = []
+md_lists = []
 
 if os.path.exists(args.source):
     for line in open(args.source, 'r'):
         t = lxml.html.parse(urlopen(line.strip()))
         title = t.find(".//title").text
-        title = title.split("(")[1]
-        title = title.split(")")[0]
         link = title + ' - ' + line
+        md_link = '* [' + title + '](' + line + ')'
         lists.append(link)
-        print(link)
+        md_lists.append(md_link)
 
 with open('/tmp/parsed.txt', "w") as f:
     for item in lists:
+        f.write("%s" % item)
+        
+with open('/tmp/parsed.md', "w") as f:
+    for item in md_lists:
         f.write("%s" % item)
