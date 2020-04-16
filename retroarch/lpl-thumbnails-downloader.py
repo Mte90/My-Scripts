@@ -40,10 +40,12 @@ def get_console_name(console):
     return console
 
 
-def download_image(folder, console, game, retry):
+def download_image(folder, console, game, retry, realname=""):
     repo = "https://raw.githubusercontent.com/libretro-thumbnails/" + urllib.parse.quote(console.replace(' ','_')) + "/master/"
     clean_game = game
-    original_game = game.replace('/', '_').replace(':', '_') + '.png'
+    if realname == '':
+        realname = game
+    original_game = realname.replace('/', '_').replace(':', '_') + '.png'
     game = urllib.parse.quote(game.replace('&', '_').replace(':', '_').replace('/', '_') + '.png')
     thumbnail = 0
     if not os.path.exists(folder + '/Named_Boxarts/' + original_game):
@@ -73,20 +75,26 @@ def download_image(folder, console, game, retry):
 
     if thumbnail == 0:
         print("Not found " + clean_game + ' at ' + repo + 'Named_Boxarts/' + game)
-        # Try with switching stuff inside parenthesis because the game can have different filenames
         if retry is False:
             if ',' in clean_game:
+                # Try with switching stuff inside parenthesis because the game can have different filenames
                 s = re.findall('\((.*?)\)', clean_game)
                 s = s[0].split(', ')
                 try_game_name = s[1] + ', ' + s[0].replace(', ', '')
                 clean_game = clean_game.replace(s[0] + ', ' + s[1], try_game_name)
-                download_image(folder, console, clean_game, True)
-                download_image(folder, console, clean_game.replace(',', ''), True)
+                download_image(folder, console, clean_game, True, realname)
+                download_image(folder, console, clean_game.replace(',', ''), True, realname)
             if '(Euro)' in clean_game:
+                # Try with bootleg
                 clean_game = clean_game.replace('(Euro)', '(bootleg)')
-                download_image(folder, console, clean_game, True)
+                download_image(folder, console, clean_game, True, realname)
+            if '(' not in clean_game:
+                # Try with adding a country
+                download_image(folder, console, clean_game + " (Japan)", True, realname)
+                download_image(folder, console, clean_game + " (USA)", True, realname)
+                download_image(folder, console, clean_game + " (Euro)", True, realname)
     else:
-        print(' Downloaded ' + clean_game + ' ' + str(thumbnail) + ' thumbnails')
+        print(' Downloaded ' + realname + ' ' + str(thumbnail) + ' thumbnails')
 
 
 console = get_console_name(args.playlist)
