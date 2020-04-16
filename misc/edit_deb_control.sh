@@ -32,7 +32,7 @@ fi
 CONTROL="$TMPDIR"/DEBIAN/control
 
 MOD=`stat -c "%y" "$CONTROL"`
-$EDITOR "$CONTROL"
+vim.tiny "$CONTROL"
 
 if [[ "$MOD" == `stat -c "%y" "$CONTROL"` ]]; then
   echo Not modfied.
