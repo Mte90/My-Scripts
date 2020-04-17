@@ -76,7 +76,7 @@ def download_image(folder, console, game, retry, realname=""):
     if thumbnail == 0:
         print("Not found " + clean_game + ' at ' + repo + 'Named_Boxarts/' + game)
         if retry is False:
-            if ',' in clean_game:
+            if clean_game.count(',') > 1:
                 # Try with switching stuff inside parenthesis because the game can have different filenames
                 s = re.findall('\((.*?)\)', clean_game)
                 s = s[0].split(', ')
