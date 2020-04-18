@@ -95,7 +95,7 @@ def download_image(folder, console, game, retry, realname=""):
                 download_image(folder, console, clean_game + " (Europe)", True, realname)
             if '(Europe)' in clean_game:
                 # Try with replacing a country
-                clean_game = clean_game.replace('(Europre)', '(USA)')
+                clean_game = clean_game.replace('(Europe)', '(USA)')
                 download_image(folder, console, clean_game, True, realname)
     else:
         print(' Downloaded ' + realname + ' ' + str(thumbnail) + ' thumbnails')
