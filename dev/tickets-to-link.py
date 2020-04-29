@@ -23,7 +23,7 @@ if os.path.exists(args.source):
 with open('/tmp/parsed.txt', "w") as f:
     for item in lists:
         f.write("%s" % item)
-        
+
 with open('/tmp/parsed.md', "w") as f:
     for item in md_lists:
         f.write("%s" % item)
