@@ -76,14 +76,17 @@ def download_image(folder, console, game, retry, realname=""):
     if thumbnail == 0:
         print("Not found " + clean_game + ' at ' + repo + 'Named_Boxarts/' + game)
         if retry is False:
-            if clean_game.count(',') > 1 and clean_game.count('[') == 0:
-                # Try with switching stuff inside parenthesis because the game can have different filenames
-                s = re.findall('\((.*?)\)', clean_game)
-                s = s[0].split(', ')
-                try_game_name = s[1] + ', ' + s[0].replace(', ', '')
-                clean_game = clean_game.replace(s[0] + ', ' + s[1], try_game_name)
-                download_image(folder, console, clean_game, True, realname)
-                download_image(folder, console, clean_game.replace(',', ''), True, realname)
+            try:
+                if clean_game.count(',') > 1:
+                    # Try with switching stuff inside parenthesis because the game can have different filenames
+                    s = re.findall('\((.*?)\)', clean_game)
+                    s = s[0].split(', ')
+                    try_game_name = s[1] + ', ' + s[0].replace(', ', '')
+                    clean_game = clean_game.replace(s[0] + ', ' + s[1], try_game_name)
+                    download_image(folder, console, clean_game, True, realname)
+                    download_image(folder, console, clean_game.replace(',', ''), True, realname)
+            except:
+                pass
             if '(Euro)' in clean_game:
                 # Try with bootleg
                 clean_game = clean_game.replace('(Euro)', '(bootleg)')
