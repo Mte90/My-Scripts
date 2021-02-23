@@ -4,7 +4,7 @@ import os
 import lxml.html
 import sys
 import re
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 
 parser = argparse.ArgumentParser(description='Generate titles by links list')
 parser.add_argument('-source', dest='source', required=True, type=str)
@@ -23,15 +23,18 @@ if os.path.exists(args.source):
     for line in open(args.source, 'r'):
         if line.startswith('*'):
             url = line[1:].strip()
-            if re.match(regex, url):
-                print('Processing', url)
-                t = lxml.html.parse(urlopen(url))
-                title = t.find(".//title").text
-                link = title + ' - ' + line
-                if args.mode == 'md':
-                    line = '* [' + title + '](' + url + ")\n"
-                else:
-                    line = '* ' + title + ' - ' + url + "\n"
+            try:
+                if re.match(regex, url):
+                    print('Processing', url)
+                    t = lxml.html.parse(urlopen(Request(url, headers={'User-Agent': 'Mozilla'})))
+                    title = t.find(".//title").text
+                    link = title.strip().replace('  ', ' ') + ' - ' + line
+                    if args.mode == 'md':
+                        line = '* [' + title + '](' + url + ")\n"
+                    else:
+                        line = '* ' + title + ' - ' + url + "\n"
+            except:
+                print('Error:', url)
         newfile.append(line)
 else:
     print('Error: The file doesn\'t exists')
