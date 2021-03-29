@@ -13,10 +13,12 @@ cd ./amule
 # Put in queue
 if ls ./*.emulecollection 1> /dev/null 2>&1; then
     awk 'NF' *.emulecollection
+    sed -i 's/^[[:space:]]*//;s/[[:space:]]*$//' *.emulecollection
     ed2k -e *.emulecollection
 fi
 if ls ./*.amulecollection 1> /dev/null 2>&1; then
     awk 'NF' *.amulecollection
+    sed -i 's/^[[:space:]]*//;s/[[:space:]]*$//' *.amulecollection
     ed2k -e *.amulecollection
 fi
 
