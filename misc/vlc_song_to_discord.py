@@ -3,7 +3,6 @@
 # Delete the file running on VLC
 
 import dbus
-import os
 import time
 from pypresence import Presence
 
@@ -20,5 +19,4 @@ while True:
         RPC.update(state=str(metadata['xesam:title']), details=str(metadata['xesam:artist'][0]))
     except:
         RPC.clear()
-        pass
     time.sleep(15)

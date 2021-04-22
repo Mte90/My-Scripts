@@ -24,7 +24,7 @@ for file in glob.glob("*.mid"):
     print("Convert", key.tonic.name, key.mode, "To C Major")
     if key.mode == "major":
         halfSteps = majors[key.tonic.name]
-        
+
     elif key.mode == "minor":
         halfSteps = minors[key.tonic.name]
     

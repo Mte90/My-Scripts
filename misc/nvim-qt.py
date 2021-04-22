@@ -15,4 +15,4 @@ elif len(instances) == 0:
     os.system('/usr/local/bin/nvim-qt')
 else:
     nvim = attach("socket", path=os.path.join("/tmp", instances[0], "0"))
-    nvim.command("tabnew " + os.path.abspath(sys.argv[1])) 
+    nvim.command("tabnew " + os.path.abspath(sys.argv[1]))
