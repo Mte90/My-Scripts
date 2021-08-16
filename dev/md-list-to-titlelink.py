@@ -2,6 +2,7 @@
 import argparse
 import os
 import lxml.html
+import lxml.etree
 import sys
 import re
 from urllib.request import urlopen, Request
@@ -19,6 +20,7 @@ regex = re.compile(
     r'(?::\d+)?'  # optional port
     r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
+utf8_html_parser = lxml.etree.HTMLParser(encoding='utf-8')
 if os.path.exists(args.source):
     for line in open(args.source, 'r'):
         if line.startswith('*'):
@@ -26,8 +28,9 @@ if os.path.exists(args.source):
             try:
                 if re.match(regex, url):
                     print('Processing', url)
-                    t = lxml.html.parse(urlopen(Request(url, headers={'User-Agent': 'Mozilla'})))
+                    t = lxml.html.parse(urlopen(Request(url, headers={'User-Agent': 'Mozilla'})), parser=utf8_html_parser)
                     title = t.find(".//title").text
+                    title = title.strip()
                     link = title.strip().replace('  ', ' ') + ' - ' + line
                     if args.mode == 'md':
                         line = '* [' + title + '](' + url + ")\n"
