@@ -31,4 +31,5 @@ fi
 for filename in ./*; do
     [ -e "$filename" ] || continue
     curl --header "Authorization: Basic [atokenstring]" -X DELETE "https://[your-url]/public.php/webdav/$filename"
+    rm "./$filename"
 done

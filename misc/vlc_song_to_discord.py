@@ -15,8 +15,9 @@ while True:
         player = session_bus.get_object('org.mpris.MediaPlayer2.vlc', '/org/mpris/MediaPlayer2')
         interface = dbus.Interface(player, dbus_interface='org.mpris.MediaPlayer2.Player')
         metadata = player.Get('org.mpris.MediaPlayer2.Player', 'Metadata', dbus_interface='org.freedesktop.DBus.Properties')
-        print('VLC identified')
-        RPC.update(state=str(metadata['xesam:title']), details=str(metadata['xesam:artist'][0]))
+        if 'xesam:title' in metadata:
+            RPC.update(state=str(metadata['xesam:title']), details=str(metadata['xesam:artist'][0]))
     except:
+        print('Error')
         RPC.clear()
     time.sleep(15)
