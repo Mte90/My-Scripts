@@ -16,7 +16,7 @@ metadata = player.Get('org.mpris.MediaPlayer2.Player', 'Metadata', dbus_interfac
 
 path  = unquote(metadata['xesam:url']).replace('file://','')
 
-if ".mp3" in path or ".ogg" in path or ".flac" in path:
+if ".mp3" in path or ".m4a" in path or ".ogg" in path or ".flac" in path:
     folder = os.path.abspath(os.path.join(path, os.pardir)) + '/'
     folder = os.path.abspath(os.path.join(folder, os.pardir)) + '/'
     first_parent = folder + os.path.basename(path)
