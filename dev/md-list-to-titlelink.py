@@ -28,7 +28,7 @@ if os.path.exists(args.source):
             try:
                 if re.match(regex, url):
                     print('Processing', url)
-                    t = lxml.html.parse(urlopen(Request(url, headers={'User-Agent': 'Mozilla'})), parser=utf8_html_parser)
+                    t = lxml.html.parse(urlopen(Request(url, headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:90.0) Gecko/20100101 Firefox/90.0'})), parser=utf8_html_parser)
                     title = t.find(".//title").text
                     title = title.strip()
                     link = title.strip().replace('  ', ' ') + ' - ' + line
@@ -36,8 +36,9 @@ if os.path.exists(args.source):
                         line = '* [' + title + '](' + url + ")\n"
                     else:
                         line = '* ' + title + ' - ' + url + "\n"
-            except:
+            except Exception as e:
                 print('Error:', url)
+                print(e)
         newfile.append(line)
 else:
     print('Error: The file doesn\'t exists')
