@@ -22,7 +22,7 @@ with open(file_csv) as csv_file:
             post_id = re.findall(' postid\-.?\d\d\d\d', str(data.content))
         try:
             post_id = post_id[0].replace(' postid-','')
-            new_list.append('<a href="https://' + domain + '/wp-admin/post.php?post=' + post_id + '&action=edit" target="_blank">' + row[column] + '</a><br>')
+            new_list.append('<a href="https://' + domain + '/wp-admin/post.php?post=' + post_id + '&action=edit" target="_blank">' + row[column] + '</a><br>' + "\n")
         except:
             print(row[column])
 
