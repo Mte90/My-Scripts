@@ -27,18 +27,26 @@ if os.path.exists(args.source):
             url = line[1:].strip()
             try:
                 if re.match(regex, url):
-                    print('Processing', url)
+                    print('Processing:', url)
+                    if url.startswith('https://twitter.com/'):
+                        raise ValueError("Twitter...")
                     t = lxml.html.parse(urlopen(Request(url, headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:90.0) Gecko/20100101 Firefox/90.0'})), parser=utf8_html_parser)
                     title = t.find(".//title").text
-                    title = title.strip().replace("\n", '')
-                    link = title.replace("\n", '').replace('  ', ' ') + ' - ' + line
+                    title = title.strip().replace("\n", '').replace("\r", '')
+                    link = title.replace("\n", '').replace("\r", '').replace('  ', ' ') + ' - ' + line
                     if args.mode == 'md':
                         line = '* [' + title + '](' + url + ")\n"
+                    elif args.mode == 'html':
+                        line = '* <a href="' + url + '" target="_blank">' + title + "</a>\n"
                     else:
                         line = '* ' + title + ' - ' + url + "\n"
             except Exception as e:
                 print('Error:', url)
-                print(e)
+                print('   ' + str(e))
+                if args.mode == 'md':
+                    line = '* [' + url + '](' + url + ")\n"
+                elif args.mode == 'html':
+                    line = '* <a href="' + url + '" target="_blank">' + url + "</a>\n"
         newfile.append(line)
 else:
     print('Error: The file doesn\'t exists')
