@@ -6,6 +6,7 @@ import lxml.etree
 import sys
 import re
 from urllib.request import urlopen, Request
+from urllib.parse import urlencode, urlparse, urlunparse, parse_qs
 
 parser = argparse.ArgumentParser(description='Generate titles by links list')
 parser.add_argument('-source', dest='source', required=True, type=str)
@@ -29,6 +30,11 @@ if os.path.exists(args.source):
                 if re.match(regex, url):
                     print('Processing:', url)
                     if url.startswith('https://twitter.com/'):
+                        u = urlparse(url)
+                        query = parse_qs(u.query, keep_blank_values=True)
+                        query.pop('t', None)
+                        u = u._replace(query=urlencode(query, True))
+                        line = urlunparse(u)
                         raise ValueError("Twitter...")
                     t = lxml.html.parse(urlopen(Request(url, headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:90.0) Gecko/20100101 Firefox/90.0'})), parser=utf8_html_parser)
                     title = t.find(".//title").text
