@@ -21,6 +21,18 @@ regex = re.compile(
     r'(?::\d+)?'  # optional port
     r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
+
+def generate_link(args, url, title):
+    line = ''
+    if args.mode == 'md':
+        line = '* [' + url + '](' + url + ")\n"
+    elif args.mode == 'html':
+        line = '* <a href="' + url + '" target="_blank">' + url + "</a>\n"
+    else:
+        line = '* ' + title + ' - ' + url + "\n"
+    return line
+
+
 utf8_html_parser = lxml.etree.HTMLParser(encoding='utf-8')
 if os.path.exists(args.source):
     for line in open(args.source, 'r'):
@@ -33,26 +45,21 @@ if os.path.exists(args.source):
                         u = urlparse(url)
                         query = parse_qs(u.query, keep_blank_values=True)
                         query.pop('t', None)
+                        query.pop('s', None)
                         u = u._replace(query=urlencode(query, True))
-                        line = urlunparse(u)
-                        raise ValueError("Twitter...")
+                        url = urlunparse(u)
+                        line = generate_link(args, url, url)
+                        newfile.append(line)
+                        continue
                     t = lxml.html.parse(urlopen(Request(url, headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:90.0) Gecko/20100101 Firefox/90.0'})), parser=utf8_html_parser)
                     title = t.find(".//title").text
                     title = title.strip().replace("\n", '').replace("\r", '')
                     link = title.replace("\n", '').replace("\r", '').replace('  ', ' ') + ' - ' + line
-                    if args.mode == 'md':
-                        line = '* [' + title + '](' + url + ")\n"
-                    elif args.mode == 'html':
-                        line = '* <a href="' + url + '" target="_blank">' + title + "</a>\n"
-                    else:
-                        line = '* ' + title + ' - ' + url + "\n"
+                    line = generate_link(args, url, title)
             except Exception as e:
                 print('Error:', url)
                 print('   ' + str(e))
-                if args.mode == 'md':
-                    line = '* [' + url + '](' + url + ")\n"
-                elif args.mode == 'html':
-                    line = '* <a href="' + url + '" target="_blank">' + url + "</a>\n"
+                line = generate_link(args, url, url)
         newfile.append(line)
 else:
     print('Error: The file doesn\'t exists')
