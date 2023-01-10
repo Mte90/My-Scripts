@@ -25,9 +25,9 @@ regex = re.compile(
 def generate_link(args, url, title):
     line = ''
     if args.mode == 'md':
-        line = '* [' + url + '](' + url + ")\n"
+        line = '* [' + url + '](' + title + ")\n"
     elif args.mode == 'html':
-        line = '* <a href="' + url + '" target="_blank">' + url + "</a>\n"
+        line = '* <a href="' + url + '" target="_blank">' + title + "</a>\n"
     else:
         line = '* ' + title + ' - ' + url + "\n"
     return line
