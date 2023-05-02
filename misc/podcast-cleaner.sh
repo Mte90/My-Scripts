@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
 
-# https://github.com/lagmoellertim/unsilence
-
-unsilence $1 pulito-$1 -stt 0.5 -ao -sl '-18' -t 4 --non-interactive-mode
+ffmpeg -i $1 -af silenceremove=stop_periods=-1:stop_duration=1:stop_threshold=-28dB pulito-$1
