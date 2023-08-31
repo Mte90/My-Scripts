@@ -53,6 +53,8 @@ if os.path.exists(args.source):
                         continue
                     t = lxml.html.parse(urlopen(Request(url, headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:90.0) Gecko/20100101 Firefox/90.0'})), parser=utf8_html_parser)
                     title = t.find(".//title").text
+                    if url.startswith('https://www.reddit.com/'):
+                        title = t.xpath("//shreddit-title")[0].attrib['title']
                     title = title.strip().replace("\n", '').replace("\r", '')
                     link = title.replace("\n", '').replace("\r", '').replace('  ', ' ') + ' - ' + line
                     line = generate_link(args, url, title)
