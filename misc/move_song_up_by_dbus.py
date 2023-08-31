@@ -21,10 +21,12 @@ if ".mp3" in path or ".m4a" in path or ".ogg" in path or ".flac" in path:
     folder = os.path.abspath(os.path.join(folder, os.pardir)) + '/'
     first_parent = folder + os.path.basename(path)
     os.rename(path, first_parent)
+    print(first_parent)
     # If is an album folder of a discography move up * 2
     if has_numbers(os.path.basename(os.path.dirname(path))[0:4]):
         folder = os.path.abspath(os.path.join(folder, os.pardir)) + '/'
         os.rename(first_parent, folder + os.path.basename(path))
+        print(folder + os.path.basename(path))
 
 
 interface.Next()
