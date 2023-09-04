@@ -45,28 +45,27 @@ def download_image(folder, console, game, retry, realname=""):
     clean_game = game
     if realname == '':
         realname = game
-    original_game = realname.replace('/', '_').replace(':', '_') + '.png'
-    game = urllib.parse.quote(game.replace('&', '_').replace(':', '_').replace('/', '_') + '.png')
+    game = re.sub(r'[\\\/:*?"><|&]', '_', game) + '.png'
     thumbnail = 0
-    if not os.path.exists(folder + '/Named_Boxarts/' + original_game):
+    if not os.path.exists(folder + '/Named_Boxarts/' + game):
         try:
-            urllib.request.urlretrieve(repo + 'Named_Boxarts/' + game, folder + '/Named_Boxarts/' + original_game)
+            urllib.request.urlretrieve(repo + 'Named_Boxarts/' + urllib.parse.quote(game), folder + '/Named_Boxarts/' + game)
             thumbnail += 1
         except:
             pass
     else:
         thumbnail += 1
-    if not os.path.exists(folder + '/Named_Snaps/' + original_game):
+    if not os.path.exists(folder + '/Named_Snaps/' + game):
         try:
-            urllib.request.urlretrieve(repo + 'Named_Snaps/' + game, folder + '/Named_Snaps/' + original_game)
+            urllib.request.urlretrieve(repo + 'Named_Snaps/' + urllib.parse.quote(game), folder + '/Named_Snaps/' + game)
             thumbnail += 1
         except:
             pass
     else:
         thumbnail += 1
-    if not os.path.exists(folder + '/Named_Titles/' + original_game):
+    if not os.path.exists(folder + '/Named_Titles/' + game):
         try:
-            urllib.request.urlretrieve(repo + 'Named_Titles/' + game, folder + '/Named_Titles/' + original_game)
+            urllib.request.urlretrieve(repo + 'Named_Titles/' + urllib.parse.quote(game), folder + '/Named_Titles/' + game)
             thumbnail += 1
         except:
             pass
