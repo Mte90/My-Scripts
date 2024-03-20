@@ -2,11 +2,10 @@
 import sys, os, json, zipfile
 
 print("Browser Extension packager by Mte90")
-print("The only parameter required is the folder path!")
 
 def zipdir(path, name):
     zipf = zipfile.ZipFile(name, 'w', zipfile.ZIP_DEFLATED)
-    exclude_prefixes = ['__', '.', 'jshintrc', 'tests']  # list of exclusion prefixes
+    exclude_prefixes = ['__', '.', 'jshintrc', 'tests', 'node_modules']  # list of exclusion prefixes
     exclude_suffixes = ['.xpi', '.zip', '.md']  # list of exclusion suffix
     for dirpath, dirnames, filenames in os.walk(path):
         # exclude all dirs/files starting/endings
@@ -50,5 +49,6 @@ if len(sys.argv) > 1 and os.path.isdir(sys.argv[1]):
         print("The file" + manifest + " not exist")
         sys.exit()
 else:
+    print("The only parameter required is the folder path!")
     print("Path not found")
     sys.exit()
