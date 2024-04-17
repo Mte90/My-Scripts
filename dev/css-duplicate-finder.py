@@ -28,8 +28,10 @@ for rule in stylesheet.cssRules:
         selectors = selectors_count(selectors, rule)
     elif rule.type == cssutils.css.CSSRule.MEDIA_RULE:
         for rule_ in rule.cssRules:
-            selectors = selectors_count(selectors, rule_)
+            if type(rule_) is not cssutils.css.CSSComment:
+                selectors = selectors_count(selectors, rule_)
 
 selectors = sorted(selectors.items(), key=lambda x: x[1], reverse=True)
 selectors = dict(selectors)
+
 print(selectors)

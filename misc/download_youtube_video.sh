@@ -1,13 +1,14 @@
 #!/bin/bash
 ago=$(date +"%Y%m%d" -d "last-monday - 2 week")
 dir=$(mktemp -d)
-cd $dir
-youtube-dl --extract-audio --audio-format=mp3 -w -c https://www.youtube.com/channel/UCtIOyeupgM3jRAn74Q1RNeQ/featured --max-download 1 -o "%(title)s.%(ext)s" --match-filter "duration > 100 & duration < 600" --dateafter $ago --lazy-playlist # Stefano di carlo
+cd "$dir"
+echo "$dir"
+youtube-dl --extract-audio --audio-format=mp3 -w -c https://www.youtube.com/channel/UCtIOyeupgM3jRAn74Q1RNeQ/featured --max-download 1 -o "%(title)s.%(ext)s" --match-filter "duration > 100 & duration < 600" --dateafter "$ago" --lazy-playlist # Stefano di carlo
 youtube-dl --extract-audio --audio-format=mp3 -w -c https://www.youtube.com/user/FunkyyPanda/featured --max-download 3 -o "%(title)s.%(ext)s" --match-filter "duration > 100 & duration < 600" --lazy-playlist
 youtube-dl --extract-audio --audio-format=mp3 -w -c https://www.youtube.com/user/NewRetroWave/featured --max-download 3 -o "%(title)s.%(ext)s" --match-filter "duration > 100 & duration < 600" --lazy-playlist
 youtube-dl --extract-audio --audio-format=mp3 -w -c https://www.youtube.com/user/MonstercatMedia/featured --max-download 3 -o "%(title)s.%(ext)s" --match-filter "duration > 100 & duration < 600" --lazy-playlist
 youtube-dl --extract-audio --audio-format=mp3 -w -c https://www.youtube.com/user/UCLFlh_qSWmdPkMLaI2YUxTg/featured --max-download 3 -o "%(title)s.%(ext)s" --match-filter "duration > 100 & duration < 600" --lazy-playlist # Electro swing elite
-youtube-dl --extract-audio --audio-format=mp3 -w -c https://www.youtube.com/channel/UCr_D8RsfDhZ1CVgD7l5ByoQ/featured --max-download 3 -o "%(title)s.%(ext)s" --match-filter "duration > 100 & duration < 600" --dateafter $ago --lazy-playlist # immortal swing
+youtube-dl --extract-audio --audio-format=mp3 -w -c https://www.youtube.com/channel/UCr_D8RsfDhZ1CVgD7l5ByoQ/featured --max-download 3 -o "%(title)s.%(ext)s" --match-filter "duration > 100 & duration < 600" --dateafter "$ago" --lazy-playlist # immortal swing
 
 rename 's/\ Visualizer\ //g' ./*
 rename 's/\#basshouse//g' ./*
