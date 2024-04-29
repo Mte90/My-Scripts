@@ -51,12 +51,11 @@ if os.path.exists(args.source):
                         line = generate_link(args, url, url)
                         newfile.append(line)
                         continue
-                    t = lxml.html.parse(urlopen(Request(url, headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:90.0) Gecko/20100101 Firefox/90.0'})), parser=utf8_html_parser)
+                    request = Request(url, headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:90.0) Gecko/20100101 Firefox/90.0'})
+                    t = lxml.html.parse(urlopen(request, timeout=4), parser=utf8_html_parser)
                     title = t.find(".//title").text
                     if url.startswith('https://www.reddit.com/') or url.startswith('https://new.reddit.com/'):
                         title = t.xpath("//shreddit-title")[0].attrib['title']
-                    if url.startswith('https://twitter.com/'):
-                        title = t.xpath("//meta")[0].attrib['content']
                     title = title.strip().replace("\n", '').replace("\r", '')
                     link = title.replace("\n", '').replace("\r", '').replace('  ', ' ') + ' - ' + line
                     line = generate_link(args, url, title)
