@@ -1,0 +1,83 @@
+silent unsafe $cd /tmp$
+
+echo "Install PHPactor LSP"
+let download_url = $curl -sL https://api.github.com/repos/phpactor/phpactor/releases | jq -r '.[0].assets.[0].browser_download_url'$
+$wget {download_url}$ failed {
+    echo "Error! Exit code: {status}"
+}
+$mv phpactor.phar /usr/local/bin$
+$chmod +x /usr/local/bin/phpactor$
+
+echo "Install Typos LSP"
+let download_url = $curl -sL https://api.github.com/repos/tekumara/typos-lsp/releases | jq -r '.[0].assets.[6].browser_download_url'$
+$wget {download_url}$ failed {
+    echo "Error! Exit code: {status}"
+}
+$tar -zxvf ./typos* -C ./typos-lsp$
+$mv typos-lsp /usr/local/bin$
+$chmod +x /usr/local/bin/typos-lsp$
+
+echo "Install GitLab CI LSP"
+let download_url = $curl -sL https://api.github.com/repos/alesbrelih/gitlab-ci-ls/releases | jq -r '.[0].assets.[3].browser_download_url'$
+$wget {download_url}$ failed {
+    echo "Error! Exit code: {status}"
+}
+$mv x86_64-unknown-linux-gnu /usr/local/bin/gitlab-ci-ls$
+$chmod +x /usr/local/bin/gitlab-ci-ls$
+
+echo "Install HTMX LSP"
+let download_url = $curl -sL https://api.github.com/repos/ThePrimeagen/htmx-lsp/releases | jq -r '.[0].assets.[2].browser_download_url'$
+$wget {download_url}$ failed {
+    echo "Error! Exit code: {status}"
+}
+$mv htmx-lsp-linux-x64 /usr/local/bin/htmx-lsp$
+$chmod +x /usr/local/bin/htmx-lsp$
+
+echo "Install Marksman LSP"
+let download_url = $curl -sL https://api.github.com/repos/artempyanykh/marksman/releases | jq -r '.[0].assets.[1].browser_download_url'$
+$wget {download_url}$ failed {
+    echo "Error! Exit code: {status}"
+}
+$mv marksman-linux-x64 /usr/local/bin/marksman$
+$chmod +x /usr/local/bin/marksman$
+
+echo "Install Lua LSP"
+if not dir_exist("/opt/lua-language-server") {
+    $git clone https://github.com/LuaLS/lua-language-server$
+}
+$cd lua-language-server$
+$git pull$
+$./make.sh$
+$ln -s /opt/lua-language-server/bin/lua-language-server /usr/local/bin/lua-language-server$
+
+silent unsafe $cd /tmp$
+
+echo "Install Python LSP Server"
+$pip install python-lsp-server$ failed {
+    echo "Error! Exit code: {status}"
+}
+
+echo "Install CSS, HTML, JSON LSP"
+$npm i -g vscode-langservers-extracted$ failed {
+    echo "Error! Exit code: {status}"
+}
+echo "Install Tailwind LSP"
+$npm i -g @tailwindcss/language-server$ failed {
+    echo "Error! Exit code: {status}"
+}
+echo "Install Emmet LSP"
+$npm i -g @olrtg/emmet-language-server$ failed {
+    echo "Error! Exit code: {status}"
+}
+echo "Install Intelephense LSP"
+$npm i -g intelephense$ failed {
+    echo "Error! Exit code: {status}"
+}
+echo "Install Intelephense LSP"
+$npm i -g bash-language-server$ failed {
+    echo "Error! Exit code: {status}"
+}
+echo "Install Ruby LSP"
+$gem install ruby-lsp$ failed {
+    echo "Error! Exit code: {status}"
+}
