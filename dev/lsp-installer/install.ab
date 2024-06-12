@@ -1,9 +1,13 @@
 import { dir_exist } from "std"
 
+fun get_download_path(repo, position) {
+    return unsafe $curl -sL https://api.github.com/repos/{repo}/releases | jq -r ".[0].assets.[{position}].browser_download_url"$
+}
+
 silent unsafe $cd /tmp$
 
 echo "Install PHPactor LSP"
-let download_url = unsafe $curl -sL https://api.github.com/repos/phpactor/phpactor/releases | jq -r '.[0].assets.[0].browser_download_url'$
+let download_url = get_download_path("phpactor/phpactor", 0)
 $wget {download_url}$ failed {
     echo "Error! Exit code: {status}"
 }
@@ -13,7 +17,7 @@ silent unsafe {
 }
 
 echo "Install Typos LSP"
-let download_url = unsafe $curl -sL https://api.github.com/repos/tekumara/typos-lsp/releases | jq -r '.[0].assets.[6].browser_download_url'$
+let download_url = get_download_path("tekumara/typos-lsp", 6)
 $wget {download_url}$ failed {
     echo "Error! Exit code: {status}"
 }
@@ -24,7 +28,7 @@ silent unsafe {
 }
 
 echo "Install GitLab CI LSP"
-let download_url = unsafe $curl -sL https://api.github.com/repos/alesbrelih/gitlab-ci-ls/releases | jq -r '.[0].assets.[3].browser_download_url'$
+let download_url = get_download_path("alesbrelih/gitlab-ci-ls", 3)
 $wget {download_url}$ failed {
     echo "Error! Exit code: {status}"
 }
@@ -34,7 +38,7 @@ silent unsafe {
 }
 
 echo "Install HTMX LSP"
-let download_url = unsafe $curl -sL https://api.github.com/repos/ThePrimeagen/htmx-lsp/releases | jq -r '.[0].assets.[2].browser_download_url'$
+let download_url = get_download_path("ThePrimeagen/htmx-lsp", 2)
 $wget {download_url}$ failed {
     echo "Error! Exit code: {status}"
 }
@@ -44,7 +48,7 @@ silent unsafe {
 }
 
 echo "Install Marksman LSP"
-let download_url = unsafe $curl -sL https://api.github.com/repos/artempyanykh/marksman/releases | jq -r '.[0].assets.[1].browser_download_url'$
+let download_url = get_download_path("artempyanykh/marksman", 1)
 $wget {download_url}$ failed {
     echo "Error! Exit code: {status}"
 }
@@ -55,7 +59,10 @@ silent unsafe {
 
 echo "Install Lua LSP"
 if not dir_exist("/opt/lua-language-server") {
+    unsafe $cd /opt/$
     unsafe $git clone https://github.com/LuaLS/lua-language-server$
+} else {
+    unsafe $cd /opt/lua-language-server$
 }
 silent unsafe {
     $cd lua-language-server$
@@ -66,31 +73,20 @@ silent unsafe {
 
 silent unsafe $cd /tmp$
 
+let npm_lsp = ["vscode-langservers-extracted", "@tailwindcss/language-server", "@olrtg/emmet-language-server", "intelephense", "bash-language-server"]
+let npm_lsp_name = ["CSS, HTML, JSON LSP", "Tailwind LSP", "Emmet LSP", "Intelephense LSP", "Bash LSP"]
+loop index, lsp in npm_lsp {
+    echo "Install {npm_lsp_name[index]}"
+    $npm i -g {lsp}$ failed {
+        echo "Error! Exit code: {status}"
+    }
+}
+
 echo "Install Python LSP Server"
 $pip install python-lsp-server$ failed {
     echo "Error! Exit code: {status}"
 }
 
-echo "Install CSS, HTML, JSON LSP"
-$npm i -g vscode-langservers-extracted$ failed {
-    echo "Error! Exit code: {status}"
-}
-echo "Install Tailwind LSP"
-$npm i -g @tailwindcss/language-server$ failed {
-    echo "Error! Exit code: {status}"
-}
-echo "Install Emmet LSP"
-$npm i -g @olrtg/emmet-language-server$ failed {
-    echo "Error! Exit code: {status}"
-}
-echo "Install Intelephense LSP"
-$npm i -g intelephense$ failed {
-    echo "Error! Exit code: {status}"
-}
-echo "Install Intelephense LSP"
-$npm i -g bash-language-server$ failed {
-    echo "Error! Exit code: {status}"
-}
 echo "Install Ruby LSP"
 $gem install ruby-lsp$ failed {
     echo "Error! Exit code: {status}"
