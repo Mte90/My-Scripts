@@ -82,12 +82,12 @@ loop index, lsp in npm_lsp {
     }
 }
 
-echo "Install Python LSP Server"
-$pip install python-lsp-server$ failed {
-    echo "Error! Exit code: {status}"
-}
+let command_lsp = ["pip install python-lsp-server", "gem install ruby-lsp"]
+let command_lsp_name = ["Python LSP", "Ruby LSP"]
 
-echo "Install Ruby LSP"
-$gem install ruby-lsp$ failed {
-    echo "Error! Exit code: {status}"
+loop index, lsp in command_lsp {
+    echo "Install {command_lsp_name[index]}"
+    ${lsp}$ failed {
+        echo "Error! Exit code: {status}"
+    }
 }

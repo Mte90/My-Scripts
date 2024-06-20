@@ -111,7 +111,7 @@ ln -s /opt/lua-language-server/bin/lua-language-server /usr/local/bin/lua-langua
 __AS=$?
 cd /tmp >/dev/null 2>&1
 __AS=$?
-__AMBER_ARRAY_0=("vscode-langservers-extracted" "@tailwindcss/language-server" "@olrtg/emmet-language-server" "intelephense$" "bash-language-server")
+__AMBER_ARRAY_0=("vscode-langservers-extracted" "@tailwindcss/language-server" "@olrtg/emmet-language-server" "intelephense" "bash-language-server")
 __5_npm_lsp=("${__AMBER_ARRAY_0[@]}")
 __AMBER_ARRAY_1=("CSS, HTML, JSON LSP" "Tailwind LSP" "Emmet LSP" "Intelephense LSP" "Bash LSP")
 __6_npm_lsp_name=("${__AMBER_ARRAY_1[@]}")
@@ -123,17 +123,19 @@ for lsp in "${__5_npm_lsp[@]}"; do
 	if [ $__AS != 0 ]; then
 		echo "Error! Exit code: $__AS"
 	fi
-	let index=${index}+1
+	((index++)) || true
 done
-echo "Install Python LSP Server"
-pip install python-lsp-server
-__AS=$?
-if [ $__AS != 0 ]; then
-	echo "Error! Exit code: $__AS"
-fi
-echo "Install Ruby LSP"
-gem install ruby-lsp
-__AS=$?
-if [ $__AS != 0 ]; then
-	echo "Error! Exit code: $__AS"
-fi
+__AMBER_ARRAY_2=("pip install python-lsp-server" "gem install ruby-lsp")
+__7_command_lsp=("${__AMBER_ARRAY_2[@]}")
+__AMBER_ARRAY_3=("Python LSP" "Ruby LSP")
+__8_command_lsp_name=("${__AMBER_ARRAY_3[@]}")
+index=0
+for lsp in "${__7_command_lsp[@]}"; do
+	echo "Install ${__8_command_lsp_name[${index}]}"
+	${lsp}
+	__AS=$?
+	if [ $__AS != 0 ]; then
+		echo "Error! Exit code: $__AS"
+	fi
+	((index++)) || true
+done
