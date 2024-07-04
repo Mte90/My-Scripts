@@ -41,7 +41,7 @@ if os.path.exists(args.source):
             try:
                 if re.match(regex, url):
                     print('Processing:', url)
-                    if url.startswith('https://twitter.com/'):
+                    if url.startswith('https://x.com/'):
                         u = urlparse(url)
                         query = parse_qs(u.query, keep_blank_values=True)
                         query.pop('t', None)

@@ -1,61 +1,43 @@
-import { dir_exist } from "std"
+import { dir_exist, download, make_executable } from "std"
 
 fun get_download_path(repo, position) {
     return unsafe $curl -sL https://api.github.com/repos/{repo}/releases | jq -r ".[0].assets.[{position}].browser_download_url"$
+}
+
+fun move_to_bin(binary) {
+    unsafe $mv {binary} /usr/local/bin$
+    make_executable("/usr/local/bin/{binary}")
 }
 
 silent unsafe $cd /tmp$
 
 echo "Install PHPactor LSP"
 let download_url = get_download_path("phpactor/phpactor", 0)
-$wget {download_url}$ failed {
-    echo "Error! Exit code: {status}"
-}
-silent unsafe {
-    $mv phpactor.phar /usr/local/bin$
-    $chmod +x /usr/local/bin/phpactor$
-}
+download(download_url, "phpactor")
+move_to_bin("phpactor")
 
 echo "Install Typos LSP"
 let download_url = get_download_path("tekumara/typos-lsp", 6)
-$wget {download_url}$ failed {
-    echo "Error! Exit code: {status}"
-}
+download(download_url, "typos.tar.gz")
 silent unsafe {
-    $tar -zxvf ./typos* -C ./typos-lsp$
-    $mv typos-lsp /usr/local/bin$
-    $chmod +x /usr/local/bin/typos-lsp$
+    $tar -zxvf ./typos.tar.gz -C ./typos-lsp$
 }
+move_to_bin("typos-lsp")
 
 echo "Install GitLab CI LSP"
 let download_url = get_download_path("alesbrelih/gitlab-ci-ls", 3)
-$wget {download_url}$ failed {
-    echo "Error! Exit code: {status}"
-}
-silent unsafe {
-    $mv x86_64-unknown-linux-gnu /usr/local/bin/gitlab-ci-ls$
-    $chmod +x /usr/local/bin/gitlab-ci-ls$
-}
+download(download_url, "gitlab-ci-ls")
+move_to_bin("gitlab-ci-ls")
 
 echo "Install HTMX LSP"
 let download_url = get_download_path("ThePrimeagen/htmx-lsp", 2)
-$wget {download_url}$ failed {
-    echo "Error! Exit code: {status}"
-}
-silent unsafe {
-    $mv htmx-lsp-linux-x64 /usr/local/bin/htmx-lsp$
-    $chmod +x /usr/local/bin/htmx-lsp$
-}
+download(download_url, "htmx-lsp")
+move_to_bin("htmx-lsp")
 
 echo "Install Marksman LSP"
 let download_url = get_download_path("artempyanykh/marksman", 1)
-$wget {download_url}$ failed {
-    echo "Error! Exit code: {status}"
-}
-silent unsafe {
-    $mv marksman-linux-x64 /usr/local/bin/marksman$
-    $chmod +x /usr/local/bin/marksman$
-}
+download(download_url, "marksman")
+move_to_bin("marksman")
 
 echo "Install Lua LSP"
 if not dir_exist("/opt/lua-language-server") {
