@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Written in [Amber](https://amber-lang.com/)
 # version: 0.3.3-alpha
-# date: 2024-07-04 11:50:58
+# date: 2024-07-04 12:03:51
 function dir_exist__4_v0 {
 	local path=$1
 	[ -d "${path}" ]
@@ -83,71 +83,67 @@ function get_download_path__40_v0 {
 	return 0
 }
 function move_to_bin__41_v0 {
-	local binary=$1
-	mv ${binary} /usr/local/bin
-	__AS=$?
-	make_executable__31_v0 "/usr/local/bin/${binary}"
-	__AF_make_executable31_v0__9_5=$__AF_make_executable31_v0
-	echo $__AF_make_executable31_v0__9_5 >/dev/null 2>&1
+	local download_url=$1
+	local binary=$2
+	download__33_v0 "${download_url}" "${binary}"
+	__AF_download33_v0__8_8=$__AF_download33_v0
+	if [ $__AF_download33_v0__8_8 != 0 ]; then
+		mv ${binary} /usr/local/bin
+		__AS=$?
+		make_executable__31_v0 "/usr/local/bin/${binary}"
+		__AF_make_executable31_v0__10_9=$__AF_make_executable31_v0
+		echo $__AF_make_executable31_v0__10_9 >/dev/null 2>&1
+	else
+		echo "Download for ${binary} at ${download_url} failed"
+	fi
 }
 cd /tmp >/dev/null 2>&1
 __AS=$?
 echo "Install PHPactor LSP"
 get_download_path__40_v0 "phpactor/phpactor" 0
-__AF_get_download_path40_v0__15_20="${__AF_get_download_path40_v0}"
-__0_download_url="${__AF_get_download_path40_v0__15_20}"
-download__33_v0 "${__0_download_url}" "phpactor"
-__AF_download33_v0__16_1=$__AF_download33_v0
-echo $__AF_download33_v0__16_1 >/dev/null 2>&1
-move_to_bin__41_v0 "phpactor"
-__AF_move_to_bin41_v0__17_1=$__AF_move_to_bin41_v0
-echo $__AF_move_to_bin41_v0__17_1 >/dev/null 2>&1
+__AF_get_download_path40_v0__19_13="${__AF_get_download_path40_v0}"
+move_to_bin__41_v0 "${__AF_get_download_path40_v0__19_13}" "phpactor"
+__AF_move_to_bin41_v0__19_1=$__AF_move_to_bin41_v0
+echo $__AF_move_to_bin41_v0__19_1 >/dev/null 2>&1
 echo "Install Typos LSP"
 get_download_path__40_v0 "tekumara/typos-lsp" 6
-__AF_get_download_path40_v0__20_20="${__AF_get_download_path40_v0}"
-__1_download_url="${__AF_get_download_path40_v0__20_20}"
-download__33_v0 "${__1_download_url}" "typos.tar.gz"
-__AF_download33_v0__21_1=$__AF_download33_v0
-echo $__AF_download33_v0__21_1 >/dev/null 2>&1
-tar -zxvf ./typos.tar.gz -C ./typos-lsp >/dev/null 2>&1
-__AS=$?
-move_to_bin__41_v0 "typos-lsp"
-__AF_move_to_bin41_v0__25_1=$__AF_move_to_bin41_v0
-echo $__AF_move_to_bin41_v0__25_1 >/dev/null 2>&1
+__AF_get_download_path40_v0__22_20="${__AF_get_download_path40_v0}"
+__0_download_url="${__AF_get_download_path40_v0__22_20}"
+download__33_v0 "${__0_download_url}" "typos.tar.gz"
+__AF_download33_v0__23_4=$__AF_download33_v0
+if [ $__AF_download33_v0__23_4 != 0 ]; then
+	tar -zxvf ./typos.tar.gz -C ./typos-lsp >/dev/null 2>&1
+	__AS=$?
+	rm ./typos.tar.gz >/dev/null 2>&1
+	__AS=$?
+	mv typos-lsp /usr/local/bin
+	__AS=$?
+	make_executable__31_v0 "/usr/local/bin/typos-lsp"
+	__AF_make_executable31_v0__29_5=$__AF_make_executable31_v0
+	echo $__AF_make_executable31_v0__29_5 >/dev/null 2>&1
+fi
 echo "Install GitLab CI LSP"
 get_download_path__40_v0 "alesbrelih/gitlab-ci-ls" 3
-__AF_get_download_path40_v0__28_20="${__AF_get_download_path40_v0}"
-__2_download_url="${__AF_get_download_path40_v0__28_20}"
-download__33_v0 "${__2_download_url}" "gitlab-ci-ls"
-__AF_download33_v0__29_1=$__AF_download33_v0
-echo $__AF_download33_v0__29_1 >/dev/null 2>&1
-move_to_bin__41_v0 "gitlab-ci-ls"
-__AF_move_to_bin41_v0__30_1=$__AF_move_to_bin41_v0
-echo $__AF_move_to_bin41_v0__30_1 >/dev/null 2>&1
+__AF_get_download_path40_v0__33_13="${__AF_get_download_path40_v0}"
+move_to_bin__41_v0 "${__AF_get_download_path40_v0__33_13}" "gitlab-ci-ls"
+__AF_move_to_bin41_v0__33_1=$__AF_move_to_bin41_v0
+echo $__AF_move_to_bin41_v0__33_1 >/dev/null 2>&1
 echo "Install HTMX LSP"
 get_download_path__40_v0 "ThePrimeagen/htmx-lsp" 2
-__AF_get_download_path40_v0__33_20="${__AF_get_download_path40_v0}"
-__3_download_url="${__AF_get_download_path40_v0__33_20}"
-download__33_v0 "${__3_download_url}" "htmx-lsp"
-__AF_download33_v0__34_1=$__AF_download33_v0
-echo $__AF_download33_v0__34_1 >/dev/null 2>&1
-move_to_bin__41_v0 "htmx-lsp"
-__AF_move_to_bin41_v0__35_1=$__AF_move_to_bin41_v0
-echo $__AF_move_to_bin41_v0__35_1 >/dev/null 2>&1
+__AF_get_download_path40_v0__36_13="${__AF_get_download_path40_v0}"
+move_to_bin__41_v0 "${__AF_get_download_path40_v0__36_13}" "htmx-lsp"
+__AF_move_to_bin41_v0__36_1=$__AF_move_to_bin41_v0
+echo $__AF_move_to_bin41_v0__36_1 >/dev/null 2>&1
 echo "Install Marksman LSP"
 get_download_path__40_v0 "artempyanykh/marksman" 1
-__AF_get_download_path40_v0__38_20="${__AF_get_download_path40_v0}"
-__4_download_url="${__AF_get_download_path40_v0__38_20}"
-download__33_v0 "${__4_download_url}" "marksman"
-__AF_download33_v0__39_1=$__AF_download33_v0
-echo $__AF_download33_v0__39_1 >/dev/null 2>&1
-move_to_bin__41_v0 "marksman"
-__AF_move_to_bin41_v0__40_1=$__AF_move_to_bin41_v0
-echo $__AF_move_to_bin41_v0__40_1 >/dev/null 2>&1
+__AF_get_download_path40_v0__39_13="${__AF_get_download_path40_v0}"
+move_to_bin__41_v0 "${__AF_get_download_path40_v0__39_13}" "marksman"
+__AF_move_to_bin41_v0__39_1=$__AF_move_to_bin41_v0
+echo $__AF_move_to_bin41_v0__39_1 >/dev/null 2>&1
 echo "Install Lua LSP"
 dir_exist__4_v0 "/opt/lua-language-server"
-__AF_dir_exist4_v0__43_8=$__AF_dir_exist4_v0
-if [ $(echo '!' $__AF_dir_exist4_v0__43_8 | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//') != 0 ]; then
+__AF_dir_exist4_v0__42_8=$__AF_dir_exist4_v0
+if [ $(echo '!' $__AF_dir_exist4_v0__42_8 | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//') != 0 ]; then
 	cd /opt/
 	__AS=$?
 	git clone https://github.com/LuaLS/lua-language-server
@@ -167,12 +163,12 @@ __AS=$?
 cd /tmp >/dev/null 2>&1
 __AS=$?
 __AMBER_ARRAY_0=("vscode-langservers-extracted" "@tailwindcss/language-server" "@olrtg/emmet-language-server" "intelephense" "bash-language-server")
-__5_npm_lsp=("${__AMBER_ARRAY_0[@]}")
+__1_npm_lsp=("${__AMBER_ARRAY_0[@]}")
 __AMBER_ARRAY_1=("CSS, HTML, JSON LSP" "Tailwind LSP" "Emmet LSP" "Intelephense LSP" "Bash LSP")
-__6_npm_lsp_name=("${__AMBER_ARRAY_1[@]}")
+__2_npm_lsp_name=("${__AMBER_ARRAY_1[@]}")
 index=0
-for lsp in "${__5_npm_lsp[@]}"; do
-	echo "Install ${__6_npm_lsp_name[${index}]}"
+for lsp in "${__1_npm_lsp[@]}"; do
+	echo "Install ${__2_npm_lsp_name[${index}]}"
 	npm i -g ${lsp}
 	__AS=$?
 	if [ $__AS != 0 ]; then
@@ -181,12 +177,12 @@ for lsp in "${__5_npm_lsp[@]}"; do
 	((index++)) || true
 done
 __AMBER_ARRAY_2=("pip install python-lsp-server" "gem install ruby-lsp")
-__7_command_lsp=("${__AMBER_ARRAY_2[@]}")
+__3_command_lsp=("${__AMBER_ARRAY_2[@]}")
 __AMBER_ARRAY_3=("Python LSP" "Ruby LSP")
-__8_command_lsp_name=("${__AMBER_ARRAY_3[@]}")
+__4_command_lsp_name=("${__AMBER_ARRAY_3[@]}")
 index=0
-for lsp in "${__7_command_lsp[@]}"; do
-	echo "Install ${__8_command_lsp_name[${index}]}"
+for lsp in "${__3_command_lsp[@]}"; do
+	echo "Install ${__4_command_lsp_name[${index}]}"
 	${lsp}
 	__AS=$?
 	if [ $__AS != 0 ]; then
