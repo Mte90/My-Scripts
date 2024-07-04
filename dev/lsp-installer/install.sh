@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Written in [Amber](https://amber-lang.com/)
 # version: 0.3.3-alpha
-# date: 2024-07-04 12:03:51
+# date: 2024-07-04 12:16:39
 function dir_exist__4_v0 {
 	local path=$1
 	[ -d "${path}" ]
@@ -26,7 +26,7 @@ function file_exist__5_v0 {
 }
 function is_command__28_v0 {
 	local command=$1
-	[ -x "$(command -v ${command})" ]
+	[ -x $(command -v "${command}") ]
 	__AS=$?
 	if [ $__AS != 0 ]; then
 		__AF_is_command28_v0=0
@@ -77,7 +77,7 @@ function download__33_v0 {
 function get_download_path__40_v0 {
 	local repo=$1
 	local position=$2
-	__AMBER_VAL_0=$(curl -sL https://api.github.com/repos/${repo}/releases | jq -r ".[0].assets.[${position}].browser_download_url")
+	__AMBER_VAL_0=$(curl -sL "https://api.github.com/repos/${repo}/releases" | jq -r ".[0].assets.[${position}].browser_download_url")
 	__AS=$?
 	__AF_get_download_path40_v0="${__AMBER_VAL_0}"
 	return 0
@@ -88,7 +88,7 @@ function move_to_bin__41_v0 {
 	download__33_v0 "${download_url}" "${binary}"
 	__AF_download33_v0__8_8=$__AF_download33_v0
 	if [ $__AF_download33_v0__8_8 != 0 ]; then
-		mv ${binary} /usr/local/bin
+		mv "${binary}" /usr/local/bin
 		__AS=$?
 		make_executable__31_v0 "/usr/local/bin/${binary}"
 		__AF_make_executable31_v0__10_9=$__AF_make_executable31_v0
@@ -169,7 +169,7 @@ __2_npm_lsp_name=("${__AMBER_ARRAY_1[@]}")
 index=0
 for lsp in "${__1_npm_lsp[@]}"; do
 	echo "Install ${__2_npm_lsp_name[${index}]}"
-	npm i -g ${lsp}
+	npm i -g "${lsp}"
 	__AS=$?
 	if [ $__AS != 0 ]; then
 		echo "Error! Exit code: $__AS"

@@ -1,12 +1,12 @@
 import { dir_exist, download, make_executable } from "std"
 
 fun get_download_path(repo, position) {
-    return unsafe $curl -sL https://api.github.com/repos/{repo}/releases | jq -r ".[0].assets.[{position}].browser_download_url"$
+    return unsafe $curl -sL "https://api.github.com/repos/{repo}/releases" | jq -r ".[0].assets.[{position}].browser_download_url"$
 }
 
 fun move_to_bin(download_url, binary) {
     if download(download_url, binary) {
-        unsafe $mv {binary} /usr/local/bin$
+        unsafe $mv "{binary}" /usr/local/bin$
         make_executable("/usr/local/bin/{binary}")
     } else {
         echo "Download for {binary} at {download_url} failed"
@@ -58,7 +58,7 @@ let npm_lsp = ["vscode-langservers-extracted", "@tailwindcss/language-server", "
 let npm_lsp_name = ["CSS, HTML, JSON LSP", "Tailwind LSP", "Emmet LSP", "Intelephense LSP", "Bash LSP"]
 loop index, lsp in npm_lsp {
     echo "Install {npm_lsp_name[index]}"
-    $npm i -g {lsp}$ failed {
+    $npm i -g "{lsp}"$ failed {
         echo "Error! Exit code: {status}"
     }
 }
