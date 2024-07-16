@@ -4,6 +4,7 @@ import { is_root } from "std/env"
 
 if not is_root() {
     echo "This script requires root permissions!"
+    exit(1)
 }
 
 fun get_download_path(repo, position) {
