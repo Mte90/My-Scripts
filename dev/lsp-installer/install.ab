@@ -1,6 +1,6 @@
 import { dir_exist, make_executable } from "std/fs"
 import { download } from "std/http"
-import { is_root } from "std/env"
+import { is_root, exit } from "std/env"
 
 if not is_root() {
     echo "This script requires root permissions!"
