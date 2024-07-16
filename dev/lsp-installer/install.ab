@@ -1,4 +1,10 @@
-import { dir_exist, download, make_executable } from "std"
+import { dir_exist, make_executable } from "std/fs"
+import { download } from "std/http"
+import { is_root } from "std/env"
+
+if not is_root() {
+    echo "This script requires root permissions!"
+}
 
 fun get_download_path(repo, position) {
     return unsafe $curl -sL "https://api.github.com/repos/{repo}/releases" | jq -r ".[0].assets.[{position}].browser_download_url"$
