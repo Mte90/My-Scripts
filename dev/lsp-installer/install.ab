@@ -12,11 +12,31 @@ fun get_download_path(repo, position) {
 }
 
 fun move_to_bin(download_url, binary) {
-    if download(download_url, binary) {
+    if silent download(download_url, binary) {
         unsafe $mv "{binary}" /usr/local/bin$
         make_executable("/usr/local/bin/{binary}")
     } else {
         echo "Download for {binary} at {download_url} failed"
+        exit(1)
+    }
+}
+
+fun download_to_bin(download_url, binary, packed_file) {
+    if silent download(download_url, packed_file) {
+        unsafe {
+            // TODO: switch to contain string
+            if packed_file == "typos.tar.gz" {
+                $tar -zxvf ./{packed_file} -C ./ > /dev/null 2>&1$
+                $mv ./{binary} /usr/local/bin$
+            } else {
+                $gunzip -c - > /usr/local/bin/{binary}$
+            }
+            $rm ./{packed_file}$
+        }
+        make_executable("/usr/local/bin/{binary}")
+    } else {
+        echo "Download for {binary} at {download_url} failed"
+        exit(1)
     }
 }
 
@@ -26,15 +46,10 @@ echo "Install PHPactor LSP"
 move_to_bin(get_download_path("phpactor/phpactor", 0), "phpactor")
 
 echo "Install Typos LSP"
-let download_url = get_download_path("tekumara/typos-lsp", 6)
-if download(download_url, "typos.tar.gz") {
-    silent unsafe {
-        $tar -zxvf ./typos.tar.gz -C ./typos-lsp$
-        $rm ./typos.tar.gz$
-    }
-    unsafe $mv typos-lsp /usr/local/bin$
-    make_executable("/usr/local/bin/typos-lsp")
-}
+download_to_bin(get_download_path("tekumara/typos-lsp", 6), "typos-lsp", "typos.tar.gz")
+
+echo "Install Rust LSP"
+download_to_bin("https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz", "rust-analyzer", "rust-analyzer-x86_64-unknown-linux-gnu.gz")
 
 echo "Install GitLab CI LSP"
 move_to_bin(get_download_path("alesbrelih/gitlab-ci-ls", 3), "gitlab-ci-ls")
