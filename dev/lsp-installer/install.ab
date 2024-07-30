@@ -1,4 +1,4 @@
-import { dir_exist, make_executable } from "std/fs"
+import { dir_exist, make_executable, create_symbolic_link } from "std/fs"
 import { download } from "std/http"
 import { is_root, exit } from "std/env"
 
@@ -71,8 +71,8 @@ silent unsafe {
     $cd lua-language-server$
     $git pull$
     $./make.sh$
-    $ln -s /opt/lua-language-server/bin/lua-language-server /usr/local/bin/lua-language-server$
 }
+create_symbolic_link("/opt/lua-language-server/bin/lua-language-server", "/usr/local/bin/lua-language-server")
 
 silent unsafe $cd /tmp$
 
