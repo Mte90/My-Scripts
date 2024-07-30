@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Written in [Amber](https://amber-lang.com/)
 # version: 0.3.4-alpha
-# date: 2024-07-30 12:33:01
+# date: 2024-07-30 12:35:19
 function dir_exist__0_v0 {
     local path=$1
     [ -d "${path}" ]
@@ -165,7 +165,7 @@ function download_to_bin__110_v0 {
         contains__36_v0 "tar.gz" "${packed_file}"
         __AF_contains36_v0__28_16="$__AF_contains36_v0"
         if [ "$__AF_contains36_v0__28_16" != 0 ]; then
-            tar -zxvf ./${packed_file} -C ./ >/dev/null 2>&1
+            tar -zxvf "./${packed_file}" -C ./ >/dev/null 2>&1
             __AS=$?
             mv "./${binary}" "/usr/local/bin"
             __AS=$?
@@ -173,7 +173,7 @@ function download_to_bin__110_v0 {
             gunzip -c - >/usr/local/bin/${binary}
             __AS=$?
         fi
-        rm ./${packed_file}
+        rm "./${packed_file}"
         __AS=$?
         make_executable__7_v0 "/usr/local/bin/${binary}"
         __AF_make_executable7_v0__36_9="$__AF_make_executable7_v0"
