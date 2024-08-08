@@ -29,7 +29,7 @@ fun download_to_bin(download_url, binary, packed_file) {
                 $tar -zxvf "./{packed_file}" -C ./ > /dev/null 2>&1$
                 unsafe mv "./{binary}" "/usr/local/bin"
             } else {
-                $gunzip -c - > /usr/local/bin/{binary}$
+                $gunzip -c - > "/usr/local/bin/{binary}"$
             }
             $rm "./{packed_file}"$
         }

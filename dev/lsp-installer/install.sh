@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Written in [Amber](https://amber-lang.com/)
 # version: 0.3.4-alpha
-# date: 2024-07-30 12:35:19
+# date: 2024-08-08 15:08:39
 function dir_exist__0_v0 {
     local path=$1
     [ -d "${path}" ]
@@ -67,82 +67,82 @@ function contains__36_v0 {
     )
     return 0
 }
-function is_command__61_v0 {
+function is_command__79_v0 {
     local command=$1
     [ -x "$(command -v ${command})" ]
     __AS=$?
     if [ $__AS != 0 ]; then
-        __AF_is_command61_v0=0
+        __AF_is_command79_v0=0
         return 0
     fi
-    __AF_is_command61_v0=1
+    __AF_is_command79_v0=1
     return 0
 }
-function exit__65_v0 {
+function exit__83_v0 {
     local code=$1
-    exit "${code}" >/dev/null 2>&1
+    exit "${code}"
     __AS=$?
 }
-function is_root__66_v0 {
+function is_root__84_v0 {
     __AMBER_VAL_1=$(id -u)
     __AS=$?
     if [ $(
         [ "_${__AMBER_VAL_1}" != "_0" ]
         echo $?
     ) != 0 ]; then
-        __AF_is_root66_v0=1
+        __AF_is_root84_v0=1
         return 0
     fi
-    __AF_is_root66_v0=0
+    __AF_is_root84_v0=0
     return 0
 }
-function download__103_v0 {
+function download__121_v0 {
     local url=$1
     local path=$2
-    is_command__61_v0 "curl"
-    __AF_is_command61_v0__5_9="$__AF_is_command61_v0"
-    is_command__61_v0 "wget"
-    __AF_is_command61_v0__8_9="$__AF_is_command61_v0"
-    is_command__61_v0 "aria2c"
-    __AF_is_command61_v0__11_9="$__AF_is_command61_v0"
-    if [ "$__AF_is_command61_v0__5_9" != 0 ]; then
+    is_command__79_v0 "curl"
+    __AF_is_command79_v0__5_9="$__AF_is_command79_v0"
+    is_command__79_v0 "wget"
+    __AF_is_command79_v0__8_9="$__AF_is_command79_v0"
+    is_command__79_v0 "aria2c"
+    __AF_is_command79_v0__11_9="$__AF_is_command79_v0"
+    if [ "$__AF_is_command79_v0__5_9" != 0 ]; then
         curl -L -o "${path}" "${url}"
         __AS=$?
-    elif [ "$__AF_is_command61_v0__8_9" != 0 ]; then
+    elif [ "$__AF_is_command79_v0__8_9" != 0 ]; then
         wget "${url}" -P "${path}"
         __AS=$?
-    elif [ "$__AF_is_command61_v0__11_9" != 0 ]; then
+    elif [ "$__AF_is_command79_v0__11_9" != 0 ]; then
         aria2c "${url}" -d "${path}"
         __AS=$?
     else
-        __AF_download103_v0=0
+        __AF_download121_v0=0
         return 0
     fi
-    __AF_download103_v0=1
+    __AF_download121_v0=1
     return 0
 }
-is_root__66_v0
-__AF_is_root66_v0__6_8="$__AF_is_root66_v0"
-if [ $(echo '!' "$__AF_is_root66_v0__6_8" | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//') != 0 ]; then
+is_root__84_v0
+__AF_is_root84_v0__6_8="$__AF_is_root84_v0"
+if [ $(echo '!' "$__AF_is_root84_v0__6_8" | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//') != 0 ]; then
     echo "This script requires root permissions"'!'""
-    exit__65_v0 1
-    __AF_exit65_v0__8_5="$__AF_exit65_v0"
-    echo "$__AF_exit65_v0__8_5" >/dev/null 2>&1
+    exit__83_v0 1
+    __AF_exit83_v0__8_5="$__AF_exit83_v0"
+    echo "$__AF_exit83_v0__8_5" >/dev/null 2>&1
 fi
-function get_download_path__108_v0 {
+function get_download_path__126_v0 {
     local repo=$1
     local position=$2
     __AMBER_VAL_2=$(curl -sL "https://api.github.com/repos/${repo}/releases" | jq -r ".[0].assets.[${position}].browser_download_url")
     __AS=$?
-    __AF_get_download_path108_v0="${__AMBER_VAL_2}"
+    __AF_get_download_path126_v0="${__AMBER_VAL_2}"
     return 0
 }
-function move_to_bin__109_v0 {
+function move_to_bin__127_v0 {
     local download_url=$1
     local binary=$2
-    download__103_v0 "${download_url}" "${binary}" >/dev/null 2>&1
-    __AF_download103_v0__16_15="$__AF_download103_v0"
-    if [ "$__AF_download103_v0__16_15" != 0 ]; then
+    download__121_v0 "${download_url}" "${binary}" >/dev/null 2>&1
+    __AF_download121_v0__16_15="$__AF_download121_v0"
+    if [ "$__AF_download121_v0__16_15" != 0 ]; then
         mv "${binary}" "/usr/local/bin"
         __AS=$?
         make_executable__7_v0 "/usr/local/bin/${binary}"
@@ -150,18 +150,18 @@ function move_to_bin__109_v0 {
         echo "$__AF_make_executable7_v0__18_9" >/dev/null 2>&1
     else
         echo "Download for ${binary} at ${download_url} failed"
-        exit__65_v0 1
-        __AF_exit65_v0__21_9="$__AF_exit65_v0"
-        echo "$__AF_exit65_v0__21_9" >/dev/null 2>&1
+        exit__83_v0 1
+        __AF_exit83_v0__21_9="$__AF_exit83_v0"
+        echo "$__AF_exit83_v0__21_9" >/dev/null 2>&1
     fi
 }
-function download_to_bin__110_v0 {
+function download_to_bin__128_v0 {
     local download_url=$1
     local binary=$2
     local packed_file=$3
-    download__103_v0 "${download_url}" "${packed_file}" >/dev/null 2>&1
-    __AF_download103_v0__26_15="$__AF_download103_v0"
-    if [ "$__AF_download103_v0__26_15" != 0 ]; then
+    download__121_v0 "${download_url}" "${packed_file}" >/dev/null 2>&1
+    __AF_download121_v0__26_15="$__AF_download121_v0"
+    if [ "$__AF_download121_v0__26_15" != 0 ]; then
         contains__36_v0 "tar.gz" "${packed_file}"
         __AF_contains36_v0__28_16="$__AF_contains36_v0"
         if [ "$__AF_contains36_v0__28_16" != 0 ]; then
@@ -170,7 +170,7 @@ function download_to_bin__110_v0 {
             mv "./${binary}" "/usr/local/bin"
             __AS=$?
         else
-            gunzip -c - >/usr/local/bin/${binary}
+            gunzip -c - >"/usr/local/bin/${binary}"
             __AS=$?
         fi
         rm "./${packed_file}"
@@ -180,46 +180,46 @@ function download_to_bin__110_v0 {
         echo "$__AF_make_executable7_v0__36_9" >/dev/null 2>&1
     else
         echo "Download for ${binary} at ${download_url} failed"
-        exit__65_v0 1
-        __AF_exit65_v0__39_9="$__AF_exit65_v0"
-        echo "$__AF_exit65_v0__39_9" >/dev/null 2>&1
+        exit__83_v0 1
+        __AF_exit83_v0__39_9="$__AF_exit83_v0"
+        echo "$__AF_exit83_v0__39_9" >/dev/null 2>&1
     fi
 }
 cd "/tmp" || exit
 echo "Install PHPactor LSP"
-get_download_path__108_v0 "phpactor/phpactor" 0
-__AF_get_download_path108_v0__46_13="${__AF_get_download_path108_v0}"
-move_to_bin__109_v0 "${__AF_get_download_path108_v0__46_13}" "phpactor"
-__AF_move_to_bin109_v0__46_1="$__AF_move_to_bin109_v0"
-echo "$__AF_move_to_bin109_v0__46_1" >/dev/null 2>&1
+get_download_path__126_v0 "phpactor/phpactor" 0
+__AF_get_download_path126_v0__46_13="${__AF_get_download_path126_v0}"
+move_to_bin__127_v0 "${__AF_get_download_path126_v0__46_13}" "phpactor"
+__AF_move_to_bin127_v0__46_1="$__AF_move_to_bin127_v0"
+echo "$__AF_move_to_bin127_v0__46_1" >/dev/null 2>&1
 echo "Install Typos LSP"
-get_download_path__108_v0 "tekumara/typos-lsp" 6
-__AF_get_download_path108_v0__49_17="${__AF_get_download_path108_v0}"
-download_to_bin__110_v0 "${__AF_get_download_path108_v0__49_17}" "typos-lsp" "typos.tar.gz"
-__AF_download_to_bin110_v0__49_1="$__AF_download_to_bin110_v0"
-echo "$__AF_download_to_bin110_v0__49_1" >/dev/null 2>&1
+get_download_path__126_v0 "tekumara/typos-lsp" 6
+__AF_get_download_path126_v0__49_17="${__AF_get_download_path126_v0}"
+download_to_bin__128_v0 "${__AF_get_download_path126_v0__49_17}" "typos-lsp" "typos.tar.gz"
+__AF_download_to_bin128_v0__49_1="$__AF_download_to_bin128_v0"
+echo "$__AF_download_to_bin128_v0__49_1" >/dev/null 2>&1
 echo "Install Rust LSP"
-download_to_bin__110_v0 "https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz" "rust-analyzer" "rust-analyzer-x86_64-unknown-linux-gnu.gz"
-__AF_download_to_bin110_v0__52_1="$__AF_download_to_bin110_v0"
-echo "$__AF_download_to_bin110_v0__52_1" >/dev/null 2>&1
+download_to_bin__128_v0 "https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz" "rust-analyzer" "rust-analyzer-x86_64-unknown-linux-gnu.gz"
+__AF_download_to_bin128_v0__52_1="$__AF_download_to_bin128_v0"
+echo "$__AF_download_to_bin128_v0__52_1" >/dev/null 2>&1
 echo "Install GitLab CI LSP"
-get_download_path__108_v0 "alesbrelih/gitlab-ci-ls" 3
-__AF_get_download_path108_v0__55_13="${__AF_get_download_path108_v0}"
-move_to_bin__109_v0 "${__AF_get_download_path108_v0__55_13}" "gitlab-ci-ls"
-__AF_move_to_bin109_v0__55_1="$__AF_move_to_bin109_v0"
-echo "$__AF_move_to_bin109_v0__55_1" >/dev/null 2>&1
+get_download_path__126_v0 "alesbrelih/gitlab-ci-ls" 3
+__AF_get_download_path126_v0__55_13="${__AF_get_download_path126_v0}"
+move_to_bin__127_v0 "${__AF_get_download_path126_v0__55_13}" "gitlab-ci-ls"
+__AF_move_to_bin127_v0__55_1="$__AF_move_to_bin127_v0"
+echo "$__AF_move_to_bin127_v0__55_1" >/dev/null 2>&1
 echo "Install HTMX LSP"
-get_download_path__108_v0 "ThePrimeagen/htmx-lsp" 2
-__AF_get_download_path108_v0__58_13="${__AF_get_download_path108_v0}"
-move_to_bin__109_v0 "${__AF_get_download_path108_v0__58_13}" "htmx-lsp"
-__AF_move_to_bin109_v0__58_1="$__AF_move_to_bin109_v0"
-echo "$__AF_move_to_bin109_v0__58_1" >/dev/null 2>&1
+get_download_path__126_v0 "ThePrimeagen/htmx-lsp" 2
+__AF_get_download_path126_v0__58_13="${__AF_get_download_path126_v0}"
+move_to_bin__127_v0 "${__AF_get_download_path126_v0__58_13}" "htmx-lsp"
+__AF_move_to_bin127_v0__58_1="$__AF_move_to_bin127_v0"
+echo "$__AF_move_to_bin127_v0__58_1" >/dev/null 2>&1
 echo "Install Marksman LSP"
-get_download_path__108_v0 "artempyanykh/marksman" 1
-__AF_get_download_path108_v0__61_13="${__AF_get_download_path108_v0}"
-move_to_bin__109_v0 "${__AF_get_download_path108_v0__61_13}" "marksman"
-__AF_move_to_bin109_v0__61_1="$__AF_move_to_bin109_v0"
-echo "$__AF_move_to_bin109_v0__61_1" >/dev/null 2>&1
+get_download_path__126_v0 "artempyanykh/marksman" 1
+__AF_get_download_path126_v0__61_13="${__AF_get_download_path126_v0}"
+move_to_bin__127_v0 "${__AF_get_download_path126_v0__61_13}" "marksman"
+__AF_move_to_bin127_v0__61_1="$__AF_move_to_bin127_v0"
+echo "$__AF_move_to_bin127_v0__61_1" >/dev/null 2>&1
 echo "Install Lua LSP"
 dir_exist__0_v0 "/opt/lua-language-server"
 __AF_dir_exist0_v0__64_8="$__AF_dir_exist0_v0"
