@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Written in [Amber](https://amber-lang.com/)
-# version: 0.3.4-alpha
-# date: 2024-08-08 15:08:39
-function dir_exist__0_v0 {
+# version: 0.3.5-alpha
+# date: 2024-09-11 17:52:32
+dir_exist__0_v0() {
     local path=$1
     [ -d "${path}" ]
     __AS=$?
@@ -13,7 +13,7 @@ function dir_exist__0_v0 {
     __AF_dir_exist0_v0=1
     return 0
 }
-function file_exist__1_v0 {
+file_exist__1_v0() {
     local path=$1
     [ -f "${path}" ]
     __AS=$?
@@ -24,12 +24,12 @@ function file_exist__1_v0 {
     __AF_file_exist1_v0=1
     return 0
 }
-function create_symbolic_link__5_v0 {
+create_symbolic_link__5_v0() {
     local origin=$1
     local destination=$2
     file_exist__1_v0 "${origin}"
-    __AF_file_exist1_v0__28_8="$__AF_file_exist1_v0"
-    if [ "$__AF_file_exist1_v0__28_8" != 0 ]; then
+    __AF_file_exist1_v0__37_8="$__AF_file_exist1_v0"
+    if [ "$__AF_file_exist1_v0__37_8" != 0 ]; then
         ln -s "${origin}" "${destination}"
         __AS=$?
         __AF_create_symbolic_link5_v0=1
@@ -39,11 +39,11 @@ function create_symbolic_link__5_v0 {
     __AF_create_symbolic_link5_v0=0
     return 0
 }
-function make_executable__7_v0 {
+make_executable__7_v0() {
     local path=$1
     file_exist__1_v0 "${path}"
-    __AF_file_exist1_v0__44_8="$__AF_file_exist1_v0"
-    if [ "$__AF_file_exist1_v0__44_8" != 0 ]; then
+    __AF_file_exist1_v0__56_8="$__AF_file_exist1_v0"
+    if [ "$__AF_file_exist1_v0__56_8" != 0 ]; then
         chmod +x "${path}"
         __AS=$?
         __AF_make_executable7_v0=1
@@ -53,7 +53,7 @@ function make_executable__7_v0 {
     __AF_make_executable7_v0=0
     return 0
 }
-function contains__36_v0 {
+contains__36_v0() {
     local text=$1
     local phrase=$2
     __AMBER_VAL_0=$(if [[ "${text}" == *"${phrase}"* ]]; then
@@ -67,7 +67,7 @@ function contains__36_v0 {
     )
     return 0
 }
-function is_command__79_v0 {
+is_command__79_v0() {
     local command=$1
     [ -x "$(command -v ${command})" ]
     __AS=$?
@@ -78,12 +78,12 @@ function is_command__79_v0 {
     __AF_is_command79_v0=1
     return 0
 }
-function exit__83_v0 {
+exit__83_v0() {
     local code=$1
     exit "${code}"
     __AS=$?
 }
-function is_root__84_v0 {
+is_root__84_v0() {
     __AMBER_VAL_1=$(id -u)
     __AS=$?
     if [ $(
@@ -96,22 +96,22 @@ function is_root__84_v0 {
     __AF_is_root84_v0=0
     return 0
 }
-function download__121_v0 {
+download__121_v0() {
     local url=$1
     local path=$2
     is_command__79_v0 "curl"
-    __AF_is_command79_v0__5_9="$__AF_is_command79_v0"
+    __AF_is_command79_v0__10_9="$__AF_is_command79_v0"
     is_command__79_v0 "wget"
-    __AF_is_command79_v0__8_9="$__AF_is_command79_v0"
+    __AF_is_command79_v0__13_9="$__AF_is_command79_v0"
     is_command__79_v0 "aria2c"
-    __AF_is_command79_v0__11_9="$__AF_is_command79_v0"
-    if [ "$__AF_is_command79_v0__5_9" != 0 ]; then
+    __AF_is_command79_v0__16_9="$__AF_is_command79_v0"
+    if [ "$__AF_is_command79_v0__10_9" != 0 ]; then
         curl -L -o "${path}" "${url}"
         __AS=$?
-    elif [ "$__AF_is_command79_v0__8_9" != 0 ]; then
+    elif [ "$__AF_is_command79_v0__13_9" != 0 ]; then
         wget "${url}" -P "${path}"
         __AS=$?
-    elif [ "$__AF_is_command79_v0__11_9" != 0 ]; then
+    elif [ "$__AF_is_command79_v0__16_9" != 0 ]; then
         aria2c "${url}" -d "${path}"
         __AS=$?
     else
@@ -129,7 +129,7 @@ if [ $(echo '!' "$__AF_is_root84_v0__6_8" | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}
     __AF_exit83_v0__8_5="$__AF_exit83_v0"
     echo "$__AF_exit83_v0__8_5" >/dev/null 2>&1
 fi
-function get_download_path__126_v0 {
+get_download_path__126_v0() {
     local repo=$1
     local position=$2
     __AMBER_VAL_2=$(curl -sL "https://api.github.com/repos/${repo}/releases" | jq -r ".[0].assets.[${position}].browser_download_url")
@@ -137,7 +137,7 @@ function get_download_path__126_v0 {
     __AF_get_download_path126_v0="${__AMBER_VAL_2}"
     return 0
 }
-function move_to_bin__127_v0 {
+move_to_bin__127_v0() {
     local download_url=$1
     local binary=$2
     download__121_v0 "${download_url}" "${binary}" >/dev/null 2>&1
@@ -145,26 +145,32 @@ function move_to_bin__127_v0 {
     if [ "$__AF_download121_v0__16_15" != 0 ]; then
         mv "${binary}" "/usr/local/bin"
         __AS=$?
+        if [ $__AS != 0 ]; then
+            echo "Move ${binary} to /usr/local/bin failed"'!'""
+            exit__83_v0 1
+            __AF_exit83_v0__19_13="$__AF_exit83_v0"
+            echo "$__AF_exit83_v0__19_13" >/dev/null 2>&1
+        fi
         make_executable__7_v0 "/usr/local/bin/${binary}"
-        __AF_make_executable7_v0__18_9="$__AF_make_executable7_v0"
-        echo "$__AF_make_executable7_v0__18_9" >/dev/null 2>&1
+        __AF_make_executable7_v0__21_9="$__AF_make_executable7_v0"
+        echo "$__AF_make_executable7_v0__21_9" >/dev/null 2>&1
     else
         echo "Download for ${binary} at ${download_url} failed"
         exit__83_v0 1
-        __AF_exit83_v0__21_9="$__AF_exit83_v0"
-        echo "$__AF_exit83_v0__21_9" >/dev/null 2>&1
+        __AF_exit83_v0__24_9="$__AF_exit83_v0"
+        echo "$__AF_exit83_v0__24_9" >/dev/null 2>&1
     fi
 }
-function download_to_bin__128_v0 {
+download_to_bin__128_v0() {
     local download_url=$1
     local binary=$2
     local packed_file=$3
     download__121_v0 "${download_url}" "${packed_file}" >/dev/null 2>&1
-    __AF_download121_v0__26_15="$__AF_download121_v0"
-    if [ "$__AF_download121_v0__26_15" != 0 ]; then
+    __AF_download121_v0__29_15="$__AF_download121_v0"
+    if [ "$__AF_download121_v0__29_15" != 0 ]; then
         contains__36_v0 "tar.gz" "${packed_file}"
-        __AF_contains36_v0__28_16="$__AF_contains36_v0"
-        if [ "$__AF_contains36_v0__28_16" != 0 ]; then
+        __AF_contains36_v0__31_16="$__AF_contains36_v0"
+        if [ "$__AF_contains36_v0__31_16" != 0 ]; then
             tar -zxvf "./${packed_file}" -C ./ >/dev/null 2>&1
             __AS=$?
             mv "./${binary}" "/usr/local/bin"
@@ -176,54 +182,54 @@ function download_to_bin__128_v0 {
         rm "./${packed_file}"
         __AS=$?
         make_executable__7_v0 "/usr/local/bin/${binary}"
-        __AF_make_executable7_v0__36_9="$__AF_make_executable7_v0"
-        echo "$__AF_make_executable7_v0__36_9" >/dev/null 2>&1
+        __AF_make_executable7_v0__39_9="$__AF_make_executable7_v0"
+        echo "$__AF_make_executable7_v0__39_9" >/dev/null 2>&1
     else
         echo "Download for ${binary} at ${download_url} failed"
         exit__83_v0 1
-        __AF_exit83_v0__39_9="$__AF_exit83_v0"
-        echo "$__AF_exit83_v0__39_9" >/dev/null 2>&1
+        __AF_exit83_v0__42_9="$__AF_exit83_v0"
+        echo "$__AF_exit83_v0__42_9" >/dev/null 2>&1
     fi
 }
 cd "/tmp" || exit
 echo "Install PHPactor LSP"
 get_download_path__126_v0 "phpactor/phpactor" 0
-__AF_get_download_path126_v0__46_13="${__AF_get_download_path126_v0}"
-move_to_bin__127_v0 "${__AF_get_download_path126_v0__46_13}" "phpactor"
-__AF_move_to_bin127_v0__46_1="$__AF_move_to_bin127_v0"
-echo "$__AF_move_to_bin127_v0__46_1" >/dev/null 2>&1
+__AF_get_download_path126_v0__49_13="${__AF_get_download_path126_v0}"
+move_to_bin__127_v0 "${__AF_get_download_path126_v0__49_13}" "phpactor"
+__AF_move_to_bin127_v0__49_1="$__AF_move_to_bin127_v0"
+echo "$__AF_move_to_bin127_v0__49_1" >/dev/null 2>&1
 echo "Install Typos LSP"
 get_download_path__126_v0 "tekumara/typos-lsp" 6
-__AF_get_download_path126_v0__49_17="${__AF_get_download_path126_v0}"
-download_to_bin__128_v0 "${__AF_get_download_path126_v0__49_17}" "typos-lsp" "typos.tar.gz"
-__AF_download_to_bin128_v0__49_1="$__AF_download_to_bin128_v0"
-echo "$__AF_download_to_bin128_v0__49_1" >/dev/null 2>&1
-echo "Install Rust LSP"
-download_to_bin__128_v0 "https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz" "rust-analyzer" "rust-analyzer-x86_64-unknown-linux-gnu.gz"
+__AF_get_download_path126_v0__52_17="${__AF_get_download_path126_v0}"
+download_to_bin__128_v0 "${__AF_get_download_path126_v0__52_17}" "typos-lsp" "typos.tar.gz"
 __AF_download_to_bin128_v0__52_1="$__AF_download_to_bin128_v0"
 echo "$__AF_download_to_bin128_v0__52_1" >/dev/null 2>&1
+echo "Install Rust LSP"
+download_to_bin__128_v0 "https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz" "rust-analyzer" "rust-analyzer-x86_64-unknown-linux-gnu.gz"
+__AF_download_to_bin128_v0__55_1="$__AF_download_to_bin128_v0"
+echo "$__AF_download_to_bin128_v0__55_1" >/dev/null 2>&1
 echo "Install GitLab CI LSP"
 get_download_path__126_v0 "alesbrelih/gitlab-ci-ls" 3
-__AF_get_download_path126_v0__55_13="${__AF_get_download_path126_v0}"
-move_to_bin__127_v0 "${__AF_get_download_path126_v0__55_13}" "gitlab-ci-ls"
-__AF_move_to_bin127_v0__55_1="$__AF_move_to_bin127_v0"
-echo "$__AF_move_to_bin127_v0__55_1" >/dev/null 2>&1
-echo "Install HTMX LSP"
-get_download_path__126_v0 "ThePrimeagen/htmx-lsp" 2
 __AF_get_download_path126_v0__58_13="${__AF_get_download_path126_v0}"
-move_to_bin__127_v0 "${__AF_get_download_path126_v0__58_13}" "htmx-lsp"
+move_to_bin__127_v0 "${__AF_get_download_path126_v0__58_13}" "gitlab-ci-ls"
 __AF_move_to_bin127_v0__58_1="$__AF_move_to_bin127_v0"
 echo "$__AF_move_to_bin127_v0__58_1" >/dev/null 2>&1
-echo "Install Marksman LSP"
-get_download_path__126_v0 "artempyanykh/marksman" 1
+echo "Install HTMX LSP"
+get_download_path__126_v0 "ThePrimeagen/htmx-lsp" 2
 __AF_get_download_path126_v0__61_13="${__AF_get_download_path126_v0}"
-move_to_bin__127_v0 "${__AF_get_download_path126_v0__61_13}" "marksman"
+move_to_bin__127_v0 "${__AF_get_download_path126_v0__61_13}" "htmx-lsp"
 __AF_move_to_bin127_v0__61_1="$__AF_move_to_bin127_v0"
 echo "$__AF_move_to_bin127_v0__61_1" >/dev/null 2>&1
+echo "Install Marksman LSP"
+get_download_path__126_v0 "artempyanykh/marksman" 1
+__AF_get_download_path126_v0__64_13="${__AF_get_download_path126_v0}"
+move_to_bin__127_v0 "${__AF_get_download_path126_v0__64_13}" "marksman"
+__AF_move_to_bin127_v0__64_1="$__AF_move_to_bin127_v0"
+echo "$__AF_move_to_bin127_v0__64_1" >/dev/null 2>&1
 echo "Install Lua LSP"
 dir_exist__0_v0 "/opt/lua-language-server"
-__AF_dir_exist0_v0__64_8="$__AF_dir_exist0_v0"
-if [ $(echo '!' "$__AF_dir_exist0_v0__64_8" | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//') != 0 ]; then
+__AF_dir_exist0_v0__67_8="$__AF_dir_exist0_v0"
+if [ $(echo '!' "$__AF_dir_exist0_v0__67_8" | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//') != 0 ]; then
     cd "/opt/" || exit
     git clone https://github.com/LuaLS/lua-language-server
     __AS=$?
@@ -236,8 +242,8 @@ __AS=$?
 ./make.sh >/dev/null 2>&1
 __AS=$?
 create_symbolic_link__5_v0 "/opt/lua-language-server/bin/lua-language-server" "/usr/local/bin/lua-language-server"
-__AF_create_symbolic_link5_v0__75_1="$__AF_create_symbolic_link5_v0"
-echo "$__AF_create_symbolic_link5_v0__75_1" >/dev/null 2>&1
+__AF_create_symbolic_link5_v0__78_1="$__AF_create_symbolic_link5_v0"
+echo "$__AF_create_symbolic_link5_v0__78_1" >/dev/null 2>&1
 cd "/tmp" || exit
 __AMBER_ARRAY_0=("vscode-langservers-extracted" "@tailwindcss/language-server" "@olrtg/emmet-language-server" "intelephense" "bash-language-server")
 __0_npm_lsp=("${__AMBER_ARRAY_0[@]}")

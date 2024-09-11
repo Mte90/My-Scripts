@@ -14,7 +14,10 @@ fun get_download_path(repo, position) {
 
 fun move_to_bin(download_url, binary) {
     if silent download(download_url, binary) {
-        unsafe mv binary "/usr/local/bin"
+        mv binary "/usr/local/bin" failed {
+            echo "Move {binary} to /usr/local/bin failed!"
+            exit(1)
+        }
         make_executable("/usr/local/bin/{binary}")
     } else {
         echo "Download for {binary} at {download_url} failed"
