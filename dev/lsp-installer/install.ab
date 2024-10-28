@@ -81,7 +81,7 @@ cd "/tmp"
 
 let npm_lsp = ["vscode-langservers-extracted", "@tailwindcss/language-server", "@olrtg/emmet-language-server", "intelephense", "bash-language-server"]
 let npm_lsp_name = ["CSS, HTML, JSON LSP", "Tailwind LSP", "Emmet LSP", "Intelephense LSP", "Bash LSP"]
-loop index, lsp in npm_lsp {
+for index, lsp in npm_lsp {
     echo "Install {npm_lsp_name[index]}"
     $npm i -g "{lsp}"$ failed {
         echo "Error! Exit code: {status}"
@@ -91,7 +91,7 @@ loop index, lsp in npm_lsp {
 let command_lsp = ["pip install python-lsp-server", "gem install ruby-lsp"]
 let command_lsp_name = ["Python LSP", "Ruby LSP"]
 
-loop index, lsp in command_lsp {
+for index, lsp in command_lsp {
     echo "Install {command_lsp_name[index]}"
     ${lsp}$ failed {
         echo "Error! Exit code: {status}"
