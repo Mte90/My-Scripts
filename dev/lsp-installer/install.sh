@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Written in [Amber](https://amber-lang.com/)
-# version: 0.3.5-alpha
-# date: 2024-10-28 12:36:12
-contains__14_v0() {
+# version: 0.4.0-alpha
+# date: 2025-01-16 16:18:36
+text_contains__14_v0() {
     local text=$1
     local phrase=$2
     __AMBER_VAL_0=$(if [[ "${text}" == *"${phrase}"* ]]; then
@@ -10,169 +10,171 @@ contains__14_v0() {
     fi)
     __AS=$?
     local result="${__AMBER_VAL_0}"
-    __AF_contains14_v0=$(
+    __AF_text_contains14_v0=$(
         [ "_${result}" != "_1" ]
         echo $?
     )
     return 0
 }
-dir_exist__27_v0() {
+dir_exists__32_v0() {
     local path=$1
     [ -d "${path}" ]
     __AS=$?
     if [ $__AS != 0 ]; then
-        __AF_dir_exist27_v0=0
+        __AF_dir_exists32_v0=0
         return 0
     fi
-    __AF_dir_exist27_v0=1
+    __AF_dir_exists32_v0=1
     return 0
 }
-file_exist__28_v0() {
+file_exists__33_v0() {
     local path=$1
     [ -f "${path}" ]
     __AS=$?
     if [ $__AS != 0 ]; then
-        __AF_file_exist28_v0=0
+        __AF_file_exists33_v0=0
         return 0
     fi
-    __AF_file_exist28_v0=1
+    __AF_file_exists33_v0=1
     return 0
 }
-create_symbolic_link__32_v0() {
+symlink_create__37_v0() {
     local origin=$1
     local destination=$2
-    file_exist__28_v0 "${origin}"
-    __AF_file_exist28_v0__41_8="$__AF_file_exist28_v0"
-    if [ "$__AF_file_exist28_v0__41_8" != 0 ]; then
+    file_exists__33_v0 "${origin}"
+    __AF_file_exists33_v0__41_8="$__AF_file_exists33_v0"
+    if [ "$__AF_file_exists33_v0__41_8" != 0 ]; then
         ln -s "${origin}" "${destination}"
         __AS=$?
-        __AF_create_symbolic_link32_v0=1
+        __AF_symlink_create37_v0=1
         return 0
     fi
     echo "The file ${origin} doesn't exist"'!'""
-    __AF_create_symbolic_link32_v0=0
+    __AF_symlink_create37_v0=0
     return 0
 }
-make_executable__34_v0() {
+file_chmod__39_v0() {
     local path=$1
-    file_exist__28_v0 "${path}"
-    __AF_file_exist28_v0__61_8="$__AF_file_exist28_v0"
-    if [ "$__AF_file_exist28_v0__61_8" != 0 ]; then
-        chmod +x "${path}"
+    local mode=$2
+    file_exists__33_v0 "${path}"
+    __AF_file_exists33_v0__61_8="$__AF_file_exists33_v0"
+    if [ "$__AF_file_exists33_v0__61_8" != 0 ]; then
+        chmod "${mode}" "${path}"
         __AS=$?
-        __AF_make_executable34_v0=1
+        __AF_file_chmod39_v0=1
         return 0
     fi
     echo "The file ${path} doesn't exist"'!'""
-    __AF_make_executable34_v0=0
+    __AF_file_chmod39_v0=0
     return 0
 }
-is_command__85_v0() {
+is_command__96_v0() {
     local command=$1
     [ -x "$(command -v ${command})" ]
     __AS=$?
     if [ $__AS != 0 ]; then
-        __AF_is_command85_v0=0
+        __AF_is_command96_v0=0
         return 0
     fi
-    __AF_is_command85_v0=1
+    __AF_is_command96_v0=1
     return 0
 }
-is_root__90_v0() {
+is_root__101_v0() {
     __AMBER_VAL_1=$(id -u)
     __AS=$?
     if [ $(
         [ "_${__AMBER_VAL_1}" != "_0" ]
         echo $?
     ) != 0 ]; then
-        __AF_is_root90_v0=1
+        __AF_is_root101_v0=1
         return 0
     fi
-    __AF_is_root90_v0=0
+    __AF_is_root101_v0=0
     return 0
 }
-download__127_v0() {
+file_download__138_v0() {
     local url=$1
     local path=$2
-    is_command__85_v0 "curl"
-    __AF_is_command85_v0__9_9="$__AF_is_command85_v0"
-    is_command__85_v0 "wget"
-    __AF_is_command85_v0__12_9="$__AF_is_command85_v0"
-    is_command__85_v0 "aria2c"
-    __AF_is_command85_v0__15_9="$__AF_is_command85_v0"
-    if [ "$__AF_is_command85_v0__9_9" != 0 ]; then
+    is_command__96_v0 "curl"
+    __AF_is_command96_v0__9_9="$__AF_is_command96_v0"
+    is_command__96_v0 "wget"
+    __AF_is_command96_v0__12_9="$__AF_is_command96_v0"
+    is_command__96_v0 "aria2c"
+    __AF_is_command96_v0__15_9="$__AF_is_command96_v0"
+    if [ "$__AF_is_command96_v0__9_9" != 0 ]; then
         curl -L -o "${path}" "${url}"
         __AS=$?
-    elif [ "$__AF_is_command85_v0__12_9" != 0 ]; then
+    elif [ "$__AF_is_command96_v0__12_9" != 0 ]; then
         wget "${url}" -P "${path}"
         __AS=$?
-    elif [ "$__AF_is_command85_v0__15_9" != 0 ]; then
+    elif [ "$__AF_is_command96_v0__15_9" != 0 ]; then
         aria2c "${url}" -d "${path}"
         __AS=$?
     else
-        __AF_download127_v0=0
+        __AF_file_download138_v0=0
         return 0
     fi
-    __AF_download127_v0=1
+    __AF_file_download138_v0=1
     return 0
 }
-is_root__90_v0
-__AF_is_root90_v0__6_8="$__AF_is_root90_v0"
-if [ $(echo '!' "$__AF_is_root90_v0__6_8" | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//') != 0 ]; then
+is_root__101_v0
+__AF_is_root101_v0__6_8="$__AF_is_root101_v0"
+if [ $(echo '!' "$__AF_is_root101_v0__6_8" | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//') != 0 ]; then
     echo "This script requires root permissions"'!'""
     exit 1
 fi
-get_download_path__131_v0() {
+get_download_path__142_v0() {
     local repo=$1
     local position=$2
     __AMBER_VAL_2=$(curl -sL "https://api.github.com/repos/${repo}/releases" | jq -r ".[0].assets.[${position}].browser_download_url")
     __AS=$?
-    __AF_get_download_path131_v0="${__AMBER_VAL_2}"
+    __AF_get_download_path142_v0="${__AMBER_VAL_2}"
     return 0
 }
-move_to_bin__132_v0() {
+move_to_bin__143_v0() {
     local download_url=$1
     local binary=$2
-    download__127_v0 "${download_url}" "${binary}" >/dev/null 2>&1
-    __AF_download127_v0__16_15="$__AF_download127_v0"
-    if [ "$__AF_download127_v0__16_15" != 0 ]; then
+    file_download__138_v0 "${download_url}" "${binary}" >/dev/null 2>&1
+    __AF_file_download138_v0__16_15="$__AF_file_download138_v0"
+    if [ "$__AF_file_download138_v0__16_15" != 0 ]; then
         mv "${binary}" "/usr/local/bin"
         __AS=$?
         if [ $__AS != 0 ]; then
             echo "Move ${binary} to /usr/local/bin failed"'!'""
             exit 1
         fi
-        make_executable__34_v0 "/usr/local/bin/${binary}"
-        __AF_make_executable34_v0__21_9="$__AF_make_executable34_v0"
-        echo "$__AF_make_executable34_v0__21_9" >/dev/null 2>&1
+        file_chmod__39_v0 "/usr/local/bin/${binary}" "+x"
+        __AF_file_chmod39_v0__21_9="$__AF_file_chmod39_v0"
+        echo "$__AF_file_chmod39_v0__21_9" >/dev/null 2>&1
     else
         echo "Download for ${binary} at ${download_url} failed"
         exit 1
     fi
 }
-download_to_bin__133_v0() {
+download_to_bin__144_v0() {
     local download_url=$1
     local binary=$2
     local packed_file=$3
-    download__127_v0 "${download_url}" "${packed_file}" >/dev/null 2>&1
-    __AF_download127_v0__29_15="$__AF_download127_v0"
-    if [ "$__AF_download127_v0__29_15" != 0 ]; then
-        contains__14_v0 "tar.gz" "${packed_file}"
-        __AF_contains14_v0__31_16="$__AF_contains14_v0"
-        if [ "$__AF_contains14_v0__31_16" != 0 ]; then
+    file_download__138_v0 "${download_url}" "${packed_file}" >/dev/null 2>&1
+    __AF_file_download138_v0__29_15="$__AF_file_download138_v0"
+    if [ "$__AF_file_download138_v0__29_15" != 0 ]; then
+        text_contains__14_v0 "tar.gz" "${packed_file}"
+        __AF_text_contains14_v0__31_16="$__AF_text_contains14_v0"
+        if [ "$__AF_text_contains14_v0__31_16" != 0 ]; then
             tar -zxvf "./${packed_file}" -C ./ >/dev/null 2>&1
             __AS=$?
             mv "./${binary}" "/usr/local/bin"
             __AS=$?
         else
-            gunzip -c - >"/usr/local/bin/${binary}"
+            __AMBER_VAL_3=$(gunzip -c ${packed_file} >"/usr/local/bin/${binary}")
             __AS=$?
+            echo "${__AMBER_VAL_3}"
         fi
         rm "./${packed_file}"
         __AS=$?
-        make_executable__34_v0 "/usr/local/bin/${binary}"
-        __AF_make_executable34_v0__39_9="$__AF_make_executable34_v0"
-        echo "$__AF_make_executable34_v0__39_9" >/dev/null 2>&1
+        file_chmod__39_v0 "/usr/local/bin/${binary}" "+x"
+        __AF_file_chmod39_v0__40_9="$__AF_file_chmod39_v0"
+        echo "$__AF_file_chmod39_v0__40_9" >/dev/null 2>&1
     else
         echo "Download for ${binary} at ${download_url} failed"
         exit 1
@@ -180,62 +182,62 @@ download_to_bin__133_v0() {
 }
 cd "/tmp" || exit
 echo "Install PHPactor LSP"
-get_download_path__131_v0 "phpactor/phpactor" 0
-__AF_get_download_path131_v0__49_13="${__AF_get_download_path131_v0}"
-move_to_bin__132_v0 "${__AF_get_download_path131_v0__49_13}" "phpactor"
-__AF_move_to_bin132_v0__49_1="$__AF_move_to_bin132_v0"
-echo "$__AF_move_to_bin132_v0__49_1" >/dev/null 2>&1
+get_download_path__142_v0 "phpactor/phpactor" 0
+__AF_get_download_path142_v0__50_13="${__AF_get_download_path142_v0}"
+move_to_bin__143_v0 "${__AF_get_download_path142_v0__50_13}" "phpactor"
+__AF_move_to_bin143_v0__50_1="$__AF_move_to_bin143_v0"
+echo "$__AF_move_to_bin143_v0__50_1" >/dev/null 2>&1
 echo "Install Typos LSP"
-get_download_path__131_v0 "tekumara/typos-lsp" 6
-__AF_get_download_path131_v0__52_17="${__AF_get_download_path131_v0}"
-download_to_bin__133_v0 "${__AF_get_download_path131_v0__52_17}" "typos-lsp" "typos.tar.gz"
-__AF_download_to_bin133_v0__52_1="$__AF_download_to_bin133_v0"
-echo "$__AF_download_to_bin133_v0__52_1" >/dev/null 2>&1
+get_download_path__142_v0 "tekumara/typos-lsp" 6
+__AF_get_download_path142_v0__53_17="${__AF_get_download_path142_v0}"
+download_to_bin__144_v0 "${__AF_get_download_path142_v0__53_17}" "typos-lsp" "typos.tar.gz"
+__AF_download_to_bin144_v0__53_1="$__AF_download_to_bin144_v0"
+echo "$__AF_download_to_bin144_v0__53_1" >/dev/null 2>&1
 echo "Install Rust LSP"
-download_to_bin__133_v0 "https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz" "rust-analyzer" "rust-analyzer-x86_64-unknown-linux-gnu.gz"
-__AF_download_to_bin133_v0__55_1="$__AF_download_to_bin133_v0"
-echo "$__AF_download_to_bin133_v0__55_1" >/dev/null 2>&1
+download_to_bin__144_v0 "https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz" "rust-analyzer" "rust-analyzer-x86_64-unknown-linux-gnu.gz"
+__AF_download_to_bin144_v0__56_1="$__AF_download_to_bin144_v0"
+echo "$__AF_download_to_bin144_v0__56_1" >/dev/null 2>&1
 echo "Install GitLab CI LSP"
-get_download_path__131_v0 "alesbrelih/gitlab-ci-ls" 3
-__AF_get_download_path131_v0__58_13="${__AF_get_download_path131_v0}"
-move_to_bin__132_v0 "${__AF_get_download_path131_v0__58_13}" "gitlab-ci-ls"
-__AF_move_to_bin132_v0__58_1="$__AF_move_to_bin132_v0"
-echo "$__AF_move_to_bin132_v0__58_1" >/dev/null 2>&1
+get_download_path__142_v0 "alesbrelih/gitlab-ci-ls" 1
+__AF_get_download_path142_v0__59_13="${__AF_get_download_path142_v0}"
+move_to_bin__143_v0 "${__AF_get_download_path142_v0__59_13}" "x86_64-unknown-linux-gnu"
+__AF_move_to_bin143_v0__59_1="$__AF_move_to_bin143_v0"
+echo "$__AF_move_to_bin143_v0__59_1" >/dev/null 2>&1
 echo "Install HTMX LSP"
-get_download_path__131_v0 "ThePrimeagen/htmx-lsp" 2
-__AF_get_download_path131_v0__61_13="${__AF_get_download_path131_v0}"
-move_to_bin__132_v0 "${__AF_get_download_path131_v0__61_13}" "htmx-lsp"
-__AF_move_to_bin132_v0__61_1="$__AF_move_to_bin132_v0"
-echo "$__AF_move_to_bin132_v0__61_1" >/dev/null 2>&1
+get_download_path__142_v0 "ThePrimeagen/htmx-lsp" 2
+__AF_get_download_path142_v0__62_13="${__AF_get_download_path142_v0}"
+move_to_bin__143_v0 "${__AF_get_download_path142_v0__62_13}" "htmx-lsp"
+__AF_move_to_bin143_v0__62_1="$__AF_move_to_bin143_v0"
+echo "$__AF_move_to_bin143_v0__62_1" >/dev/null 2>&1
 echo "Install Marksman LSP"
-get_download_path__131_v0 "artempyanykh/marksman" 1
-__AF_get_download_path131_v0__64_13="${__AF_get_download_path131_v0}"
-move_to_bin__132_v0 "${__AF_get_download_path131_v0__64_13}" "marksman"
-__AF_move_to_bin132_v0__64_1="$__AF_move_to_bin132_v0"
-echo "$__AF_move_to_bin132_v0__64_1" >/dev/null 2>&1
+get_download_path__142_v0 "artempyanykh/marksman" 1
+__AF_get_download_path142_v0__65_13="${__AF_get_download_path142_v0}"
+move_to_bin__143_v0 "${__AF_get_download_path142_v0__65_13}" "marksman"
+__AF_move_to_bin143_v0__65_1="$__AF_move_to_bin143_v0"
+echo "$__AF_move_to_bin143_v0__65_1" >/dev/null 2>&1
 echo "Install Lua LSP"
-dir_exist__27_v0 "/opt/lua-language-server"
-__AF_dir_exist27_v0__67_8="$__AF_dir_exist27_v0"
-if [ $(echo '!' "$__AF_dir_exist27_v0__67_8" | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//') != 0 ]; then
+dir_exists__32_v0 "/opt/lua-language-server"
+__AF_dir_exists32_v0__68_8="$__AF_dir_exists32_v0"
+if [ $(echo '!' "$__AF_dir_exists32_v0__68_8" | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//') != 0 ]; then
     cd "/opt/" || exit
     git clone https://github.com/LuaLS/lua-language-server
     __AS=$?
+    cd "lua-language-server" || exit
 else
     cd "/opt/lua-language-server" || exit
 fi
-cd "lua-language-server" || exit
 git pull >/dev/null 2>&1
 __AS=$?
 ./make.sh >/dev/null 2>&1
 __AS=$?
-create_symbolic_link__32_v0 "/opt/lua-language-server/bin/lua-language-server" "/usr/local/bin/lua-language-server"
-__AF_create_symbolic_link32_v0__78_1="$__AF_create_symbolic_link32_v0"
-echo "$__AF_create_symbolic_link32_v0__78_1" >/dev/null 2>&1
+symlink_create__37_v0 "/opt/lua-language-server/bin/lua-language-server" "/usr/local/bin/lua-language-server"
+__AF_symlink_create37_v0__79_1="$__AF_symlink_create37_v0"
+echo "$__AF_symlink_create37_v0__79_1" >/dev/null 2>&1
 cd "/tmp" || exit
-__AMBER_ARRAY_0=("vscode-langservers-extracted" "@tailwindcss/language-server" "@olrtg/emmet-language-server" "intelephense" "bash-language-server")
-__0_npm_lsp=("${__AMBER_ARRAY_0[@]}")
-__AMBER_ARRAY_1=("CSS, HTML, JSON LSP" "Tailwind LSP" "Emmet LSP" "Intelephense LSP" "Bash LSP")
-__1_npm_lsp_name=("${__AMBER_ARRAY_1[@]}")
+__AMBER_ARRAY_4=("vscode-langservers-extracted" "@tailwindcss/language-server" "@olrtg/emmet-language-server" "intelephense" "bash-language-server")
+__0_npm_lsp=("${__AMBER_ARRAY_4[@]}")
+__AMBER_ARRAY_5=("CSS, HTML, JSON LSP" "Tailwind LSP" "Emmet LSP" "Intelephense LSP" "Bash LSP")
+__1_npm_lsp_name=("${__AMBER_ARRAY_5[@]}")
 index=0
 for lsp in "${__0_npm_lsp[@]}"; do
     echo "Install ${__1_npm_lsp_name[${index}]}"
@@ -246,10 +248,10 @@ for lsp in "${__0_npm_lsp[@]}"; do
     fi
     ((index++)) || true
 done
-__AMBER_ARRAY_2=("pip install python-lsp-server" "gem install ruby-lsp")
-__2_command_lsp=("${__AMBER_ARRAY_2[@]}")
-__AMBER_ARRAY_3=("Python LSP" "Ruby LSP")
-__3_command_lsp_name=("${__AMBER_ARRAY_3[@]}")
+__AMBER_ARRAY_6=("pip install python-lsp-server" "gem install ruby-lsp")
+__2_command_lsp=("${__AMBER_ARRAY_6[@]}")
+__AMBER_ARRAY_7=("Python LSP" "Ruby LSP")
+__3_command_lsp_name=("${__AMBER_ARRAY_7[@]}")
 index=0
 for lsp in "${__2_command_lsp[@]}"; do
     echo "Install ${__3_command_lsp_name[${index}]}"

@@ -1,7 +1,7 @@
-import { dir_exist, make_executable, create_symbolic_link } from "std/fs"
-import { download } from "std/http"
+import { dir_exists, file_chmod, symlink_create } from "std/fs"
+import { file_download } from "std/http"
 import { is_root } from "std/env"
-import { contains } from "std/text"
+import { text_contains } from "std/text"
 
 if not is_root() {
     echo "This script requires root permissions!"
@@ -13,12 +13,12 @@ fun get_download_path(repo, position) {
 }
 
 fun move_to_bin(download_url, binary) {
-    if silent download(download_url, binary) {
+    if silent file_download(download_url, binary) {
         mv binary "/usr/local/bin" failed {
             echo "Move {binary} to /usr/local/bin failed!"
             exit(1)
         }
-        make_executable("/usr/local/bin/{binary}")
+        file_chmod("/usr/local/bin/{binary}", "+x")
     } else {
         echo "Download for {binary} at {download_url} failed"
         exit(1)
@@ -26,17 +26,18 @@ fun move_to_bin(download_url, binary) {
 }
 
 fun download_to_bin(download_url, binary, packed_file) {
-    if silent download(download_url, packed_file) {
+    if silent file_download(download_url, packed_file) {
         trust {
-            if contains("tar.gz", packed_file) {
+            if text_contains("tar.gz", packed_file) {
                 $tar -zxvf "./{packed_file}" -C ./ > /dev/null 2>&1$
                 trust mv "./{binary}" "/usr/local/bin"
             } else {
-                $gunzip -c - > "/usr/local/bin/{binary}"$
+                echo
+                $gunzip -c {packed_file} > "/usr/local/bin/{binary}"$
             }
             $rm "./{packed_file}"$
         }
-        make_executable("/usr/local/bin/{binary}")
+        file_chmod("/usr/local/bin/{binary}", "+x")
     } else {
         echo "Download for {binary} at {download_url} failed"
         exit(1)
@@ -55,7 +56,7 @@ echo "Install Rust LSP"
 download_to_bin("https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz", "rust-analyzer", "rust-analyzer-x86_64-unknown-linux-gnu.gz")
 
 echo "Install GitLab CI LSP"
-move_to_bin(get_download_path("alesbrelih/gitlab-ci-ls", 3), "gitlab-ci-ls")
+move_to_bin(get_download_path("alesbrelih/gitlab-ci-ls", 1), "x86_64-unknown-linux-gnu")
 
 echo "Install HTMX LSP"
 move_to_bin(get_download_path("ThePrimeagen/htmx-lsp", 2), "htmx-lsp")
@@ -64,18 +65,18 @@ echo "Install Marksman LSP"
 move_to_bin(get_download_path("artempyanykh/marksman", 1), "marksman")
 
 echo "Install Lua LSP"
-if not dir_exist("/opt/lua-language-server") {
+if not dir_exists("/opt/lua-language-server") {
     cd "/opt/"
     trust $git clone https://github.com/LuaLS/lua-language-server$
+    cd "lua-language-server"
 } else {
     cd "/opt/lua-language-server"
 }
 silent trust {
-    cd "lua-language-server"
     $git pull$
     $./make.sh$
 }
-create_symbolic_link("/opt/lua-language-server/bin/lua-language-server", "/usr/local/bin/lua-language-server")
+symlink_create("/opt/lua-language-server/bin/lua-language-server", "/usr/local/bin/lua-language-server")
 
 cd "/tmp"
 
