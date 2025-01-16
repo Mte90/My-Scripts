@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Written in [Amber](https://amber-lang.com/)
 # version: 0.4.0-alpha
-# date: 2025-01-16 16:18:36
+# date: 2025-01-16 17:19:04
 text_contains__14_v0() {
     local text=$1
     local phrase=$2
@@ -158,7 +158,7 @@ download_to_bin__144_v0() {
     file_download__138_v0 "${download_url}" "${packed_file}" >/dev/null 2>&1
     __AF_file_download138_v0__29_15="$__AF_file_download138_v0"
     if [ "$__AF_file_download138_v0__29_15" != 0 ]; then
-        text_contains__14_v0 "tar.gz" "${packed_file}"
+        text_contains__14_v0 "${packed_file}" "tar.gz"
         __AF_text_contains14_v0__31_16="$__AF_text_contains14_v0"
         if [ "$__AF_text_contains14_v0__31_16" != 0 ]; then
             tar -zxvf "./${packed_file}" -C ./ >/dev/null 2>&1
@@ -166,15 +166,14 @@ download_to_bin__144_v0() {
             mv "./${binary}" "/usr/local/bin"
             __AS=$?
         else
-            __AMBER_VAL_3=$(gunzip -c ${packed_file} >"/usr/local/bin/${binary}")
+            gunzip -c ${packed_file} >"/usr/local/bin/${binary}"
             __AS=$?
-            echo "${__AMBER_VAL_3}"
         fi
         rm "./${packed_file}"
         __AS=$?
         file_chmod__39_v0 "/usr/local/bin/${binary}" "+x"
-        __AF_file_chmod39_v0__40_9="$__AF_file_chmod39_v0"
-        echo "$__AF_file_chmod39_v0__40_9" >/dev/null 2>&1
+        __AF_file_chmod39_v0__39_9="$__AF_file_chmod39_v0"
+        echo "$__AF_file_chmod39_v0__39_9" >/dev/null 2>&1
     else
         echo "Download for ${binary} at ${download_url} failed"
         exit 1
@@ -183,42 +182,42 @@ download_to_bin__144_v0() {
 cd "/tmp" || exit
 echo "Install PHPactor LSP"
 get_download_path__142_v0 "phpactor/phpactor" 0
-__AF_get_download_path142_v0__50_13="${__AF_get_download_path142_v0}"
-move_to_bin__143_v0 "${__AF_get_download_path142_v0__50_13}" "phpactor"
-__AF_move_to_bin143_v0__50_1="$__AF_move_to_bin143_v0"
-echo "$__AF_move_to_bin143_v0__50_1" >/dev/null 2>&1
+__AF_get_download_path142_v0__49_13="${__AF_get_download_path142_v0}"
+move_to_bin__143_v0 "${__AF_get_download_path142_v0__49_13}" "phpactor"
+__AF_move_to_bin143_v0__49_1="$__AF_move_to_bin143_v0"
+echo "$__AF_move_to_bin143_v0__49_1" >/dev/null 2>&1
 echo "Install Typos LSP"
-get_download_path__142_v0 "tekumara/typos-lsp" 6
-__AF_get_download_path142_v0__53_17="${__AF_get_download_path142_v0}"
-download_to_bin__144_v0 "${__AF_get_download_path142_v0__53_17}" "typos-lsp" "typos.tar.gz"
-__AF_download_to_bin144_v0__53_1="$__AF_download_to_bin144_v0"
-echo "$__AF_download_to_bin144_v0__53_1" >/dev/null 2>&1
+get_download_path__142_v0 "tekumara/typos-lsp" 7
+__AF_get_download_path142_v0__52_17="${__AF_get_download_path142_v0}"
+download_to_bin__144_v0 "${__AF_get_download_path142_v0__52_17}" "typos-lsp" "typos.tar.gz"
+__AF_download_to_bin144_v0__52_1="$__AF_download_to_bin144_v0"
+echo "$__AF_download_to_bin144_v0__52_1" >/dev/null 2>&1
 echo "Install Rust LSP"
 download_to_bin__144_v0 "https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz" "rust-analyzer" "rust-analyzer-x86_64-unknown-linux-gnu.gz"
-__AF_download_to_bin144_v0__56_1="$__AF_download_to_bin144_v0"
-echo "$__AF_download_to_bin144_v0__56_1" >/dev/null 2>&1
+__AF_download_to_bin144_v0__55_1="$__AF_download_to_bin144_v0"
+echo "$__AF_download_to_bin144_v0__55_1" >/dev/null 2>&1
 echo "Install GitLab CI LSP"
 get_download_path__142_v0 "alesbrelih/gitlab-ci-ls" 1
-__AF_get_download_path142_v0__59_13="${__AF_get_download_path142_v0}"
-move_to_bin__143_v0 "${__AF_get_download_path142_v0__59_13}" "x86_64-unknown-linux-gnu"
-__AF_move_to_bin143_v0__59_1="$__AF_move_to_bin143_v0"
-echo "$__AF_move_to_bin143_v0__59_1" >/dev/null 2>&1
+__AF_get_download_path142_v0__58_13="${__AF_get_download_path142_v0}"
+move_to_bin__143_v0 "${__AF_get_download_path142_v0__58_13}" "x86_64-unknown-linux-gnu"
+__AF_move_to_bin143_v0__58_1="$__AF_move_to_bin143_v0"
+echo "$__AF_move_to_bin143_v0__58_1" >/dev/null 2>&1
 echo "Install HTMX LSP"
 get_download_path__142_v0 "ThePrimeagen/htmx-lsp" 2
-__AF_get_download_path142_v0__62_13="${__AF_get_download_path142_v0}"
-move_to_bin__143_v0 "${__AF_get_download_path142_v0__62_13}" "htmx-lsp"
-__AF_move_to_bin143_v0__62_1="$__AF_move_to_bin143_v0"
-echo "$__AF_move_to_bin143_v0__62_1" >/dev/null 2>&1
+__AF_get_download_path142_v0__61_13="${__AF_get_download_path142_v0}"
+move_to_bin__143_v0 "${__AF_get_download_path142_v0__61_13}" "htmx-lsp"
+__AF_move_to_bin143_v0__61_1="$__AF_move_to_bin143_v0"
+echo "$__AF_move_to_bin143_v0__61_1" >/dev/null 2>&1
 echo "Install Marksman LSP"
 get_download_path__142_v0 "artempyanykh/marksman" 1
-__AF_get_download_path142_v0__65_13="${__AF_get_download_path142_v0}"
-move_to_bin__143_v0 "${__AF_get_download_path142_v0__65_13}" "marksman"
-__AF_move_to_bin143_v0__65_1="$__AF_move_to_bin143_v0"
-echo "$__AF_move_to_bin143_v0__65_1" >/dev/null 2>&1
+__AF_get_download_path142_v0__64_13="${__AF_get_download_path142_v0}"
+move_to_bin__143_v0 "${__AF_get_download_path142_v0__64_13}" "marksman"
+__AF_move_to_bin143_v0__64_1="$__AF_move_to_bin143_v0"
+echo "$__AF_move_to_bin143_v0__64_1" >/dev/null 2>&1
 echo "Install Lua LSP"
 dir_exists__32_v0 "/opt/lua-language-server"
-__AF_dir_exists32_v0__68_8="$__AF_dir_exists32_v0"
-if [ $(echo '!' "$__AF_dir_exists32_v0__68_8" | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//') != 0 ]; then
+__AF_dir_exists32_v0__67_8="$__AF_dir_exists32_v0"
+if [ $(echo '!' "$__AF_dir_exists32_v0__67_8" | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//') != 0 ]; then
     cd "/opt/" || exit
     git clone https://github.com/LuaLS/lua-language-server
     __AS=$?
@@ -231,13 +230,13 @@ __AS=$?
 ./make.sh >/dev/null 2>&1
 __AS=$?
 symlink_create__37_v0 "/opt/lua-language-server/bin/lua-language-server" "/usr/local/bin/lua-language-server"
-__AF_symlink_create37_v0__79_1="$__AF_symlink_create37_v0"
-echo "$__AF_symlink_create37_v0__79_1" >/dev/null 2>&1
+__AF_symlink_create37_v0__78_1="$__AF_symlink_create37_v0"
+echo "$__AF_symlink_create37_v0__78_1" >/dev/null 2>&1
 cd "/tmp" || exit
-__AMBER_ARRAY_4=("vscode-langservers-extracted" "@tailwindcss/language-server" "@olrtg/emmet-language-server" "intelephense" "bash-language-server")
-__0_npm_lsp=("${__AMBER_ARRAY_4[@]}")
-__AMBER_ARRAY_5=("CSS, HTML, JSON LSP" "Tailwind LSP" "Emmet LSP" "Intelephense LSP" "Bash LSP")
-__1_npm_lsp_name=("${__AMBER_ARRAY_5[@]}")
+__AMBER_ARRAY_3=("vscode-langservers-extracted" "@tailwindcss/language-server" "@olrtg/emmet-language-server" "intelephense" "bash-language-server")
+__0_npm_lsp=("${__AMBER_ARRAY_3[@]}")
+__AMBER_ARRAY_4=("CSS, HTML, JSON LSP" "Tailwind LSP" "Emmet LSP" "Intelephense LSP" "Bash LSP")
+__1_npm_lsp_name=("${__AMBER_ARRAY_4[@]}")
 index=0
 for lsp in "${__0_npm_lsp[@]}"; do
     echo "Install ${__1_npm_lsp_name[${index}]}"
@@ -248,10 +247,10 @@ for lsp in "${__0_npm_lsp[@]}"; do
     fi
     ((index++)) || true
 done
-__AMBER_ARRAY_6=("pip install python-lsp-server" "gem install ruby-lsp")
-__2_command_lsp=("${__AMBER_ARRAY_6[@]}")
-__AMBER_ARRAY_7=("Python LSP" "Ruby LSP")
-__3_command_lsp_name=("${__AMBER_ARRAY_7[@]}")
+__AMBER_ARRAY_5=("pip install python-lsp-server" "gem install ruby-lsp")
+__2_command_lsp=("${__AMBER_ARRAY_5[@]}")
+__AMBER_ARRAY_6=("Python LSP" "Ruby LSP")
+__3_command_lsp_name=("${__AMBER_ARRAY_6[@]}")
 index=0
 for lsp in "${__2_command_lsp[@]}"; do
     echo "Install ${__3_command_lsp_name[${index}]}"

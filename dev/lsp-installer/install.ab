@@ -28,11 +28,10 @@ fun move_to_bin(download_url, binary) {
 fun download_to_bin(download_url, binary, packed_file) {
     if silent file_download(download_url, packed_file) {
         trust {
-            if text_contains("tar.gz", packed_file) {
+            if text_contains(packed_file, "tar.gz") {
                 $tar -zxvf "./{packed_file}" -C ./ > /dev/null 2>&1$
                 trust mv "./{binary}" "/usr/local/bin"
             } else {
-                echo
                 $gunzip -c {packed_file} > "/usr/local/bin/{binary}"$
             }
             $rm "./{packed_file}"$
@@ -50,7 +49,7 @@ echo "Install PHPactor LSP"
 move_to_bin(get_download_path("phpactor/phpactor", 0), "phpactor")
 
 echo "Install Typos LSP"
-download_to_bin(get_download_path("tekumara/typos-lsp", 6), "typos-lsp", "typos.tar.gz")
+download_to_bin(get_download_path("tekumara/typos-lsp", 7), "typos-lsp", "typos.tar.gz")
 
 echo "Install Rust LSP"
 download_to_bin("https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz", "rust-analyzer", "rust-analyzer-x86_64-unknown-linux-gnu.gz")
