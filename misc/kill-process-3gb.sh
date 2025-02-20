@@ -11,7 +11,7 @@ while true; do
             MEM_USAGE_MB=$((MEM_USAGE_KB / 1024))
 
             if [[ "$MEM_USAGE_MB" -gt $LIMIT_MB ]]; then
-                echo "$(date) - Process $PROCESS_NAME ($PID) exceeds RAM limit ($MEM_USAGE_MB MB), terminating..." | tee -a monitor.log
+                echo "Process $PROCESS_NAME ($PID) exceeds RAM limit ($MEM_USAGE_MB MB), terminating..."
                 kill -9 $PID
             fi
         done
