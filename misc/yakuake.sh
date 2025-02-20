@@ -13,7 +13,7 @@ instruct "/yakuake/sessions org.kde.yakuake.addSession"
 instruct "/yakuake/sessions org.kde.yakuake.addSession"
 
 instruct "/yakuake/tabs org.kde.yakuake.setTabTitle 0 root"
-instruct "/yakuake/tabs org.kde.yakuake.setTabTitle 1 VVV"
+instruct "/yakuake/tabs org.kde.yakuake.setTabTitle 1 www"
 instruct "/yakuake/tabs org.kde.yakuake.setTabTitle 2 casa"
 
 # seems that id on that command is switched
@@ -24,7 +24,7 @@ instruct "/Sessions/1 org.kde.konsole.Session.sendText \$'\n'"
 
 sleep 1
 
-instruct "/yakuake/sessions org.kde.yakuake.runCommandInTerminal 1 'vvv'"
+instruct "/yakuake/sessions org.kde.yakuake.runCommandInTerminal 1 'www'"
 instruct "/yakuake/sessions org.kde.yakuake.runCommandInTerminal 2 'casa'"
 instruct "/yakuake/sessions org.kde.yakuake.runCommandInTerminal 1 'clear'"
 instruct "/yakuake/sessions org.kde.yakuake.runCommandInTerminal 2 'clear'"
