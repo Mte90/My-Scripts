@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Kill a process if the memory used is over the limit
 
 PROCESS_NAMES=("pylsp") # array
 LIMIT_MB=3072
