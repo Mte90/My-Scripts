@@ -4,7 +4,6 @@
 import os
 import eyed3
 import sys
-import sys
 
 
 def process_mp3_files(directory):
