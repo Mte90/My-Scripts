@@ -16,11 +16,11 @@ def create_connection(db_file):
 
 def select_all_tracks_grouped(conn):
     cur = conn.cursor()
-    cur.execute("SELECT artists.name, COUNT(*) FROM tracks JOIN artists ON artists.id = tracks.artist_id GROUP BY artist_id HAVING COUNT(*) > 10 ORDER BY COUNT(*)")
+    cur.execute("SELECT artists.name, COUNT(*) FROM tracks JOIN artists ON artists.id = tracks.artist_id GROUP BY artist_id HAVING COUNT(*) > 15 ORDER BY COUNT(*)")
     rows = cur.fetchall()
 
     for row in rows:
-        print(str(row[0]) + ': ' + str(row[1]))
+        print(str(row[0]) + ': ' + str(row[1]) + " - https://muspy.com/artists?search=" + str(row[0]))
 
 
 def main():

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Written in [Amber](https://amber-lang.com/)
 # version: 0.4.0-alpha
-# date: 2025-03-04 11:10:10
+# date: 2025-03-07 11:36:13
 text_contains__14_v0() {
     local text=$1
     local phrase=$2
@@ -11,7 +11,7 @@ text_contains__14_v0() {
     __status=$?
     result="${__0_command}"
     __ret_text_contains14_v0=$(
-        [ "_${result}" != "_"1"" ]
+        [ "_${result}" != "_1" ]
         echo $?
     )
     return 0
@@ -88,7 +88,7 @@ is_root__101_v0() {
     __1_command=$(id -u)
     __status=$?
     if [ $(
-        [ "_${__1_command}" != "_"0"" ]
+        [ "_${__1_command}" != "_0" ]
         echo $?
     ) != 0 ]; then
         __ret_is_root101_v0=1
