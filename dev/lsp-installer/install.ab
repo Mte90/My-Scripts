@@ -32,7 +32,7 @@ fun download_to_bin(download_url, binary, packed_file) {
                 $tar -zxvf "./{packed_file}" -C ./ > /dev/null 2>&1$
                 trust mv "./{binary}" "/usr/local/bin"
             } else {
-                $gunzip -c {packed_file} > "/usr/local/bin/{binary}"$
+                $gunzip -c "{packed_file}" > "/usr/local/bin/{binary}"$
             }
             $rm "./{packed_file}"$
         }
