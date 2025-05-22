@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 # Written in [Amber](https://amber-lang.com/)
-# version: 0.4.0-alpha
-# date: 2025-03-10 11:58:53
+# version: 0.4.0-alpha-23-g3ac9e0a
+# date: 2025-05-22 11:18:03
 text_contains__14_v0() {
     local text=$1
     local phrase=$2
     __0_command="$(if [[ "${text}" == *"${phrase}"* ]]; then
         echo 1
     fi)"
-    __status=$?
     result="${__0_command}"
     __ret_text_contains14_v0="$(
         [ "_${result}" != "_1" ]
@@ -21,7 +20,7 @@ dir_exists__32_v0() {
     local path=$1
     [ -d "${path}" ]
     __status=$?
-    if [ $__status != 0 ]; then
+    if [ "${__status}" != 0 ]; then
         __ret_dir_exists32_v0=0
         return 0
     fi
@@ -33,7 +32,7 @@ file_exists__33_v0() {
     local path=$1
     [ -f "${path}" ]
     __status=$?
-    if [ $__status != 0 ]; then
+    if [ "${__status}" != 0 ]; then
         __ret_file_exists33_v0=0
         return 0
     fi
@@ -48,7 +47,6 @@ symlink_create__37_v0() {
     __ret_file_exists33_v0__41_8="${__ret_file_exists33_v0}"
     if [ "${__ret_file_exists33_v0__41_8}" != 0 ]; then
         ln -s "${origin}" "${destination}"
-        __status=$?
         __ret_symlink_create37_v0=1
         return 0
     fi
@@ -64,7 +62,6 @@ file_chmod__39_v0() {
     __ret_file_exists33_v0__61_8="${__ret_file_exists33_v0}"
     if [ "${__ret_file_exists33_v0__61_8}" != 0 ]; then
         chmod "${mode}" "${path}"
-        __status=$?
         __ret_file_chmod39_v0=1
         return 0
     fi
@@ -77,7 +74,7 @@ is_command__96_v0() {
     local command=$1
     [ -x "$(command -v "${command}")" ]
     __status=$?
-    if [ $__status != 0 ]; then
+    if [ "${__status}" != 0 ]; then
         __ret_is_command96_v0=0
         return 0
     fi
@@ -87,7 +84,6 @@ is_command__96_v0() {
 
 is_root__101_v0() {
     __1_command="$(id -u)"
-    __status=$?
     if [ "$(
         [ "_${__1_command}" != "_0" ]
         echo $?
@@ -110,13 +106,10 @@ file_download__138_v0() {
     __ret_is_command96_v0__15_9="${__ret_is_command96_v0}"
     if [ "${__ret_is_command96_v0__9_9}" != 0 ]; then
         curl -L -o "${path}" "${url}"
-        __status=$?
     elif [ "${__ret_is_command96_v0__12_9}" != 0 ]; then
         wget "${url}" -P "${path}"
-        __status=$?
     elif [ "${__ret_is_command96_v0__15_9}" != 0 ]; then
         aria2c "${url}" -d "${path}"
-        __status=$?
     else
         __ret_file_download138_v0=0
         return 0
@@ -148,12 +141,11 @@ move_to_bin__143_v0() {
     if [ "${__ret_file_download138_v0__16_15}" != 0 ]; then
         mv "${binary}" "/usr/local/bin"
         __status=$?
-        if [ $__status != 0 ]; then
+        if [ "${__status}" != 0 ]; then
             echo "Move ${binary} to /usr/local/bin failed"'!'""
             exit 1
         fi
         file_chmod__39_v0 "/usr/local/bin/${binary}" "+x"
-        __ret_file_chmod39_v0__21_9="${__ret_file_chmod39_v0}"
     else
         echo "Download for ${binary} at ${download_url} failed"
         exit 1
@@ -171,17 +163,12 @@ download_to_bin__144_v0() {
         __ret_text_contains14_v0__31_16="${__ret_text_contains14_v0}"
         if [ "${__ret_text_contains14_v0__31_16}" != 0 ]; then
             tar -zxvf "./${packed_file}" -C ./ >/dev/null 2>&1
-            __status=$?
             mv "./${binary}" "/usr/local/bin"
-            __status=$?
         else
             gunzip -c "${packed_file}" >"/usr/local/bin/${binary}"
-            __status=$?
         fi
         rm "./${packed_file}"
-        __status=$?
         file_chmod__39_v0 "/usr/local/bin/${binary}" "+x"
-        __ret_file_chmod39_v0__39_9="${__ret_file_chmod39_v0}"
     else
         echo "Download for ${binary} at ${download_url} failed"
         exit 1
@@ -217,17 +204,14 @@ __ret_dir_exists32_v0__67_8="${__ret_dir_exists32_v0}"
 if [ "$(echo '!' "${__ret_dir_exists32_v0__67_8}" | bc -l | sed '/\./ s/\.\{0,1\}0\{1,\}$//')" != 0 ]; then
     cd "/opt/" || exit
     git clone https://github.com/LuaLS/lua-language-server
-    __status=$?
     cd "lua-language-server" || exit
 else
     cd "/opt/lua-language-server" || exit
 fi
 git pull >/dev/null 2>&1
-__status=$?
 ./make.sh >/dev/null 2>&1
 __status=$?
 symlink_create__37_v0 "/opt/lua-language-server/bin/lua-language-server" "/usr/local/bin/lua-language-server"
-__ret_symlink_create37_v0__78_1="${__ret_symlink_create37_v0}"
 cd "/tmp" || exit
 __3_array=("vscode-langservers-extracted" "@tailwindcss/language-server" "@olrtg/emmet-language-server" "intelephense" "bash-language-server")
 __0_npm_lsp=("${__3_array[@]}")
@@ -235,11 +219,11 @@ __4_array=("CSS, HTML, JSON LSP" "Tailwind LSP" "Emmet LSP" "Intelephense LSP" "
 __1_npm_lsp_name=("${__4_array[@]}")
 index=0
 for lsp in "${__0_npm_lsp[@]}"; do
-    echo "Install ${__1_npm_lsp_name["${index}"]}"
+    echo "Install ${__1_npm_lsp_name[${index}]}"
     npm i -g "${lsp}"
     __status=$?
-    if [ $__status != 0 ]; then
-        echo "Error"'!'" Exit code: $__status"
+    if [ "${__status}" != 0 ]; then
+        echo "Error"'!'" Exit code: ${__status}"
     fi
     ((index++)) || true
 done
@@ -249,11 +233,11 @@ __6_array=("Python LSP" "Ruby LSP")
 __3_command_lsp_name=("${__6_array[@]}")
 index=0
 for lsp in "${__2_command_lsp[@]}"; do
-    echo "Install ${__3_command_lsp_name["${index}"]}"
+    echo "Install ${__3_command_lsp_name[${index}]}"
     ${lsp}
     __status=$?
-    if [ $__status != 0 ]; then
-        echo "Error"'!'" Exit code: $__status"
+    if [ "${__status}" != 0 ]; then
+        echo "Error"'!'" Exit code: ${__status}"
     fi
     ((index++)) || true
 done
