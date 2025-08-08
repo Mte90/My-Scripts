@@ -1,0 +1,27 @@
+import { is_command, env_var_load } from "std/env"
+
+let API_URL = "https://api.regolo.ai/v1/"
+let API_KEY = "YOUR_API_KEY"
+
+if not is_command("curl") {
+    echo "curl not found"
+}
+if not is_command("jq") {
+    echo "jq not found"
+}
+if not is_command("git") {
+    echo "git not found"
+}
+
+fun process_diff() {
+    let diff = trust $git diff --cached$
+        let languages = trust $git diff --cached --name-only | xargs file | awk -F": " '\{print \$2}' | sort | uniq | paste -sd, -$
+    let response = trust $curl -s -X POST "{API_URL}" -H "Authorization: Bearer {API_KEY}" -H "Content-Type: application/json" -d '{"prompt": "Generate a Git commit message following the Conventional Commits specification for the following changes in languages: {languages}.\nChanges:\n{diff}"}'$
+
+    return trust $echo "{response}" | jq -r '.choices[0].text'$
+}
+
+let message = process_diff()
+if (message != "") {
+    git commit -m "{message}"
+}
