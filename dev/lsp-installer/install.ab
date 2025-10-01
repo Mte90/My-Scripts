@@ -13,12 +13,12 @@ fun get_download_path(repo, position) {
 }
 
 fun move_to_bin(download_url, binary) {
-    if silent file_download(download_url, binary) {
+    if silent file_download(download_url, binary)? {
         mv binary "/usr/local/bin" failed {
             echo "Move {binary} to /usr/local/bin failed!"
             exit(1)
         }
-        file_chmod("/usr/local/bin/{binary}", "+x")
+        file_chmod("/usr/local/bin/{binary}", "+x")?
     } else {
         echo "Download for {binary} at {download_url} failed"
         exit(1)
@@ -26,7 +26,7 @@ fun move_to_bin(download_url, binary) {
 }
 
 fun download_to_bin(download_url, binary, packed_file) {
-    if silent file_download(download_url, packed_file) {
+    if silent file_download(download_url, packed_file)? {
         trust {
             if text_contains(packed_file, "tar.gz") {
                 $tar -zxvf "./{packed_file}" -C ./ > /dev/null 2>&1$
@@ -36,64 +36,66 @@ fun download_to_bin(download_url, binary, packed_file) {
             }
             $rm "./{packed_file}"$
         }
-        file_chmod("/usr/local/bin/{binary}", "+x")
+        file_chmod("/usr/local/bin/{binary}", "+x")?
     } else {
         echo "Download for {binary} at {download_url} failed"
         exit(1)
     }
 }
 
-cd "/tmp"
+main {
+    cd "/tmp"
 
-echo "Install PHPactor LSP"
-move_to_bin(get_download_path("phpactor/phpactor", 0), "phpactor")
+    echo "Install PHPactor LSP"
+    move_to_bin(get_download_path("phpactor/phpactor", 0), "phpactor")?
 
-echo "Install Typos LSP"
-download_to_bin(get_download_path("tekumara/typos-lsp", 7), "typos-lsp", "typos.tar.gz")
+    echo "Install Typos LSP"
+    download_to_bin(get_download_path("tekumara/typos-lsp", 7), "typos-lsp", "typos.tar.gz")?
 
-echo "Install Rust LSP"
-download_to_bin("https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz", "rust-analyzer", "rust-analyzer-x86_64-unknown-linux-gnu.gz")
+    echo "Install Rust LSP"
+    download_to_bin("https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz", "rust-analyzer", "rust-analyzer-x86_64-unknown-linux-gnu.gz")?
 
-echo "Install GitLab CI LSP"
-move_to_bin(get_download_path("alesbrelih/gitlab-ci-ls", 1), "x86_64-unknown-linux-gnu")
+    echo "Install GitLab CI LSP"
+    move_to_bin(get_download_path("alesbrelih/gitlab-ci-ls", 1), "x86_64-unknown-linux-gnu")?
 
-echo "Install HTMX LSP"
-move_to_bin(get_download_path("ThePrimeagen/htmx-lsp", 2), "htmx-lsp")
+    echo "Install HTMX LSP"
+    move_to_bin(get_download_path("ThePrimeagen/htmx-lsp", 2), "htmx-lsp")?
 
-echo "Install Marksman LSP"
-move_to_bin(get_download_path("artempyanykh/marksman", 1), "marksman")
+    echo "Install Marksman LSP"
+    move_to_bin(get_download_path("artempyanykh/marksman", 1), "marksman")?
 
-echo "Install Lua LSP"
-if not dir_exists("/opt/lua-language-server") {
-    cd "/opt/"
-    trust $git clone https://github.com/LuaLS/lua-language-server$
-    cd "lua-language-server"
-} else {
-    cd "/opt/lua-language-server"
-}
-silent trust {
-    $git pull$
-    $./make.sh$
-}
-symlink_create("/opt/lua-language-server/bin/lua-language-server", "/usr/local/bin/lua-language-server")
-
-cd "/tmp"
-
-let npm_lsp = ["vscode-langservers-extracted", "@tailwindcss/language-server", "@olrtg/emmet-language-server", "intelephense", "bash-language-server"]
-let npm_lsp_name = ["CSS, HTML, JSON LSP", "Tailwind LSP", "Emmet LSP", "Intelephense LSP", "Bash LSP"]
-for index, lsp in npm_lsp {
-    echo "Install {npm_lsp_name[index]}"
-    $npm i -g "{lsp}"$ failed {
-        echo "Error! Exit code: {status}"
+    echo "Install Lua LSP"
+    if not dir_exists("/opt/lua-language-server") {
+        cd "/opt/"
+        trust $git clone https://github.com/LuaLS/lua-language-server$
+        cd "lua-language-server"
+    } else {
+        cd "/opt/lua-language-server"
     }
-}
+    silent trust {
+        $git pull$
+        $./make.sh$
+    }
+    symlink_create("/opt/lua-language-server/bin/lua-language-server", "/usr/local/bin/lua-language-server")?
 
-let command_lsp = ["pip install python-lsp-server", "gem install ruby-lsp"]
-let command_lsp_name = ["Python LSP", "Ruby LSP"]
+    cd "/tmp"
 
-for index, lsp in command_lsp {
-    echo "Install {command_lsp_name[index]}"
-    ${lsp}$ failed {
-        echo "Error! Exit code: {status}"
+    let npm_lsp = ["vscode-langservers-extracted", "@tailwindcss/language-server", "@olrtg/emmet-language-server", "intelephense", "bash-language-server"]
+    let npm_lsp_name = ["CSS, HTML, JSON LSP", "Tailwind LSP", "Emmet LSP", "Intelephense LSP", "Bash LSP"]
+    for index, lsp in npm_lsp {
+        echo "Install {npm_lsp_name[index]}"
+        $npm i -g "{lsp}"$ failed {
+            echo "Error! Exit code: {status}"
+        }
+    }
+
+    let command_lsp = ["pip install python-lsp-server", "gem install ruby-lsp"]
+    let command_lsp_name = ["Python LSP", "Ruby LSP"]
+
+    for index, lsp in command_lsp {
+        echo "Install {command_lsp_name[index]}"
+        ${lsp}$ failed {
+            echo "Error! Exit code: {status}"
+        }
     }
 }
