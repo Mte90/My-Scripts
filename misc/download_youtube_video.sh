@@ -1,14 +1,50 @@
 #!/bin/bash
-ago=$(date +"%Y%m%d" -d "last-monday - 2 week")
+ago=$(date +"%Y%m%d" -d "last-monday - 4 month")
 dir=$(mktemp -d)
 cd "$dir"
 echo "$dir"
-youtube-dl --extract-audio --audio-format=mp3 -w -c https://www.youtube.com/channel/UCtIOyeupgM3jRAn74Q1RNeQ/featured --max-download 1 -o "%(title)s.%(ext)s" --match-filter "duration > 100 & duration < 600" --dateafter "$ago" --lazy-playlist # Stefano di carlo
-youtube-dl --extract-audio --audio-format=mp3 -w -c https://www.youtube.com/user/FunkyyPanda/featured --max-download 3 -o "%(title)s.%(ext)s" --match-filter "duration > 100 & duration < 600" --lazy-playlist
-youtube-dl --extract-audio --audio-format=mp3 -w -c https://www.youtube.com/user/NewRetroWave/featured --max-download 3 -o "%(title)s.%(ext)s" --match-filter "duration > 100 & duration < 600" --lazy-playlist
-youtube-dl --extract-audio --audio-format=mp3 -w -c https://www.youtube.com/user/MonstercatMedia/featured --max-download 3 -o "%(title)s.%(ext)s" --match-filter "duration > 100 & duration < 600" --lazy-playlist
-youtube-dl --extract-audio --audio-format=mp3 -w -c https://www.youtube.com/@ElectroSwingThing/featured --max-download 3 -o "%(title)s.%(ext)s" --match-filter "duration > 100 & duration < 600" --lazy-playlist # Electro swing elite
-youtube-dl --extract-audio --audio-format=mp3 -w -c https://www.youtube.com/channel/UCr_D8RsfDhZ1CVgD7l5ByoQ/featured --max-download 3 -o "%(title)s.%(ext)s" --match-filter "duration > 100 & duration < 600" --dateafter "$ago" --lazy-playlist # immortal swing
+download_channel() {
+    local url="$1"
+    local comment="$2"
+    local max_item=51
+
+    echo "Download: $comment"
+
+    tmpfile=$(mktemp)
+    youtube-dl --extract-audio --audio-format=mp3 -w -c "$url" \
+        --max-download 15 \
+        --lazy-playlist \
+        -o "%(title)s.%(ext)s" \
+        --match-filter "duration > 100 & duration < 600" \
+        --dateafter "$ago" \
+        --js-runtimes node -t sleep \
+        playlist-items 1-50 > "$tmpfile" 2>&1 &
+    ytd_pid=$!
+
+    tail -f "$tmpfile" | while IFS= read -r line; do
+        if [[ "$line" =~ Downloading\ item\ ([0-9]+)\ of ]]; then
+            item_number="${BASH_REMATCH[1]}"
+            if (( item_number > max_item )); then
+                kill "$ytd_pid"
+                break
+            fi
+        fi
+        if [[ "$line" =~ Maximum\ number\ of\ downloads\ reached ]]; then
+            kill "$ytd_pid" 2>/dev/null
+            break
+        fi
+    done
+
+    wait "$ytd_pid" 2>/dev/null
+    rm -f "$tmpfile"
+}
+
+download_channel "https://www.youtube.com/channel/UCtIOyeupgM3jRAn74Q1RNeQ/videos" "Stefano di Carlo"
+download_channel "https://www.youtube.com/user/FunkyyPanda/videos" "FunkyyPanda"
+download_channel "https://www.youtube.com/user/NewRetroWave/videos" "NewRetroWave"
+download_channel "https://www.youtube.com/user/MonstercatMedia/videos" "MonstercatMedia"
+download_channel "https://www.youtube.com/@ElectroSwingThing/videos" "ElectroSwingThing"
+download_channel "https://www.youtube.com/channel/UCr_D8RsfDhZ1CVgD7l5ByoQ/videos" "Immortal Swing"
 
 rename 's/\ Visualizer\ //g' ./*
 rename 's/\#basshouse//g' ./*
