@@ -76,7 +76,7 @@ main {
         $git pull$
         $./make.sh$
     }
-    symlink_create("/opt/lua-language-server/bin/lua-language-server", "/usr/local/bin/lua-language-server")?
+    symlink_create("/opt/lua-language-server/lua-language-server", "/usr/local/bin/lua-language-server")?
 
     cd "/tmp"
 
