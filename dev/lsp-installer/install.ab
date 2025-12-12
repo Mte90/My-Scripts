@@ -80,8 +80,8 @@ main {
 
     cd "/tmp"
 
-    let npm_lsp = ["vscode-langservers-extracted", "@tailwindcss/language-server", "@olrtg/emmet-language-server", "intelephense", "bash-language-server"]
-    let npm_lsp_name = ["CSS, HTML, JSON LSP", "Tailwind LSP", "Emmet LSP", "Intelephense LSP", "Bash LSP"]
+    const npm_lsp = ["vscode-langservers-extracted", "@tailwindcss/language-server", "@olrtg/emmet-language-server", "intelephense", "bash-language-server"]
+    const npm_lsp_name = ["CSS, HTML, JSON LSP", "Tailwind LSP", "Emmet LSP", "Intelephense LSP", "Bash LSP"]
     for index, lsp in npm_lsp {
         echo "Install {npm_lsp_name[index]}"
         $npm i -g "{lsp}"$ failed {
@@ -89,8 +89,8 @@ main {
         }
     }
 
-    let command_lsp = ["pip install python-lsp-server", "gem install ruby-lsp"]
-    let command_lsp_name = ["Python LSP", "Ruby LSP"]
+    const command_lsp = ["pip install python-lsp-server", "gem install ruby-lsp"]
+    const command_lsp_name = ["Python LSP", "Ruby LSP"]
 
     for index, lsp in command_lsp {
         echo "Install {command_lsp_name[index]}"
