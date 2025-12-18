@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Written in [Amber](https://amber-lang.com/)
-# version: nightly-4-g38fe480
+# version: nightly-32-g2779fef
 # We cannot import `bash_version` from `env.ab` because it imports `text.ab` making a circular dependency.
 # This is a workaround to avoid that issue and the import system should be improved in the future.
 text_contains__17_v0() {
@@ -34,7 +34,7 @@ symlink_create__41_v0() {
     file_exists__37_v0 "${origin_19}"
     local ret_file_exists37_v0__71_8="${ret_file_exists37_v0}"
     if [ "${ret_file_exists37_v0__71_8}" != 0 ]; then
-        ln -s "${origin_19}" "${destination_20}"
+        ln -fs "${origin_19}" "${destination_20}"
         __status=$?
         if [ "${__status}" != 0 ]; then
             ret_symlink_create41_v0=''
@@ -92,26 +92,26 @@ is_root__108_v0() {
     return 0
 }
 
-file_download__146_v0() {
+file_download__186_v0() {
     local url_7="${1}"
     local path_8="${2}"
     is_command__103_v0 "curl"
-    local ret_is_command103_v0__14_9="${ret_is_command103_v0}"
+    local ret_is_command103_v0__15_9="${ret_is_command103_v0}"
     is_command__103_v0 "wget"
-    local ret_is_command103_v0__17_9="${ret_is_command103_v0}"
+    local ret_is_command103_v0__18_9="${ret_is_command103_v0}"
     is_command__103_v0 "aria2c"
-    local ret_is_command103_v0__20_9="${ret_is_command103_v0}"
-    if [ "${ret_is_command103_v0__14_9}" != 0 ]; then
+    local ret_is_command103_v0__21_9="${ret_is_command103_v0}"
+    if [ "${ret_is_command103_v0__15_9}" != 0 ]; then
         curl -L -o "${path_8}" "${url_7}" >/dev/null 2>&1
         __status=$?
-    elif [ "${ret_is_command103_v0__17_9}" != 0 ]; then
+    elif [ "${ret_is_command103_v0__18_9}" != 0 ]; then
         wget "${url_7}" -P "${path_8}" >/dev/null 2>&1
         __status=$?
-    elif [ "${ret_is_command103_v0__20_9}" != 0 ]; then
+    elif [ "${ret_is_command103_v0__21_9}" != 0 ]; then
         aria2c "${url_7}" -d "${path_8}" >/dev/null 2>&1
         __status=$?
     else
-        ret_file_download146_v0=''
+        ret_file_download186_v0=''
         return 1
     fi
 }
@@ -122,23 +122,23 @@ if [ "$(( ! ret_is_root108_v0__6_8 ))" != 0 ]; then
     echo "This script requires root permissions"'!'""
     exit 1
 fi
-get_download_path__150_v0() {
+get_download_path__191_v0() {
     local repo_3="${1}"
     local position_4="${2}"
     local command_1
     command_1="$(curl -sL "https://api.github.com/repos/${repo_3}/releases" | jq -r ".[0].assets.[${position_4}].browser_download_url")"
     __status=$?
-    ret_get_download_path150_v0="${command_1}"
+    ret_get_download_path191_v0="${command_1}"
     return 0
 }
 
-move_to_bin__151_v0() {
+move_to_bin__192_v0() {
     local download_url_5="${1}"
     local binary_6="${2}"
-    file_download__146_v0 "${download_url_5}" "${binary_6}">/dev/null 2>&1
+    file_download__186_v0 "${download_url_5}" "${binary_6}">/dev/null 2>&1
     __status=$?
     if [ "${__status}" != 0 ]; then
-        ret_move_to_bin151_v0=''
+        ret_move_to_bin192_v0=''
         return "${__status}"
     fi
     if [ '' != 0 ]; then
@@ -151,7 +151,7 @@ move_to_bin__151_v0() {
         file_chmod__45_v0 "/usr/local/bin/${binary_6}" "+x"
         __status=$?
         if [ "${__status}" != 0 ]; then
-            ret_move_to_bin151_v0=''
+            ret_move_to_bin192_v0=''
             return "${__status}"
         fi
     else
@@ -160,14 +160,14 @@ move_to_bin__151_v0() {
     fi
 }
 
-download_to_bin__152_v0() {
+download_to_bin__193_v0() {
     local download_url_13="${1}"
     local binary_14="${2}"
     local packed_file_15="${3}"
-    file_download__146_v0 "${download_url_13}" "${packed_file_15}">/dev/null 2>&1
+    file_download__186_v0 "${download_url_13}" "${packed_file_15}">/dev/null 2>&1
     __status=$?
     if [ "${__status}" != 0 ]; then
-        ret_download_to_bin152_v0=''
+        ret_download_to_bin193_v0=''
         return "${__status}"
     fi
     if [ '' != 0 ]; then
@@ -187,7 +187,7 @@ download_to_bin__152_v0() {
         file_chmod__45_v0 "/usr/local/bin/${binary_14}" "+x"
         __status=$?
         if [ "${__status}" != 0 ]; then
-            ret_download_to_bin152_v0=''
+            ret_download_to_bin193_v0=''
             return "${__status}"
         fi
     else
@@ -198,47 +198,47 @@ download_to_bin__152_v0() {
 
 cd "/tmp" || exit
 echo "Install PHPactor LSP"
-get_download_path__150_v0 "phpactor/phpactor" 0
-ret_get_download_path150_v0__50_17="${ret_get_download_path150_v0}"
-move_to_bin__151_v0 "${ret_get_download_path150_v0__50_17}" "phpactor"
+get_download_path__191_v0 "phpactor/phpactor" 0
+ret_get_download_path191_v0__50_17="${ret_get_download_path191_v0}"
+move_to_bin__192_v0 "${ret_get_download_path191_v0__50_17}" "phpactor"
 __status=$?
 if [ "${__status}" != 0 ]; then
     exit "${__status}"
 fi
 echo "Install Typos LSP"
-get_download_path__150_v0 "tekumara/typos-lsp" 7
-ret_get_download_path150_v0__53_21="${ret_get_download_path150_v0}"
-download_to_bin__152_v0 "${ret_get_download_path150_v0__53_21}" "typos-lsp" "typos.tar.gz"
+get_download_path__191_v0 "tekumara/typos-lsp" 7
+ret_get_download_path191_v0__53_21="${ret_get_download_path191_v0}"
+download_to_bin__193_v0 "${ret_get_download_path191_v0__53_21}" "typos-lsp" "typos.tar.gz"
 __status=$?
 if [ "${__status}" != 0 ]; then
     exit "${__status}"
 fi
 echo "Install Rust LSP"
-download_to_bin__152_v0 "https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz" "rust-analyzer" "rust-analyzer-x86_64-unknown-linux-gnu.gz"
+download_to_bin__193_v0 "https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz" "rust-analyzer" "rust-analyzer-x86_64-unknown-linux-gnu.gz"
 __status=$?
 if [ "${__status}" != 0 ]; then
     exit "${__status}"
 fi
 echo "Install GitLab CI LSP"
-get_download_path__150_v0 "alesbrelih/gitlab-ci-ls" 1
-ret_get_download_path150_v0__59_17="${ret_get_download_path150_v0}"
-move_to_bin__151_v0 "${ret_get_download_path150_v0__59_17}" "x86_64-unknown-linux-gnu"
+get_download_path__191_v0 "alesbrelih/gitlab-ci-ls" 1
+ret_get_download_path191_v0__59_17="${ret_get_download_path191_v0}"
+move_to_bin__192_v0 "${ret_get_download_path191_v0__59_17}" "x86_64-unknown-linux-gnu"
 __status=$?
 if [ "${__status}" != 0 ]; then
     exit "${__status}"
 fi
 echo "Install HTMX LSP"
-get_download_path__150_v0 "ThePrimeagen/htmx-lsp" 2
-ret_get_download_path150_v0__62_17="${ret_get_download_path150_v0}"
-move_to_bin__151_v0 "${ret_get_download_path150_v0__62_17}" "htmx-lsp"
+get_download_path__191_v0 "ThePrimeagen/htmx-lsp" 2
+ret_get_download_path191_v0__62_17="${ret_get_download_path191_v0}"
+move_to_bin__192_v0 "${ret_get_download_path191_v0__62_17}" "htmx-lsp"
 __status=$?
 if [ "${__status}" != 0 ]; then
     exit "${__status}"
 fi
 echo "Install Marksman LSP"
-get_download_path__150_v0 "artempyanykh/marksman" 1
-ret_get_download_path150_v0__65_17="${ret_get_download_path150_v0}"
-move_to_bin__151_v0 "${ret_get_download_path150_v0__65_17}" "marksman"
+get_download_path__191_v0 "artempyanykh/marksman" 1
+ret_get_download_path191_v0__65_17="${ret_get_download_path191_v0}"
+move_to_bin__192_v0 "${ret_get_download_path191_v0__65_17}" "marksman"
 __status=$?
 if [ "${__status}" != 0 ]; then
     exit "${__status}"
