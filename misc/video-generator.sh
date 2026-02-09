@@ -15,9 +15,14 @@ for ((i=0; i<total_files; i++)); do
     current=$((i+1))
     echo "Processing file $current of $total_files: $filename"
 
+    if [ -f "$OUTPUT_DIR/${filename_noext}.mp4" ]; then
+        echo "Skipping $filename: $output_file already exists."
+        continue
+    fi
+
     rm -f "/tmp/temp_cover.jpg"
     ffmpeg -i "$mp3_file" -an -vcodec copy "/tmp/temp_cover.jpg" &> /dev/null
-    if [ ! -f "temp_cover.jpg" ]; then
+    if [ ! -f "/tmp/temp_cover.jpg" ]; then
         echo "Skipping $filename: no cover found."
         continue
     fi
