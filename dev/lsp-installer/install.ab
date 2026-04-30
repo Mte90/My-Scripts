@@ -44,7 +44,9 @@ fun download_to_bin(download_url, binary, packed_file) {
 }
 
 main {
-    cd("/tmp")
+    cd("/tmp") failed {
+        echo("Could not change directory")
+    }
 
     echo("Install PHPactor LSP")
     move_to_bin(get_download_path("phpactor/phpactor", 0), "phpactor")?
@@ -66,11 +68,17 @@ main {
 
     echo("Install Lua LSP")
     if not dir_exists("/opt/lua-language-server") {
-        cd("/opt/")
+        cd("/opt/") failed {
+            echo("Could not change directory")
+        }
         trust $git clone https://github.com/LuaLS/lua-language-server$
-        cd("lua-language-server")
+        cd("lua-language-server") failed {
+            echo("Could not change directory")
+        }
     } else {
-        cd("/opt/lua-language-server")
+        cd("/opt/lua-language-server") failed {
+            echo("Could not change directory")
+        }
     }
     silent trust {
         $git pull$
@@ -78,14 +86,16 @@ main {
     }
     symlink_create("/opt/lua-language-server/lua-language-server", "/usr/local/bin/lua-language-server")?
 
-    cd("/tmp")
+    cd("/tmp") failed {
+        echo("Could not change directory")
+    }
 
     const npm_lsp = ["vscode-langservers-extracted", "@tailwindcss/language-server", "@olrtg/emmet-language-server", "intelephense", "bash-language-server"]
     const npm_lsp_name = ["CSS, HTML, JSON LSP", "Tailwind LSP", "Emmet LSP", "Intelephense LSP", "Bash LSP"]
     for index, lsp in npm_lsp {
         echo("Install {npm_lsp_name[index]}")
         $npm i -g "{lsp}"$ failed {
-            echo("Error! Exit code: {status}")
+            echo("Error! Exit code: {status()}")
         }
     }
 
@@ -95,7 +105,7 @@ main {
     for index, lsp in command_lsp {
         echo("Install {command_lsp_name[index]}")
         ${lsp}$ failed {
-            echo("Error! Exit code: {status}")
+            echo("Error! Exit code: {status()}")
         }
     }
 }
