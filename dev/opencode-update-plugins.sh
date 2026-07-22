@@ -3,11 +3,10 @@ set -euo pipefail
 
 # opencode-update-plugins.sh — update all OpenCode plugins: sync opencode.json AND install
 #
-# OpenCode loads plugins from <plugin_root>/node_modules/ where <plugin_root> is:
+# OpenCode loads plugins from <plugin_root>/packages/ where <plugin_root> is:
 #   - ~/.cache/opencode/   (opencode 1.18+ / Desktop v21+)
 #   - ~/.config/opencode/  (older opencode)
-# OpenCode maintains a synthetic package.json there and runs `bun install` on startup.
-# This script does the same install proactively so new versions are ready immediately.
+# Plugins are stored as scoped @org/name/ or unscoped name@version/ directories.
 #
 # Usage:
 #   ./opencode-update-plugins.sh               # update JSON + install
@@ -88,14 +87,66 @@ if [[ ${#UPDATED[@]} -eq 0 ]]; then
   exit 0
 fi
 
-if ! command -v bun >/dev/null 2>&1; then
-  echo "⚠ bun not found on PATH; skipping install. Restart opencode to install."
+if ! command -v npm >/dev/null 2>&1; then
+  echo "⚠ npm not found on PATH; skipping install. Restart opencode to install."
   exit 0
 fi
 
-echo "📦 Installing ${#UPDATED[@]} updated plugin(s) in $PLUGIN_ROOT …"
+if [[ ! -d "$PLUGIN_ROOT/packages" ]]; then
+  echo "⚠ Plugins directory not found: $PLUGIN_ROOT/packages"
+  echo "  Restart opencode to create the directory."
+  exit 1
+fi
+
+echo "📦 Installing ${#UPDATED[@]} updated plugin(s) in $PLUGIN_ROOT/packages …"
+
 for spec in "${UPDATED[@]}"; do
-  (cd "$PLUGIN_ROOT" && bun add "$spec" 2>&1 | tail -1 | sed 's/^/  /') \
-    || echo "  ⚠ bun add failed for $spec" >&2
+  # Extract package name and version
+  name="${spec%@*}"
+  version="${spec##*@}"
+  
+  # Create directory name: @scope/name for scoped, name@version for unscoped
+  if [[ "$name" == @* ]]; then
+    # Scoped package: @scope/name -> @scope/name
+    dir_name="$name"
+  else
+    # Unscoped package: name -> name@version
+    dir_name="${name}@${version}"
+  fi
+  
+  target_dir="$PLUGIN_ROOT/packages/$dir_name"
+  
+  echo "  Installing $spec → $dir_name/"
+  
+  # Create temp directory for extraction
+  tmp_dir=$(mktemp -d)
+  
+  # Download package tarball
+  tarball_url=$(npm view "$spec" dist.tarball)
+  if [[ -z "$tarball_url" ]]; then
+    echo "    ⚠ Could not fetch tarball URL for $spec"
+    rm -rf "$tmp_dir"
+    continue
+  fi
+  
+  # Download and extract
+  if curl -sL "$tarball_url" | tar -xzf - -C "$tmp_dir" 2>/dev/null; then
+    # Package is extracted to tmp_dir/package
+    if [[ -d "$tmp_dir/package" ]]; then
+      # Remove old version if exists
+      rm -rf "$target_dir"
+      # Move to correct location
+      mv "$tmp_dir/package" "$target_dir"
+      echo "    ✓ Installed to $dir_name/"
+    else
+      echo "    ⚠ Extracted package missing 'package' directory"
+    fi
+  else
+    echo "    ⚠ Failed to download/extract $spec"
+  fi
+  
+  # Cleanup temp directory
+  rm -rf "$tmp_dir"
 done
+
 echo "✓ Done. Plugins installed — restart opencode to load the new versions."
