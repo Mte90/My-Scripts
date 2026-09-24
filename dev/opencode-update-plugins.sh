@@ -29,7 +29,7 @@ fi
 
 [[ -f "$OPENCODE_JSON" ]] || { echo "✗ $OPENCODE_JSON not found" >&2; exit 1; }
 
-mapfile -t PLUGIN_ENTRIES < <(jq -r '.plugin[]?' "$OPENCODE_JSON")
+mapfile -t PLUGIN_ENTRIES < <(jq -c '.plugin[]?' "$OPENCODE_JSON")
 
 if [[ ${#PLUGIN_ENTRIES[@]} -eq 0 ]]; then
   echo "⚠ No plugins found in opencode.json; nothing to update"
@@ -42,25 +42,79 @@ NEW_PLUGINS_JSON="[]"
 UPDATED=()
 
 for entry in "${PLUGIN_ENTRIES[@]}"; do
-  # Split name@version on the last @ (handles scoped packages like @scope/name@ver)
+  # Branch on entry shape: tuple ["name@ver", {...}], object {...}, or plain string "name@ver"
+  # Strip surrounding quotes from jq -c output for plain strings
+  entry="${entry#\"}"
+  entry="${entry%\"}"
+  
+  if [[ "$entry" == \[* ]]; then
+    # Tuple entry: ["name@version", {options...}]
+    spec=$(jq -r '.[0]' <<< "$entry")
+    
+    # Validate spec is a name@version string
+    if [[ ! "$spec" =~ @ ]]; then
+      echo "  ⚠ Unknown tuple format; keeping verbatim: $spec"
+      NEW_PLUGINS_JSON=$(jq --argjson e "$entry" '. + [$e]' <<< "$NEW_PLUGINS_JSON")
+      continue
+    fi
+    
+    name="${spec%@*}"
+    old_version="${spec##*@}"
+    
+    latest_version=$(npm view "$name" version 2>/dev/null || echo "")
+    
+    if [[ -z "$latest_version" ]]; then
+      echo "  ⚠ $name — could not reach npm registry; keeping @$old_version"
+      updated_spec="${name}@${old_version}"
+    else
+      if [[ "$latest_version" == "$old_version" ]]; then
+        echo "  ✓ $name@$latest_version (up to date)"
+      else
+        echo "  ↑ $name: $old_version → $latest_version"
+        UPDATED+=("${name}@${latest_version}")
+      fi
+      updated_spec="${name}@${latest_version}"
+    fi
+    
+    # Rebuild tuple with updated version, preserving options
+    options=$(jq '.[1:]' <<< "$entry")
+    updated_entry=$(jq -n --arg spec "$updated_spec" --argjson opts "$options" '[$spec] + $opts')
+    NEW_PLUGINS_JSON=$(jq --argjson e "$updated_entry" '. + [$e]' <<< "$NEW_PLUGINS_JSON")
+    continue
+  fi
+  
+  if [[ "$entry" == \{* ]]; then
+    # Unknown object entry — keep verbatim, warn
+    echo "  ⚠ Unknown object entry; keeping verbatim"
+    NEW_PLUGINS_JSON=$(jq --argjson e "$entry" '. + [$e]' <<< "$NEW_PLUGINS_JSON")
+    continue
+  fi
+  
+  # Plain string entry: "name@version"
+  if [[ ! "$entry" =~ @ ]]; then
+    echo "  ⚠ Entry missing @; keeping verbatim: $entry"
+    NEW_PLUGINS_JSON=$(jq --arg p "$entry" '. + [$p]' <<< "$NEW_PLUGINS_JSON")
+    continue
+  fi
+  
   name="${entry%@*}"
   old_version="${entry##*@}"
-
+  
   latest_version=$(npm view "$name" version 2>/dev/null || echo "")
-
+  
   if [[ -z "$latest_version" ]]; then
     echo "  ⚠ $name — could not reach npm registry; keeping @$old_version"
     NEW_PLUGINS_JSON=$(jq --arg p "${name}@${old_version}" '. + [$p]' <<< "$NEW_PLUGINS_JSON")
     continue
   fi
-
+  
   if [[ "$latest_version" == "$old_version" ]]; then
     echo "  ✓ $name@$latest_version (up to date)"
   else
     echo "  ↑ $name: $old_version → $latest_version"
     UPDATED+=("${name}@${latest_version}")
   fi
-
+  
   NEW_PLUGINS_JSON=$(jq --arg p "${name}@${latest_version}" '. + [$p]' <<< "$NEW_PLUGINS_JSON")
 done
 
@@ -105,48 +159,29 @@ for spec in "${UPDATED[@]}"; do
   name="${spec%@*}"
   version="${spec##*@}"
   
-  # Create directory name: @scope/name for scoped, name@version for unscoped
-  if [[ "$name" == @* ]]; then
-    # Scoped package: @scope/name -> @scope/name
-    dir_name="$name"
-  else
-    # Unscoped package: name -> name@version
-    dir_name="${name}@${version}"
-  fi
+  # Directory name is always name@version (matches opencode's layout for both scoped and unscoped)
+  dir_name="${name}@${version}"
   
   target_dir="$PLUGIN_ROOT/packages/$dir_name"
   
   echo "  Installing $spec → $dir_name/"
   
-  # Create temp directory for extraction
-  tmp_dir=$(mktemp -d)
+  # Remove old version if exists
+  rm -rf "$target_dir"
+  mkdir -p "$target_dir"
   
-  # Download package tarball
-  tarball_url=$(npm view "$spec" dist.tarball)
-  if [[ -z "$tarball_url" ]]; then
-    echo "    ⚠ Could not fetch tarball URL for $spec"
-    rm -rf "$tmp_dir"
-    continue
-  fi
+  # Create wrapper package.json matching opencode's layout:
+  #   <plugin_root>/packages/<name>@<ver>/package.json        (wrapper: {"dependencies":{"<name>":"<ver>"}})
+  #   <plugin_root>/packages/<name>@<ver>/node_modules/<name>/ (actual plugin + transitive deps)
+  echo "{\"dependencies\":{\"$name\":\"$version\"}}" > "$target_dir/package.json"
   
-  # Download and extract
-  if curl -sL "$tarball_url" | tar -xzf - -C "$tmp_dir" 2>/dev/null; then
-    # Package is extracted to tmp_dir/package
-    if [[ -d "$tmp_dir/package" ]]; then
-      # Remove old version if exists
-      rm -rf "$target_dir"
-      # Move to correct location
-      mv "$tmp_dir/package" "$target_dir"
-      echo "    ✓ Installed to $dir_name/"
-    else
-      echo "    ⚠ Extracted package missing 'package' directory"
-    fi
+  # Install — resolves the plugin and all its transitive dependencies into node_modules/
+  if (cd "$target_dir" && npm install --no-audit --no-fund --loglevel=error 2>&1); then
+    echo "    ✓ Installed to $dir_name/"
   else
-    echo "    ⚠ Failed to download/extract $spec"
+    echo "    ⚠ npm install failed for $spec; removing partial directory"
+    rm -rf "$target_dir"
   fi
-  
-  # Cleanup temp directory
-  rm -rf "$tmp_dir"
 done
 
 echo "✓ Done. Plugins installed — restart opencode to load the new versions."
