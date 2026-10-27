@@ -121,6 +121,12 @@ def get_tables_with_columns(conn):
     return project_scoped, session_scoped
 
 
+def has_session_projects(conn):
+    cur = conn.cursor()
+    cur.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='session_projects'")
+    return cur.fetchone() is not None
+
+
 def sync_magic_context(conn_oc, mc_path, args, force, pending_deletes=None):
     """
     Cross-check opencode.db against magic-context DB.
@@ -140,6 +146,10 @@ def sync_magic_context(conn_oc, mc_path, args, force, pending_deletes=None):
         return 0, 0, {}, None
 
     mc_cur = mc_conn.cursor()
+
+    if not has_session_projects(mc_conn):
+        print(f"warning: magic-context DB has no session_projects table at {mc_path}, skipping cross-check")
+        return 0, 0, {}, None
 
     # Get all session_ids in opencode.db (source of truth). In dry-run the stale
     # sessions are not yet deleted, so subtract the pending set to preview the
@@ -295,23 +305,28 @@ def main() -> int:
 
     if args.magic_context:
         # Magic-context mode: stale project_path based on session_projects.updated_at
-        cur.execute(
-            "SELECT project_path, MAX(updated_at) FROM session_projects "
-            "GROUP BY project_path HAVING MAX(updated_at) < ?",
-            (cutoff_ms,)
-        )
-        stale_projects = {row[0] for row in cur.fetchall() if row[0] != MC_SENTINEL_PROJECT_PATH}
-
-        # Get stale session_ids belonging to stale projects
-        if stale_projects:
-            placeholders = ",".join("?" * len(stale_projects))
-            cur.execute(
-                f"SELECT DISTINCT session_id FROM session_projects WHERE project_path IN ({placeholders})",
-                list(stale_projects)
-            )
-            stale_sessions = {row[0] for row in cur.fetchall()}
-        else:
+        if not has_session_projects(conn):
+            print(f"warning: magic-context DB has no session_projects table at {args.db}, nothing to clean")
+            stale_projects = set()
             stale_sessions = set()
+        else:
+            cur.execute(
+                "SELECT project_path, MAX(updated_at) FROM session_projects "
+                "GROUP BY project_path HAVING MAX(updated_at) < ?",
+                (cutoff_ms,)
+            )
+            stale_projects = {row[0] for row in cur.fetchall() if row[0] != MC_SENTINEL_PROJECT_PATH}
+
+            # Get stale session_ids belonging to stale projects
+            if stale_projects:
+                placeholders = ",".join("?" * len(stale_projects))
+                cur.execute(
+                    f"SELECT DISTINCT session_id FROM session_projects WHERE project_path IN ({placeholders})",
+                    list(stale_projects)
+                )
+                stale_sessions = {row[0] for row in cur.fetchall()}
+            else:
+                stale_sessions = set()
 
         # Introspect schema
         project_scoped_tables, session_scoped_tables = get_tables_with_columns(conn)
@@ -421,25 +436,35 @@ def main() -> int:
     print(f"Total sessions: {all_sessions}")
     print(f"To delete:     {to_delete}")
     print()
+    existing_tables = {row[0] for row in cur.execute(
+        "SELECT name FROM sqlite_master WHERE type='table'"
+    ).fetchall()}
+    cascade_count = sum(1 for t in CASCADE_DEPENDENTS if t in existing_tables)
+
     print("Dependent rows that will cascade-delete (via session_id FK):")
 
     subquery = f"SELECT id FROM session WHERE {time_col} < ?"
     for table, col in CASCADE_DEPENDENTS.items():
+        if table not in existing_tables:
+            continue
         cur.execute(f"SELECT COUNT(*) FROM {table} WHERE {col} IN ({subquery})", (cutoff_ms,))
         print(f"  {table}: {cur.fetchone()[0]}")
 
     print()
     print("Dependent rows with no FK to session (deleted explicitly to prevent orphans):")
     for table, col in AGGREGATE_DEPENDENTS.items():
+        if table not in existing_tables:
+            continue
         cur.execute(f"SELECT COUNT(*) FROM {table} WHERE {col} IN ({subquery})", (cutoff_ms,))
         print(f"  {table}: {cur.fetchone()[0]}")
-    # event cascades from event_sequence, report it too
-    cur.execute(
-        f"SELECT COUNT(*) FROM event WHERE aggregate_id IN "
-        f"(SELECT aggregate_id FROM event_sequence WHERE aggregate_id IN ({subquery}))",
-        (cutoff_ms,),
-    )
-    print(f"  event (cascades from event_sequence): {cur.fetchone()[0]}")
+    # event cascades from event_sequence, report it too (only if both tables exist)
+    if "event" in existing_tables and "event_sequence" in existing_tables:
+        cur.execute(
+            f"SELECT COUNT(*) FROM event WHERE aggregate_id IN "
+            f"(SELECT aggregate_id FROM event_sequence WHERE aggregate_id IN ({subquery}))",
+            (cutoff_ms,),
+        )
+        print(f"  event (cascades from event_sequence): {cur.fetchone()[0]}")
 
     if args.list and to_delete > 0:
         print()
@@ -481,23 +506,23 @@ def main() -> int:
 
     # Delete event_sequence first (cascades to event) — must run while session
     # rows still exist so the subquery can match aggregate_id = session.id.
-    deleted_events = conn.execute(
-        f"DELETE FROM event_sequence WHERE aggregate_id IN ({subquery})",
-        (cutoff_ms,),
-    ).rowcount
+    deleted_events = 0
+    if "event_sequence" in existing_tables:
+        deleted_events = conn.execute(
+            f"DELETE FROM event_sequence WHERE aggregate_id IN ({subquery})",
+            (cutoff_ms,),
+        ).rowcount
     print(f"  event_sequence: {deleted_events} rows (event cascades)")
 
     deleted = conn.execute(
         f"DELETE FROM session WHERE {time_col} < ?", (cutoff_ms,)
     ).rowcount
-    print(f"  session: {deleted} rows (7 tables cascade)")
+    print(f"  session: {deleted} rows ({cascade_count} tables cascade)")
 
     conn.execute("COMMIT")
     print(f"Deleted {deleted} sessions.")
 
     # Now do the magic-context cross-check with force
-    if mc_conn:
-        mc_conn.close()
     orphan_count, dead_count, mc_table_counts, mc_conn = sync_magic_context(
         conn, mc_db_path, args, force=True
     )
