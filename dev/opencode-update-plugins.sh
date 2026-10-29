@@ -159,6 +159,14 @@ for spec in "${UPDATED[@]}"; do
   name="${spec%@*}"
   version="${spec##*@}"
   
+  # Remove stale "<name>@latest" dir if present (leftover from tag-based
+  # installs); safe here because UPDATED specs are all concrete versions
+  latest_dir="$PLUGIN_ROOT/packages/${name}@latest"
+  if [[ -d "$latest_dir" ]]; then
+    rm -rf "$latest_dir"
+    echo "  🗑 Removed stale dir: ${name}@latest"
+  fi
+  
   # Directory name is always name@version (matches opencode's layout for both scoped and unscoped)
   dir_name="${name}@${version}"
   
