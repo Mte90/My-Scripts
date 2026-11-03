@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Delete opencode sessions older than N days from the SQLite database.
+"""Delete opencode sessions older than 30 days from the SQLite database.
 
 By default runs in DRY-RUN mode: reports what would be deleted without changing
 anything. Pass --force to actually delete.
 
 Cutoff uses session.time_updated (last touched). A session created long ago but
-updated recently is kept. Use --by-created to switch to time_created.
+updated recently is kept.
 
 Cascade chain (all via ON DELETE CASCADE foreign keys, requires PRAGMA
 foreign_keys = ON which this script sets):
@@ -57,14 +57,18 @@ MC_DEFAULT_DB = os.path.expanduser("~/.local/share/cortexkit/magic-context/conte
 MC_SENTINEL_PROJECT_PATH = "__global__"
 
 # Tables that cascade-delete via session_id FK — shown for reporting only.
+# Includes both legacy (message, part, todo) and current (session_message,
+# session_part) table names. Missing tables are skipped at runtime.
 CASCADE_DEPENDENTS = {
     "session_message": "session_id",
     "message": "session_id",
     "part": "session_id",
+    "session_part": "session_id",
     "session_context_epoch": "session_id",
     "session_input": "session_id",
     "todo": "session_id",
     "session_share": "session_id",
+    "session_v2": "id",
 }
 
 # event_sequence has no FK to session but its aggregate_id = session.id.
@@ -278,10 +282,9 @@ def main() -> int:
     )
     parser.add_argument("--db", default=None, help="Path to database (default: opencode.db or magic-context DB with --magic-context)")
     parser.add_argument("--mc-db", default=None, help="Path to magic-context DB for cross-check (default: ~/.local/share/cortexkit/magic-context/context.db)")
-    parser.add_argument("--days", type=int, default=30, help="Delete sessions not updated in this many days (default: 30)")
+
     parser.add_argument("--force", action="store_true", help="Actually delete. Without this flag, runs in dry-run mode.")
     parser.add_argument("--vacuum", action="store_true", help="Run VACUUM after deletion to reclaim disk space (slow on large DBs).")
-    parser.add_argument("--by-created", action="store_true", help="Use time_created instead of time_updated for the cutoff.")
     parser.add_argument("--list", action="store_true", help="Print the list of sessions that would be deleted.")
     parser.add_argument("--magic-context", action="store_true", help="Target magic-context knowledge DB instead of opencode.db")
     args = parser.parse_args()
@@ -294,7 +297,7 @@ def main() -> int:
         print(f"error: database not found: {args.db}", file=sys.stderr)
         return 1
 
-    cutoff_ms = int((time.time() - args.days * 86400) * 1000)
+    cutoff_ms = int((time.time() - 30 * 86400) * 1000)
     cutoff_human = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(cutoff_ms / 1000))
 
     # autocommit mode so VACUUM works and we control the delete transaction explicitly.
@@ -349,7 +352,7 @@ def main() -> int:
 
         print(f"Database:      {args.db}")
         print(f"Mode:          magic-context (project cleanup)")
-        print(f"Cutoff:        updated_at < {args.days} days ago ({cutoff_human})")
+        print(f"Cutoff:        updated_at < 30 days ago ({cutoff_human})")
         print(f"Stale projects: {len(stale_projects)} (excludes sentinel: {MC_SENTINEL_PROJECT_PATH})")
         print(f"Stale sessions: {len(stale_sessions)}")
         print()
@@ -426,12 +429,11 @@ def main() -> int:
     cur.execute("SELECT COUNT(*) FROM session")
     all_sessions = cur.fetchone()[0]
 
-    time_col = "time_created" if args.by_created else "time_updated"
-    cur.execute(f"SELECT COUNT(*) FROM session WHERE {time_col} < ?", (cutoff_ms,))
+    cur.execute("SELECT COUNT(*) FROM session WHERE time_updated < ?", (cutoff_ms,))
     to_delete = cur.fetchone()[0]
 
     print(f"Database:      {args.db}")
-    print(f"Cutoff:        {time_col} < {args.days} days ago ({cutoff_human})")
+    print(f"Cutoff:        time_updated < 30 days ago ({cutoff_human})")
     print(f"Mode:          {'DELETE' if args.force else 'DRY-RUN (no changes)'}")
     print(f"Total sessions: {all_sessions}")
     print(f"To delete:     {to_delete}")
@@ -443,7 +445,7 @@ def main() -> int:
 
     print("Dependent rows that will cascade-delete (via session_id FK):")
 
-    subquery = f"SELECT id FROM session WHERE {time_col} < ?"
+    subquery = "SELECT id FROM session WHERE time_updated < ?"
     for table, col in CASCADE_DEPENDENTS.items():
         if table not in existing_tables:
             continue
@@ -470,8 +472,8 @@ def main() -> int:
         print()
         print(f"Sessions to delete ({to_delete}):")
         cur.execute(
-            f"SELECT id, title, datetime({time_col}/1000, 'unixepoch'), directory "
-            f"FROM session WHERE {time_col} < ? ORDER BY {time_col} ASC",
+            "SELECT id, title, datetime(time_updated/1000, 'unixepoch'), directory "
+            "FROM session WHERE time_updated < ? ORDER BY time_updated ASC",
             (cutoff_ms,),
         )
         for sid, title, when, directory in cur.fetchall():
@@ -487,7 +489,7 @@ def main() -> int:
     mc_db_path = args.mc_db if args.mc_db else MC_DEFAULT_DB
 
     if not args.force:
-        cur.execute(f"SELECT id FROM session WHERE {time_col} < ?", (cutoff_ms,))
+        cur.execute("SELECT id FROM session WHERE time_updated < ?", (cutoff_ms,))
         pending_deletes = {row[0] for row in cur.fetchall()}
         _, _, _, mc_conn = sync_magic_context(
             conn, mc_db_path, args, force=False, pending_deletes=pending_deletes
@@ -502,6 +504,17 @@ def main() -> int:
     # Delete stale sessions from opencode.db
     print()
     print("Deleting...")
+
+    # Collect session IDs to delete before starting the transaction.
+    cur.execute("SELECT id FROM session WHERE time_updated < ?", (cutoff_ms,))
+    stale_session_ids = [row[0] for row in cur.fetchall()]
+    total_to_delete = len(stale_session_ids)
+
+    if total_to_delete == 0:
+        print("Nothing to delete.")
+        conn.close()
+        return 0
+
     conn.execute("BEGIN")
 
     # Delete event_sequence first (cascades to event) — must run while session
@@ -514,13 +527,40 @@ def main() -> int:
         ).rowcount
     print(f"  event_sequence: {deleted_events} rows (event cascades)")
 
-    deleted = conn.execute(
-        f"DELETE FROM session WHERE {time_col} < ?", (cutoff_ms,)
-    ).rowcount
-    print(f"  session: {deleted} rows ({cascade_count} tables cascade)")
+    # Delete sessions in batches with progress reporting.
+    # Cascading dependents (message, part, todo, session_share, etc.) are
+    # removed automatically by ON DELETE CASCADE foreign keys.
+    BATCH_SIZE = 100
+    total_deleted = 0
+    start_time = time.time()
+
+    for i in range(0, total_to_delete, BATCH_SIZE):
+        batch = stale_session_ids[i:i + BATCH_SIZE]
+        placeholders = ",".join("?" * len(batch))
+        deleted = conn.execute(
+            f"DELETE FROM session WHERE id IN ({placeholders})",
+            batch,
+        ).rowcount
+        total_deleted += deleted
+        elapsed = time.time() - start_time
+        pct = total_deleted / total_to_delete * 100
+        rate = total_deleted / elapsed if elapsed > 0 else 0
+        remaining = (total_to_delete - total_deleted) / rate if rate > 0 else 0
+        print(
+            f"\r  session: {total_deleted}/{total_to_delete} ({pct:.0f}%) "
+            f"{elapsed:.0f}s elapsed, ~{remaining:.0f}s remaining "
+            f"({cascade_count} tables cascade)",
+            file=sys.stderr, end="", flush=True,
+        )
+
+    print(file=sys.stderr)  # newline after progress bar
 
     conn.execute("COMMIT")
-    print(f"Deleted {deleted} sessions.")
+    elapsed_total = time.time() - start_time
+    print(
+        f"Deleted {total_deleted} sessions in {elapsed_total:.1f}s "
+        f"({cascade_count} tables cascade)."
+    )
 
     # Now do the magic-context cross-check with force
     orphan_count, dead_count, mc_table_counts, mc_conn = sync_magic_context(
